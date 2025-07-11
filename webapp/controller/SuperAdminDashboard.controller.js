@@ -143,6 +143,63 @@ sap.ui.define([
     onGoToAdminDashboard: function() {
   this.getRouter().navTo("admin-dashboard");
 },
+onOpenAddEmployeeDialog: function() {
+  var that = this;
+  if (this._addEmployeeDialog) {
+    this._addEmployeeDialog.open();
+    return;
+  }
+  this._addEmployeeDialog = new sap.m.Dialog({
+    title: "Add New Employee",
+    content: [
+      new sap.m.Input("addEmpName", { placeholder: "Full Name" }),
+      new sap.m.Input("addEmpEmail", { placeholder: "Email", type: "Email" }),
+      new sap.m.Input("addEmpPassword", { placeholder: "Password", type: "Password" })
+    ],
+    beginButton: new sap.m.Button({
+      text: "Add",
+      press: function() {
+        var name = sap.ui.getCore().byId("addEmpName").getValue();
+        var email = sap.ui.getCore().byId("addEmpEmail").getValue();
+        var password = sap.ui.getCore().byId("addEmpPassword").getValue();
+        if (!name || !email || !password) {
+          sap.m.MessageBox.error("Please fill all fields.");
+          return;
+        }
+        // Call backend API to add employee
+        fetch("http://localhost:4000/api/users", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ name, email, password, role: "employee" })
+        })
+        .then(res => {
+          if (!res.ok) throw new Error("Failed to add employee");
+          return res.json();
+        })
+        .then(data => {
+          sap.m.MessageBox.success("Employee added!");
+          that.loadData(); // Refresh user list
+          that._addEmployeeDialog.close();
+        })
+        .catch(err => {
+          sap.m.MessageBox.error("Error: " + err.message);
+        });
+      }
+    }),
+    endButton: new sap.m.Button({
+      text: "Cancel",
+      press: function() { that._addEmployeeDialog.close(); }
+    }),
+    afterClose: function() {
+      // Optional: clear fields
+      sap.ui.getCore().byId("addEmpName").setValue("");
+      sap.ui.getCore().byId("addEmpEmail").setValue("");
+      sap.ui.getCore().byId("addEmpPassword").setValue("");
+    }
+  });
+  this._addEmployeeDialog.open();
+},
 
     onLogout: function() {
       AuthService.logout()

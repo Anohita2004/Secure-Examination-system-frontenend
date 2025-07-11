@@ -90,7 +90,9 @@
   press="onGoToAdminDashboard"
   type="Emphasized"
   class="sapUiTinyMarginBottom" />
+  <Button text="Add Employee" press="onOpenAddEmployeeDialog" type="Emphasized" />
             <Label text="Current Permissions:" class="sapUiTinyMarginTop" />
+            
             <List
               items="{/selectedUser/permissions}"
               class="sapUiTinyMarginTop">
