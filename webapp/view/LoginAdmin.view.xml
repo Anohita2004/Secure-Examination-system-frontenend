@@ -1,0 +1,17 @@
+<mvc:View controllerName="exam.controller.LoginAdmin" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc">
+  <VBox class="loginContainer" alignItems="Center" justifyContent="Center">
+    
+    <Panel
+      headerText="🔐 Admin Login"
+      class="sapUiResponsiveMargin loginPanel"
+      width="400px"
+    >
+      <VBox class="sapUiSmallMargin" renderType="Bare">
+        <Input id="email" type="Email" placeholder="Enter admin email" />
+        <Input id="password" type="Password" placeholder="Enter password" />
+        <Button text="Login as Admin" press="onLogin" type="Emphasized" class="loginButton" />
+      </VBox>
+    </Panel>
+
+  </VBox>
+</mvc:View>

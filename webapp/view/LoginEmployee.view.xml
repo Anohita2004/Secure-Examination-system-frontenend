@@ -1,0 +1,7 @@
+<mvc:View controllerName="exam.controller.LoginEmployee" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc">
+  <VBox class="sapUiSmallMargin">
+    <Input id="email" placeholder="Employee Email" />
+    <Input id="password" type="Password" placeholder="Password" />
+    <Button text="Login as Employee" press="onLogin" />
+  </VBox>
+</mvc:View>

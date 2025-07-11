@@ -1,0 +1,119 @@
+<mvc:View
+  controllerName="exam.controller.SuperAdminDashboard"
+  xmlns="sap.m"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:core="sap.ui.core"
+  xmlns:l="sap.ui.layout"
+  xmlns:f="sap.ui.layout.form"
+  xmlns:table="sap.ui.table"
+  displayBlock="true">
+  
+  <Page title="Super Admin Dashboard" showNavButton="false">
+    <content>
+      <l:Grid defaultSpan="XL6 L6 M12 S12" class="sapUiSmallMargin">
+        
+        <!-- Users and Permissions Table -->
+        <Panel headerText="Users and Permissions" class="sapUiSmallMargin">
+          <table:Table
+            id="usersTable"
+            rows="{/users}"
+            selectionMode="Single"
+            visibleRowCount="8">
+            <table:columns>
+              <table:Column>
+                <Label text="Name" />
+                <table:template>
+                  <Text text="{name}" />
+                </table:template>
+              </table:Column>
+              <table:Column>
+                <Label text="Email" />
+                <table:template>
+                  <Text text="{email}" />
+                </table:template>
+              </table:Column>
+              <table:Column>
+                <Label text="Role" />
+                <table:template>
+                  <Text text="{role}" />
+                </table:template>
+              </table:Column>
+              <table:Column>
+                <Label text="Permissions" />
+                <table:template>
+                  <Text text="{permissions}" />
+                </table:template>
+              </table:Column>
+              <table:Column>
+                <Label text="Actions" />
+                <table:template>
+                  <Button
+                    text="Manage Permissions"
+                    press="onManagePermissions"
+                    type="Emphasized"
+                    class="sapUiTinyMarginEnd" />
+                </table:template>
+              </table:Column>
+            </table:columns>
+          </table:Table>
+        </Panel>
+
+        <!-- Permission Management Panel -->
+        <Panel headerText="Permission Management" class="sapUiSmallMargin">
+          <VBox>
+            <HBox class="sapUiTinyMarginBottom">
+              <Label text="Selected User:" class="sapUiTinyMarginEnd" />
+              <Text text="{/selectedUser/name}" class="sapUiTinyMarginEnd" />
+              <Text text="({/selectedUser/email})" />
+            </HBox>
+            
+            <HBox class="sapUiTinyMarginBottom">
+              <Label text="Available Permissions:" class="sapUiTinyMarginEnd" />
+              <Select
+                id="permissionSelect"
+                items="{/permissions}"
+                class="sapUiTinyMarginEnd">
+                <core:Item key="{id}" text="{name}" />
+              </Select>
+              <Button
+                text="Assign Permission"
+                press="onAssignPermission"
+                type="Accept"
+                class="sapUiTinyMarginEnd" />
+              <Button
+                text="Remove Permission"
+                press="onRemovePermission"
+                type="Reject" />
+            </HBox>
+            <Button
+  text="Go to Admin Dashboard"
+  press="onGoToAdminDashboard"
+  type="Emphasized"
+  class="sapUiTinyMarginBottom" />
+            <Label text="Current Permissions:" class="sapUiTinyMarginTop" />
+            <List
+              items="{/selectedUser/permissions}"
+              class="sapUiTinyMarginTop">
+              <StandardListItem title="{name}" />
+            </List>
+          </VBox>
+        </Panel>
+
+      </l:Grid>
+    </content>
+    
+    <footer>
+      <Toolbar>
+        <ToolbarSpacer />
+        <Button
+          text="Refresh Data"
+          press="onRefreshData"
+          icon="sap-icon://refresh" />
+        <Button
+          text="Logout"
+          press="onLogout"
+          type="Emphasized" />
+      </Toolbar>
+    </footer>
+  </Page>
+</mvc:View>

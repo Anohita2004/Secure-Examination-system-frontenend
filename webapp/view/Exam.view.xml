@@ -1,0 +1,81 @@
+<mvc:View controllerName="exam.controller.Exam"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core">
+
+  <VBox>
+    <!-- Header -->
+    <HBox justifyContent="SpaceBetween" alignItems="Center" class="sapUiSmallMarginBottom">
+      <VBox>
+        <Text text="Candidate: {/user/name}" />
+        <Text text="Exam: {/user/examTitle}" />
+      </VBox>
+      <Text text="Time Left: {questions>/timeLeft}s" class="sapUiTinyMarginEnd"/>
+    </HBox>
+
+    <!-- Main Content -->
+    <HBox>
+      <!-- Left: Question Area -->
+      <VBox width="70%" class="sapUiSmallMarginEnd">
+        <Title text="Question {= ${questions>/currentIndex} + 1 }" level="H2"/>
+        <Text text="{questions>/currentQuestion/question_text}" class="sapUiSmallMarginBottom"/>
+
+        <RadioButtonGroup
+          columns="1"
+          selectedIndex="{questions>/currentQuestion/selectedIndex}"
+          select="onSelectAnswer">
+          <buttons>
+            <RadioButton text="{questions>/currentQuestion/option_a}" />
+            <RadioButton text="{questions>/currentQuestion/option_b}" />
+            <RadioButton text="{questions>/currentQuestion/option_c}" />
+            <RadioButton text="{questions>/currentQuestion/option_d}" />
+          </buttons>
+        </RadioButtonGroup>
+
+        <HBox class="sapUiSmallMarginTop">
+          <Button text="Save &amp; Next" press="onSaveNext"/>
+          <Button text="Mark for Review &amp; Next" press="onMarkForReview"/>
+          <Button text="Clear" press="onClearAnswer"/>
+          <Button text="Submit" press="onSubmitExam" type="Emphasized"/>
+        </HBox>
+      </VBox>
+
+      <!-- Right: Navigation Panel -->
+      <VBox width="30%" class="sapUiSmallMarginBegin">
+        <Text text="Question Navigation" class="sapUiSmallMarginBottom"/>
+        <List items="{questions>/questions}">
+          <CustomListItem>
+            <Button 
+              text="{= ${questions>index} + 1}"
+              width="3rem"
+              type="{= ${questions>status} === 'answered' ? 'Accept' : 
+                     ${questions>status} === 'markedForReview' ? 'Attention' : 'Default'}"
+              press="onNavigateToQuestion">
+              <customData>
+                <core:CustomData key="questionIndex" value="{questions>index}" writeToDom="false"/>
+              </customData>
+            </Button>
+          </CustomListItem>
+        </List>
+
+        <!-- Legend -->
+        <VBox class="sapUiSmallMarginTop">
+          <HBox>
+            <Button width="2rem" type="Default"/>
+            <Text text="Not Answered" class="sapUiTinyMarginBegin"/>
+          </HBox>
+          <HBox>
+            <Button width="2rem" type="Accept"/>
+            <Text text="Answered" class="sapUiTinyMarginBegin"/>
+          </HBox>
+          <HBox>
+            <Button width="2rem" type="Attention"/>
+            <Text text="Marked for Review" class="sapUiTinyMarginBegin"/>
+          </HBox>
+        </VBox>
+      </VBox>
+    </HBox>
+  </VBox>
+</mvc:View>
+
+

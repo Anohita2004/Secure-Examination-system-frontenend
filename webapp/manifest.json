@@ -1,86 +1,94 @@
 {
-	"_version": "1.12.0",
-
-	"sap.app": {
-		"id": "exam",
-		"type": "application",
-		"i18n": "i18n/i18n.properties",
-		"title": "{{appTitle}}",
-		"description": "{{appDescription}}",
-		"applicationVersion": {
-			"version": "${version}"
-		},
-		"sourceTemplate": {
-			"id": "generator-ui5-app",
-			"version": "1.1.0"
-		}
-	},
-
-	"sap.ui": {
-		"technology": "UI5",
-		"icons": {},
-		"deviceTypes": {
-			"desktop": true,
-			"tablet": true,
-			"phone": true
-		}
-	},
-
-	"sap.ui5": {
-		"rootView": {
-			"viewName": "exam.view.App",
-			"type": "XML",
-			"id": "app"
-		},
-
-		"dependencies": {
-			"minUI5Version": "1.136.2",
-			"libs": {
-				"sap.ui.core": {},
-				"sap.m": {}
-			}
-		},
-
-		"handleValidation": true,
-
-		"contentDensities": {
-			"compact": true,
-			"cozy": true
-		},
-
-		"models": {
-			"i18n": {
-				"type": "sap.ui.model.resource.ResourceModel",
-				"settings": {
-					"bundleName": "exam.i18n.i18n",
-					"supportedLocales": ["en", "de"],
-					"fallbackLocale": "en",
-					"async": true
-				}
-			}
-		},
-
-		"routing": {
-			"config": {
-				"routerClass": "sap.m.routing.Router",
-				"viewType": "XML",
-				"viewPath": "exam.view",
-				"controlId": "app",
-				"controlAggregation": "pages"
-			},
-			"routes": [
-				{
-					"pattern": "",
-					"name": "main",
-					"target": "main"
-				}
-			],
-			"targets": {
-				"main": {
-					"viewId": "main",
-					"viewName": "Main"
-				}
-			}
-		}
-	}
+  "_version": "1.12.0",
+  "sap.app": {
+    "id": "exam",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "applicationVersion": {
+      "version": "${version}"
+    },
+    "sourceTemplate": {
+      "id": "generator-ui5-app",
+      "version": "1.1.0",
+      "toolsId": "8882ec92-3ee3-4634-aeb1-22a86fe3e80a"
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {},
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "rootView": {
+      "viewName": "exam.view.App",
+      "type": "XML",
+      "id": "app"
+    },
+    "dependencies": {
+      "minUI5Version": "1.136.2",
+      "libs": {
+        "sap.ui.core": {},
+        "sap.m": {}
+      }
+    },
+    "handleValidation": true,
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "exam.i18n.i18n",
+          "supportedLocales": [
+            "en",
+            "de"
+          ],
+          "fallbackLocale": "en",
+          "async": true
+        }
+      }
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "viewPath": "exam.view",
+        "controlId": "app",
+        "controlAggregation": "pages"
+      },
+      "routes": [
+        { "pattern": "login-admin", "name": "login-admin", "target": "loginAdmin" },
+        { "pattern": "login-employee", "name": "login-employee", "target": "loginEmployee" },
+        { "pattern": "admin-dashboard", "name": "admin-dashboard", "target": "adminDashboard" },
+        { "pattern": "employee-dashboard", "name": "employee-dashboard", "target": "employeeDashboard" },
+        { "pattern": "exam/{examId}", "name": "exam", "target": "exam" },
+        { "pattern": "super-admin-dashboard", "name": "super-admin-dashboard", "target": "superAdminDashboard" },
+        {
+          "pattern": "",
+          "name": "main",
+          "target": "main"
+        }
+      ],
+      "targets": {
+        "loginAdmin": { "viewName": "LoginAdmin", "viewId": "loginAdmin" },
+        "loginEmployee": { "viewName": "LoginEmployee", "viewId": "loginEmployee" },
+        "adminDashboard": { "viewName": "AdminDashboard", "viewId": "adminDashboard" },
+        "employeeDashboard": { "viewName": "EmployeeDashboard", "viewId": "employeeDashboard" },
+        "exam": { "viewName": "Exam", "viewId": "exam" },
+        "superAdminDashboard": { "viewName": "SuperAdminDashboard", "viewId": "superAdminDashboard" },
+        "main": {
+          "viewId": "main",
+          "viewName": "Main"
+        }
+      }
+    }
+  }
 }

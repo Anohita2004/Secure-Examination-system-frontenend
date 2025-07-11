@@ -1,0 +1,48 @@
+<mvc:View controllerName="exam.controller.EmployeeDashboard"
+  xmlns="sap.m"
+  xmlns:mvc="sap.ui.core.mvc"
+  displayBlock="true">
+
+  <VBox class="dashboardContainer">
+    <HBox justifyContent="SpaceBetween" class="headerBar">
+      <Title text="📋 Employee Dashboard" level="H1" class="dashboardTitle"/>
+      <Button 
+        text="Logout" 
+        press=".onLogout" 
+        type="Emphasized" 
+        icon="sap-icon://log" 
+        class="logoutButton"/>
+    </HBox>
+
+    <!-- 🔵 Unattempted Exams Section -->
+    <List id="unattemptedList"
+      items="{exams>/unattempted}" 
+      class="examList"
+      headerText="🟢 Unattempted Exams">
+      <StandardListItem
+        title="{exams>title}"
+        description="{exams>description}"
+        info="{exams>due_date}"
+        icon="sap-icon://initiative"
+        type="Active"
+        press="onStartExam"
+      />
+    </List>
+
+    <!-- 🔒 Attempted Exams Section -->
+    <List id="attemptedList"
+      items="{exams>/attempted}" 
+      class="examList"
+      headerText="🔒 Attempted Exams">
+      <StandardListItem
+        title="{exams>title}"
+        description="{exams>description}"
+        info="Attempted on {exams>due_date}"
+        icon="sap-icon://accept"
+        type="Inactive"
+      />
+    </List>
+
+  </VBox>
+</mvc:View>
+

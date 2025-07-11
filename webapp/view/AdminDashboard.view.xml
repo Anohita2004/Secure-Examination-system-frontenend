@@ -1,0 +1,116 @@
+<mvc:View
+  controllerName="exam.controller.AdminDashboard"
+  xmlns="sap.m"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:l="sap.ui.layout"
+  xmlns:core="sap.ui.core"
+  displayBlock="true">
+  
+  <Page title="Admin Dashboard" showNavButton="false">
+    <content>
+      <l:Grid defaultSpan="XL6 L6 M12 S12" class="sapUiSmallMargin">
+        
+        <!-- Dashboard Stats -->
+        <Panel headerText="Dashboard Statistics" class="sapUiSmallMargin">
+          <VBox>
+            <HBox>
+              <VBox class="sapUiTinyMarginEnd">
+                <Label text="Total Exams:" />
+                <Text text="{dashboardModel>/examCount}" />
+              </VBox>
+              <VBox class="sapUiTinyMarginEnd">
+                <Label text="Total Questions:" />
+                <Text text="{dashboardModel>/questionCount}" />
+              </VBox>
+              <VBox>
+                <Label text="Assigned Questions:" />
+                <Text text="{dashboardModel>/assignedCount}" />
+              </VBox>
+              <VBox>
+                <Label text="Pending Exams:" />
+                <Text text="{dashboardModel>/pendingCount}" />
+              </VBox>
+            </HBox>
+          </VBox>
+        </Panel>
+
+        <!-- Admin Actions -->
+        <Panel headerText="Admin Actions" class="sapUiSmallMargin">
+          <VBox>
+            <Button
+              text="Create Exam"
+              press="onOpenCreateExamDialog"
+              type="Emphasized"
+              class="sapUiTinyMarginBottom" />
+            
+            <Button
+              text="Add Question"
+              press="onOpenAddQuestionDialog"
+              type="Emphasized"
+              class="sapUiTinyMarginBottom" />
+            
+            <Button
+              text="Assign Exam"
+              press="onOpenAssignExamDialog"
+              type="Emphasized"
+              class="sapUiTinyMarginBottom" />
+            
+            <Button
+              text="View Results"
+              press="onOpenResultsDialog"
+              type="Emphasized" />
+          </VBox>
+        </Panel>
+
+        <!-- Users Table -->
+        <!--/*<Panel headerText="Users" class="sapUiSmallMargin">
+          <List
+  items="{users>/}"
+  class="sapUiTinyMarginTop">
+  <StandardListItem
+    title="{users>name}"
+    description="{users>email}"
+    info="{users>role}" />
+          </List>
+        </Panel>*/-->
+        <Panel headerText="Dashboard Table" class="sapUiSmallMargin">
+  <Table
+    id="dashboardTable"
+    items="{tableModel>/}">
+    <!-- Define your columns and cells here, e.g.: -->
+    <columns>
+      <Column><Text text="Name" /></Column>
+      <Column><Text text="Email" /></Column>
+      <Column><Text text="Role" /></Column>
+      <Column><Text text="Exam Title" /></Column>
+      <Column><Text text="Attempted" /></Column>
+    </columns>
+    <items>
+      <ColumnListItem>
+        <cells>
+          <Text text="{tableModel>name}" />
+          <Text text="{tableModel>email}" />
+          <Text text="{tableModel>role}" />
+          <Text text="{tableModel>title}" />
+          <Text text="{tableModel>attempted}" />
+        </cells>
+      </ColumnListItem>
+    </items>
+  </Table>
+</Panel>
+
+      </l:Grid>
+    </content>
+    
+    <footer>
+      <Toolbar>
+        <ToolbarSpacer />
+        <Button
+          text="Logout"
+          press="onLogout"
+          type="Emphasized" />
+      </Toolbar>
+    </footer>
+  </Page>
+  
+</mvc:View>

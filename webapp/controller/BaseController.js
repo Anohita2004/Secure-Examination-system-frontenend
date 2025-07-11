@@ -70,6 +70,22 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/UIComponent", "sap/ui/
 			} else {
 				this.getRouter().navTo("main", {}, undefined, true);
 			}
-		}
+		},
+		getCurrentUser: async function () {
+  try {
+    const res = await fetch("http://localhost:4000/api/auth/me", {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jwt")
+      }
+    });
+    if (!res.ok) throw new Error("Unauthorized");
+    return await res.json();
+  } catch (err) {
+    sap.m.MessageBox.error("Session expired or unauthorized.");
+    this.getRouter().navTo("main"); // redirect to login
+    throw err;
+  }
+}
+
 	});
 });

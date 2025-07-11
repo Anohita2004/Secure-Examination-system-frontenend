@@ -1,0 +1,9 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+  <Button 
+    text="{= ${questions>/currentIndex} + 1}"
+    width="3rem"
+    type="{= ${questions>/questions/${questions>/currentIndex}/status} === 'answered' ? 'Accept' : 
+           ${questions>/questions/${questions>/currentIndex}/status} === 'markedForReview' ? 'Attention' : 'Default'}"
+    press="onNavigateToQuestion"
+    data:questionIndex="${questions>/currentIndex}"/>
+</core:FragmentDefinition> 
