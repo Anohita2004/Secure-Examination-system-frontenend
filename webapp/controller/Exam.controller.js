@@ -11,7 +11,24 @@
   return BaseController.extend("exam.controller.Exam", {
     onInit: function () {
       console.log("Exam controller onInit");
+      // Set an empty model immediately to prevent empty bindings
+      this.getView().setModel(new sap.ui.model.json.JSONModel({
+        questions: [],
+        currentIndex: 0,
+        currentQuestion: {},
+        timeLeft: 900
+      }), "questions");
       const that = this;
+
+      // --- Secure Exam: Add event listeners ---
+      this._onFullscreenChangeBound = this._onFullscreenChange.bind(this);
+      document.addEventListener("fullscreenchange", this._onFullscreenChangeBound);
+      document.addEventListener("webkitfullscreenchange", this._onFullscreenChangeBound);
+      document.addEventListener("mozfullscreenchange", this._onFullscreenChangeBound);
+      document.addEventListener("MSFullscreenChange", this._onFullscreenChangeBound);
+      this._onContextMenuBound = function(e) { e.preventDefault(); };
+      document.addEventListener("contextmenu", this._onContextMenuBound);
+      // --- End Secure Exam listeners ---
 
       AuthService.getCurrentUser()
         .then(user => {
@@ -22,6 +39,41 @@
           MessageBox.error("Unauthorized access.");
           that.getRouter().navTo("login-employee");
         });
+    },
+
+    onExit: function() {
+      // Remove event listeners
+      document.removeEventListener("fullscreenchange", this._onFullscreenChangeBound);
+      document.removeEventListener("webkitfullscreenchange", this._onFullscreenChangeBound);
+      document.removeEventListener("mozfullscreenchange", this._onFullscreenChangeBound);
+      document.removeEventListener("MSFullscreenChange", this._onFullscreenChangeBound);
+      document.removeEventListener("contextmenu", this._onContextMenuBound);
+    },
+
+    _requestFullscreen: function() {
+      var elem = document.documentElement;
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.mozRequestFullScreen) { // Firefox
+        elem.mozRequestFullScreen();
+      } else if (elem.webkitRequestFullscreen) { // Chrome, Safari and Opera
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { // IE/Edge
+        elem.msRequestFullscreen();
+      }
+    },
+
+    _onFullscreenChange: function() {
+      // If not in fullscreen, auto-submit
+      if (
+        !document.fullscreenElement &&
+        !document.webkitFullscreenElement &&
+        !document.mozFullScreenElement &&
+        !document.msFullscreenElement
+      ) {
+        sap.m.MessageBox.warning("You exited fullscreen. The exam will be auto-submitted.");
+        this.onSubmitExam(true);
+      }
     },
 
     _setupExamRoute: function () {
@@ -45,19 +97,14 @@
           data.forEach((q, index) => {
             q.index = index;
             q.status = "notAnswered";
-            
-            // Ensure is_msq has a default value if missing
-            if (q.is_msq === undefined || q.is_msq === null) {
-              q.is_msq = false; // Default to MCQ if field is missing
-            }
-            
-            // Initialize based on question type
+            // Normalize is_msq to boolean
+            q.is_msq = q.is_msq === true || q.is_msq === 1 || q.is_msq === "1" || q.is_msq === "true";
             if (q.is_msq) {
-              q.selectedIndices = []; // Array for multiple selections
-              q.selectedIndex = -1; // Keep for compatibility
+              q.selectedIndices = [];
+              q.selectedIndex = -1;
             } else {
-              q.selectedIndex = -1; // Single selection
-              q.selectedIndices = []; // Keep for compatibility
+              q.selectedIndex = -1;
+              q.selectedIndices = [];
             }
           });
 
@@ -81,6 +128,9 @@
 
           that.getView().setModel(model, "questions");
           that._startCountdown();
+
+          // --- Secure Exam: Request fullscreen after questions are loaded ---
+          that._requestFullscreen();
         })
         .catch(err => {
           console.error("Error loading questions:", err); // Debug log
@@ -131,24 +181,26 @@
       const index = model.getProperty("/currentIndex");
       const key = parseInt(oEvent.getSource().data("key"), 10);
       const isSelected = oEvent.getParameter("selected");
-      
+
       let selectedIndices = model.getProperty(`/questions/${index}/selectedIndices`) || [];
-      
+
+      // Always create a new array to trigger UI update
       if (isSelected) {
         if (!selectedIndices.includes(key)) {
-          selectedIndices.push(key);
+          selectedIndices = selectedIndices.concat([key]);
         }
       } else {
         selectedIndices = selectedIndices.filter(i => i !== key);
       }
-      
+
       model.setProperty(`/questions/${index}/selectedIndices`, selectedIndices);
       model.setProperty("/currentQuestion/selectedIndices", selectedIndices);
-      
-      // Update status based on whether any option is selected
+
+      // Update status
       const status = selectedIndices.length > 0 ? "answered" : "notAnswered";
       model.setProperty(`/questions/${index}/status`, status);
       model.setProperty("/currentQuestion/status", status);
+      console.log("Selected indices for question", index, selectedIndices);
     },
 
     onSaveNext: function () {
@@ -281,13 +333,23 @@ sap.ui.define([
     onInit: function () {
       console.log("Exam controller onInit");
       // Set an empty model immediately to prevent empty bindings
-  this.getView().setModel(new sap.ui.model.json.JSONModel({
-    questions: [],
-    currentIndex: 0,
-    currentQuestion: {},
-    timeLeft: 900
-  }), "questions");
+      this.getView().setModel(new sap.ui.model.json.JSONModel({
+        questions: [],
+        currentIndex: 0,
+        currentQuestion: {},
+        timeLeft: 900
+      }), "questions");
       const that = this;
+
+      // --- Secure Exam: Add event listeners ---
+      this._onFullscreenChangeBound = this._onFullscreenChange.bind(this);
+      document.addEventListener("fullscreenchange", this._onFullscreenChangeBound);
+      document.addEventListener("webkitfullscreenchange", this._onFullscreenChangeBound);
+      document.addEventListener("mozfullscreenchange", this._onFullscreenChangeBound);
+      document.addEventListener("MSFullscreenChange", this._onFullscreenChangeBound);
+      this._onContextMenuBound = function(e) { e.preventDefault(); };
+      document.addEventListener("contextmenu", this._onContextMenuBound);
+      // --- End Secure Exam listeners ---
 
       AuthService.getCurrentUser()
         .then(user => {
@@ -298,6 +360,41 @@ sap.ui.define([
           MessageBox.error("Unauthorized access.");
           that.getRouter().navTo("login-employee");
         });
+    },
+
+    onExit: function() {
+      // Remove event listeners
+      document.removeEventListener("fullscreenchange", this._onFullscreenChangeBound);
+      document.removeEventListener("webkitfullscreenchange", this._onFullscreenChangeBound);
+      document.removeEventListener("mozfullscreenchange", this._onFullscreenChangeBound);
+      document.removeEventListener("MSFullscreenChange", this._onFullscreenChangeBound);
+      document.removeEventListener("contextmenu", this._onContextMenuBound);
+    },
+
+    _requestFullscreen: function() {
+      var elem = document.documentElement;
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.mozRequestFullScreen) { // Firefox
+        elem.mozRequestFullScreen();
+      } else if (elem.webkitRequestFullscreen) { // Chrome, Safari and Opera
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { // IE/Edge
+        elem.msRequestFullscreen();
+      }
+    },
+
+    _onFullscreenChange: function() {
+      // If not in fullscreen, auto-submit
+      if (
+        !document.fullscreenElement &&
+        !document.webkitFullscreenElement &&
+        !document.mozFullScreenElement &&
+        !document.msFullscreenElement
+      ) {
+        sap.m.MessageBox.warning("You exited fullscreen. The exam will be auto-submitted.");
+        this.onSubmitExam(true);
+      }
     },
 
     _setupExamRoute: function () {
@@ -319,18 +416,18 @@ sap.ui.define([
           }
 
           data.forEach((q, index) => {
-  q.index = index;
-  q.status = "notAnswered";
-  // Normalize is_msq to boolean
-  q.is_msq = q.is_msq === true || q.is_msq === 1 || q.is_msq === "1" || q.is_msq === "true";
-  if (q.is_msq) {
-    q.selectedIndices = [];
-    q.selectedIndex = -1;
-  } else {
-    q.selectedIndex = -1;
-    q.selectedIndices = [];
-  }
-});
+            q.index = index;
+            q.status = "notAnswered";
+            // Normalize is_msq to boolean
+            q.is_msq = q.is_msq === true || q.is_msq === 1 || q.is_msq === "1" || q.is_msq === "true";
+            if (q.is_msq) {
+              q.selectedIndices = [];
+              q.selectedIndex = -1;
+            } else {
+              q.selectedIndex = -1;
+              q.selectedIndices = [];
+            }
+          });
 
           console.log("Processed questions:", data); // Debug log
 
@@ -352,6 +449,9 @@ sap.ui.define([
 
           that.getView().setModel(model, "questions");
           that._startCountdown();
+
+          // --- Secure Exam: Request fullscreen after questions are loaded ---
+          that._requestFullscreen();
         })
         .catch(err => {
           console.error("Error loading questions:", err); // Debug log
@@ -398,31 +498,31 @@ sap.ui.define([
     },
 
     onSelectMSQOption: function (oEvent) {
-  const model = this.getView().getModel("questions");
-  const index = model.getProperty("/currentIndex");
-  const key = parseInt(oEvent.getSource().data("key"), 10);
-  const isSelected = oEvent.getParameter("selected");
+      const model = this.getView().getModel("questions");
+      const index = model.getProperty("/currentIndex");
+      const key = parseInt(oEvent.getSource().data("key"), 10);
+      const isSelected = oEvent.getParameter("selected");
 
-  let selectedIndices = model.getProperty(`/questions/${index}/selectedIndices`) || [];
+      let selectedIndices = model.getProperty(`/questions/${index}/selectedIndices`) || [];
 
-  // Always create a new array to trigger UI update
-  if (isSelected) {
-    if (!selectedIndices.includes(key)) {
-      selectedIndices = selectedIndices.concat([key]);
-    }
-  } else {
-    selectedIndices = selectedIndices.filter(i => i !== key);
-  }
+      // Always create a new array to trigger UI update
+      if (isSelected) {
+        if (!selectedIndices.includes(key)) {
+          selectedIndices = selectedIndices.concat([key]);
+        }
+      } else {
+        selectedIndices = selectedIndices.filter(i => i !== key);
+      }
 
-  model.setProperty(`/questions/${index}/selectedIndices`, selectedIndices);
-  model.setProperty("/currentQuestion/selectedIndices", selectedIndices);
+      model.setProperty(`/questions/${index}/selectedIndices`, selectedIndices);
+      model.setProperty("/currentQuestion/selectedIndices", selectedIndices);
 
-  // Update status
-  const status = selectedIndices.length > 0 ? "answered" : "notAnswered";
-  model.setProperty(`/questions/${index}/status`, status);
-  model.setProperty("/currentQuestion/status", status);
-  console.log("Selected indices for question", index, selectedIndices);
-},
+      // Update status
+      const status = selectedIndices.length > 0 ? "answered" : "notAnswered";
+      model.setProperty(`/questions/${index}/status`, status);
+      model.setProperty("/currentQuestion/status", status);
+      console.log("Selected indices for question", index, selectedIndices);
+    },
 
     onSaveNext: function () {
       const model = this.getView().getModel("questions");
