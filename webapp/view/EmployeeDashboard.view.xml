@@ -1,48 +1,72 @@
 <mvc:View controllerName="exam.controller.EmployeeDashboard"
   xmlns="sap.m"
   xmlns:mvc="sap.ui.core.mvc"
+  xmlns:core="sap.ui.core"
   displayBlock="true">
 
-  <VBox class="dashboardContainer">
-    <HBox justifyContent="SpaceBetween" class="headerBar">
-      <Title text="📋 Employee Dashboard" level="H1" class="dashboardTitle"/>
-      <Button 
-        text="Logout" 
-        press=".onLogout" 
-        type="Emphasized" 
-        icon="sap-icon://log" 
-        class="logoutButton"/>
-    </HBox>
+  <HBox class="employeeDashboardRoot">
+    <!-- Sidebar -->
+    <VBox class="employeeSidebar" width="220px">
+      <Avatar initials="{user>name}" displaySize="L" class="employeeAvatar"/>
+      <Text text="Hi, {user>name}" class="employeeSidebarName"/>
+      <List mode="None" class="employeeSidebarList">
+        <StandardListItem icon="sap-icon://home" title="Dashboard" type="Inactive"/>
+        <StandardListItem icon="sap-icon://education" title="My Exams" type="Inactive"/>
+        <StandardListItem icon="sap-icon://business-objects-experience" title="Results" type="Inactive"/>
+        <StandardListItem icon="sap-icon://log" title="Logout" type="Active" press="onLogout"/>
+      </List>
+    </VBox>
 
-    <!-- 🔵 Unattempted Exams Section -->
-    <List id="unattemptedList"
-      items="{exams>/unattempted}" 
-      class="examList"
-      headerText="🟢 Unattempted Exams">
-      <StandardListItem
-        title="{exams>title}"
-        description="{exams>description}"
-        info="{exams>due_date}"
-        icon="sap-icon://initiative"
-        type="Active"
-        press="onStartExam"
-      />
-    </List>
+    <!-- Main Content -->
+    <VBox class="employeeMainContent" width="100%">
+      <!-- Header -->
+      <HBox class="employeeHeaderBar" alignItems="Center" justifyContent="SpaceBetween">
+        <VBox>
+          <Text text="Welcome, {user>name}!" class="employeeWelcome"/>
+          <Text text="Role: {user>role} | Email: {user>email}" class="employeeDetails"/>
+        </VBox>
+        <Avatar initials="{user>name}" displaySize="M"/>
+      </HBox>
 
-    <!-- 🔒 Attempted Exams Section -->
-    <List id="attemptedList"
-      items="{exams>/attempted}" 
-      class="examList"
-      headerText="🔒 Attempted Exams">
-      <StandardListItem
-        title="{exams>title}"
-        description="{exams>description}"
-        info="Attempted on {exams>due_date}"
-        icon="sap-icon://accept"
-        type="Inactive"
-      />
-    </List>
-
-  </VBox>
+      <!-- Cards Grid -->
+      <HBox class="employeeCardsRow" wrap="Wrap" renderType="Bare">
+        <!-- Unattempted Exams Card -->
+        <VBox class="employeeCard" width="260px">
+          <core:Icon src="sap-icon://education" size="2.5rem"/>
+          <Text text="Unattempted Exams" class="cardTitle"/>
+          <Text text="{= ${exams>/unattempted}.length + ' pending' }"/>
+          <Button text="View" press="onGoToUnattempted"/>
+        </VBox>
+        <!-- Attempted Exams Card -->
+        <VBox class="employeeCard" width="260px">
+          <core:Icon src="sap-icon://accept" size="2.5rem"/>
+          <Text text="Attempted Exams" class="cardTitle"/>
+          <Text text="{= ${exams>/attempted}.length + ' completed' }"/>
+          <Button text="View" press="onGoToAttempted"/>
+        </VBox>
+        <!-- Results Card -->
+        <VBox class="employeeCard" width="260px">
+          <core:Icon src="sap-icon://business-objects-experience" size="2.5rem"/>
+          <Text text="Results" class="cardTitle"/>
+          <Text text="Check your exam results."/>
+          <Button text="View Results" press="onGoToResults"/>
+        </VBox>
+        <!-- Total Exams Assigned Card -->
+        <VBox class="employeeCard" width="260px">
+          <core:Icon src="sap-icon://number-sign" size="2.5rem"/>
+          <Text text="Total Exams Assigned" class="cardTitle"/>
+          <Text text="{= ${exams>/unattempted}.length + ${exams>/attempted}.length }"/>
+        </VBox>
+        <!-- Subject-wise Breakdown Card -->
+        <VBox class="employeeCard" width="260px">
+          <core:Icon src="sap-icon://pie-chart" size="2.5rem"/>
+          <Text text="Subject-wise Breakdown" class="cardTitle"/>
+          <List items="{exams>/subjectBreakdown}" class="subjectBreakdownList">
+            <StandardListItem title="{exams>subject}" info="{exams>count}"/>
+          </List>
+        </VBox>
+      </HBox>
+    </VBox>
+  </HBox>
 </mvc:View>
 

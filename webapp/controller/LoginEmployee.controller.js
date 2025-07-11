@@ -21,6 +21,11 @@ sap.ui.define([
   }
 })
     .catch(err => MessageBox.error("Login failed: " + err.message));
+},
+onTogglePassword: function(oEvent) {
+  var bSelected = oEvent.getParameter("selected");
+  var oPasswordInput = this.byId("password");
+  oPasswordInput.setType(bSelected ? "Text" : "Password");
 }
     /*onLogin: function() {
       console.log("Login pressed");  

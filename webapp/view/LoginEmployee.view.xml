@@ -1,7 +1,45 @@
-<mvc:View controllerName="exam.controller.LoginEmployee" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc">
-  <VBox class="sapUiSmallMargin">
-    <Input id="email" placeholder="Employee Email" />
-    <Input id="password" type="Password" placeholder="Password" />
-    <Button text="Login as Employee" press="onLogin" />
+
+
+<mvc:View
+  controllerName="exam.controller.LoginEmployee"
+  xmlns="sap.m"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:core="sap.ui.core"
+  displayBlock="true">
+
+  <VBox class="loginContainer" justifyContent="Center" alignItems="Center">
+    <Panel class="loginPanel" width="350px" height="auto" 
+           backgroundDesign="Translucent" 
+           headerText="Welcome Back!">
+      <VBox alignItems="Center" justifyContent="Center" class="sapUiSmallMargin">
+        <core:Icon src="sap-icon://employee" size="3rem" color="#e75480"/>
+        <Title text="Employee Login" level="H2" class="sapUiSmallMarginTop"/>
+        <Text text="Please enter your credentials to continue." class="welcome-subtext"/>
+        <Input
+          id="email"
+          placeholder="Email"
+          type="Email"
+          width="100%"
+          icon="sap-icon://email"
+          class="sapUiSmallMarginTop"/>
+        <Input
+          id="password"
+          placeholder="Password"
+          type="Password"
+          width="100%"
+          icon="sap-icon://key"
+          class="sapUiSmallMarginTop"/>
+        <CheckBox
+          text="Show Password"
+          select="onTogglePassword"
+          class="sapUiTinyMarginTop"/>
+        <Button
+          text="Login"
+          type="Emphasized"
+          width="100%"
+          press="onLogin"
+          class="loginButton sapUiSmallMarginTop"/>
+      </VBox>
+    </Panel>
   </VBox>
 </mvc:View>

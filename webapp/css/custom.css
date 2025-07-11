@@ -177,4 +177,127 @@ h1, h2, h3 {
 .login-button:hover {
   background-color: #fcd34d;
 }
+.employeeDashboardRoot {
+  height: 100vh;
+  background: linear-gradient(135deg, #ffe0ec 0%, #f5f7fa 100%);
+}
 
+.employeeSidebar {
+  background: #fff;
+  box-shadow: 2px 0 8px rgba(255, 0, 128, 0.05);
+  padding: 2rem 1rem;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.employeeAvatar {
+  margin-bottom: 1rem;
+  background: #ffb6c1;
+}
+
+.employeeSidebarName {
+  font-weight: bold;
+  margin-bottom: 2rem;
+  color: #e75480;
+}
+
+.employeeSidebarList .sapMSLI {
+  margin-bottom: 0.5rem;
+}
+
+.employeeMainContent {
+  padding: 2rem;
+  width: 100%;
+}
+
+.employeeHeaderBar {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #f8bbd0;
+  padding-bottom: 1rem;
+}
+
+.employeeWelcome {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #e75480;
+}
+
+.employeeDetails {
+  color: #888;
+  font-size: 1rem;
+}
+
+.employeeCardsRow {
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.employeeCard {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(255, 0, 128, 0.10);
+  padding: 2rem 1.5rem;
+  margin-bottom: 2rem;
+  align-items: center;
+  text-align: center;
+  transition: box-shadow 0.2s;
+  border: 2px solid #ffe0ec;
+}
+
+.employeeCard:hover {
+  box-shadow: 0 8px 32px rgba(255, 0, 128, 0.18);
+  border-color: #e75480;
+}
+
+.cardTitle {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 1rem 0 0.5rem 0;
+  color: #e75480;
+}
+
+.subjectBreakdownList .sapMSLI {
+  border: none;
+  background: transparent;
+}
+.loginContainer {
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #ffe0ec 0%, #f5f7fa 100%);
+}
+
+.loginPanel {
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(255, 0, 128, 0.10);
+  padding: 2.5rem 2rem 2rem 2rem;
+  min-width: 320px;
+  max-width: 400px;
+  align-items: center;
+}
+
+.loginPanel .sapMTitle {
+  font-size: 1.5rem;
+  color: #e75480;
+}
+
+.loginButton {
+  margin-top: 1rem;
+  width: 100%;
+  background-color: #e75480 !important;
+  color: white !important;
+  font-weight: bold;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgba(255, 0, 128, 0.08);
+}
+
+.loginButton:hover {
+  background-color: #c2185b !important;
+}
+
+.welcome-subtext {
+  color: #e75480;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
