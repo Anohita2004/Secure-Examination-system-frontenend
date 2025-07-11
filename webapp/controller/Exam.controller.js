@@ -637,6 +637,17 @@ sap.ui.define([
       const oRouter = sap.ui.core.UIComponent.getRouterFor(this);
       const oHash = oRouter.getHashChanger().getHash();
       return oHash.split("/")[1];
-    }
+    },
+    onPreviousQuestion: function () {
+  const model = this.getView().getModel("questions");
+  let index = model.getProperty("/currentIndex");
+  const questions = model.getProperty("/questions");
+
+  if (index > 0) {
+    index -= 1;
+    model.setProperty("/currentIndex", index);
+    model.setProperty("/currentQuestion", questions[index]);
+  }
+}
   });
 });

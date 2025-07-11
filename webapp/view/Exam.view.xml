@@ -67,6 +67,7 @@
         </VBox>
 
         <HBox class="sapUiSmallMarginTop">
+          <Button text="Previous" press="onPreviousQuestion"/>
           <Button text="Save &amp; Next" press="onSaveNext"/>
           <Button text="Mark for Review &amp; Next" press="onMarkForReview"/>
           <Button text="Clear" press="onClearAnswer"/>
