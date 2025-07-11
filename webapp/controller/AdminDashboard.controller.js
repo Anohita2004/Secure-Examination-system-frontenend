@@ -588,40 +588,87 @@ sap.ui.define([
     },
 
     _showAddQuestionDialog: function() {
-      var dialog = new Dialog({
-        title: "Add Question",
-        content: [
-          new Input("questionExamId", { placeholder: "Exam ID" }),
-          new Input("questionText", { placeholder: "Question Text" }),
-          new Input("optionA", { placeholder: "Option A" }),
-          new Input("optionB", { placeholder: "Option B" }),
-          new Input("optionC", { placeholder: "Option C" }),
-          new Input("optionD", { placeholder: "Option D" }),
-          new Input("correctOption", { placeholder: "Correct Option (A/B/C/D)" })
-        ],
-        beginButton: new Button({
-          text: "Add",
-          press: function() {
-            var exam_id = sap.ui.getCore().byId("questionExamId").getValue();
-            var question_text = sap.ui.getCore().byId("questionText").getValue();
-            var option_a = sap.ui.getCore().byId("optionA").getValue();
-            var option_b = sap.ui.getCore().byId("optionB").getValue();
-            var option_c = sap.ui.getCore().byId("optionC").getValue();
-            var option_d = sap.ui.getCore().byId("optionD").getValue();
-            var correct_option = sap.ui.getCore().byId("correctOption").getValue();
-            ExamService.addQuestion({ exam_id, question_text, option_a, option_b, option_c, option_d, correct_option })
-              .then(data => MessageBox.success("Question added!"))
-              .catch(err => MessageBox.error("Error: " + err.message));
-            dialog.close();
-          }
-        }),
-        endButton: new Button({
-          text: "Cancel",
-          press: function() { dialog.close(); }
+  var dialog = new sap.m.Dialog({
+    title: "Add Question",
+    content: [
+      new sap.m.Input("questionExamId", { placeholder: "Exam ID" }),
+      new sap.m.Input("questionText", { placeholder: "Question Text" }),
+      new sap.m.Input("optionA", { placeholder: "Option A" }),
+      new sap.m.Input("optionB", { placeholder: "Option B" }),
+      new sap.m.Input("optionC", { placeholder: "Option C" }),
+      new sap.m.Input("optionD", { placeholder: "Option D" }),
+      new sap.m.CheckBox("isMSQ", { text: "Multiple Select (MSQ)", select: function(e) {
+        // Show/hide correct option fields based on MSQ/MCQ
+        var isMSQ = e.getSource().getSelected();
+        sap.ui.getCore().byId("mcqCorrectOption").setVisible(!isMSQ);
+        sap.ui.getCore().byId("msqCorrectOptionsBox").setVisible(isMSQ);
+      }}),
+      // MCQ correct option (single input)
+      new sap.m.Input("mcqCorrectOption", { placeholder: "Correct Option (A/B/C/D)" }),
+      // MSQ correct options (checkboxes)
+      new sap.m.HBox("msqCorrectOptionsBox", {
+        visible: false,
+        items: [
+          new sap.m.CheckBox("correctA", { text: "A" }),
+          new sap.m.CheckBox("correctB", { text: "B" }),
+          new sap.m.CheckBox("correctC", { text: "C" }),
+          new sap.m.CheckBox("correctD", { text: "D" })
+        ]
+      })
+    ],
+    beginButton: new sap.m.Button({
+      text: "Add",
+      press: function() {
+        var exam_id = sap.ui.getCore().byId("questionExamId").getValue();
+        var question_text = sap.ui.getCore().byId("questionText").getValue();
+        var option_a = sap.ui.getCore().byId("optionA").getValue();
+        var option_b = sap.ui.getCore().byId("optionB").getValue();
+        var option_c = sap.ui.getCore().byId("optionC").getValue();
+        var option_d = sap.ui.getCore().byId("optionD").getValue();
+        var is_msq = sap.ui.getCore().byId("isMSQ").getSelected();
+
+        var correct_option;
+        if (is_msq) {
+          // Collect all checked options for MSQ
+          var corrects = [];
+          if (sap.ui.getCore().byId("correctA").getSelected()) corrects.push("A");
+          if (sap.ui.getCore().byId("correctB").getSelected()) corrects.push("B");
+          if (sap.ui.getCore().byId("correctC").getSelected()) corrects.push("C");
+          if (sap.ui.getCore().byId("correctD").getSelected()) corrects.push("D");
+          correct_option = corrects.join(",");
+        } else {
+          correct_option = sap.ui.getCore().byId("mcqCorrectOption").getValue();
+        }
+
+        // Validation (optional)
+        if (!exam_id || !question_text || !option_a || !option_b || !option_c || !option_d || !correct_option) {
+          sap.m.MessageBox.error("Please fill all fields and select at least one correct option.");
+          return;
+        }
+
+        // Call your ExamService
+        ExamService.addQuestion({
+          exam_id,
+          question_text,
+          option_a,
+          option_b,
+          option_c,
+          option_d,
+          correct_option,
+          is_msq
         })
-      });
-      dialog.open();
-    },
+        .then(data => sap.m.MessageBox.success("Question added!"))
+        .catch(err => sap.m.MessageBox.error("Error: " + err.message));
+        dialog.close();
+      }
+    }),
+    endButton: new sap.m.Button({
+      text: "Cancel",
+      press: function() { dialog.close(); }
+    })
+  });
+  dialog.open();
+},
 
     onOpenAssignExamDialog: function() {
       var that = this;

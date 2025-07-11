@@ -20,7 +20,9 @@
         <Title text="Question {= ${questions>/currentIndex} + 1 }" level="H2"/>
         <Text text="{questions>/currentQuestion/question_text}" class="sapUiSmallMarginBottom"/>
 
+        <!-- MCQ (Single Select) -->
         <RadioButtonGroup
+          visible="{= ${questions>/currentQuestion/is_msq} !== true }"
           columns="1"
           selectedIndex="{questions>/currentQuestion/selectedIndex}"
           select="onSelectAnswer">
@@ -31,6 +33,38 @@
             <RadioButton text="{questions>/currentQuestion/option_d}" />
           </buttons>
         </RadioButtonGroup>
+
+        <!-- MSQ (Multiple Select) -->
+        <VBox visible="{= ${questions>/currentQuestion/is_msq} === true }">
+          <CheckBox text="{questions>/currentQuestion/option_a}"
+                    selected="{= ${questions>/currentQuestion/selectedIndices}.includes(0) }"
+                    select="onSelectMSQOption">
+            <customData>
+              <core:CustomData key="key" value="0" writeToDom="false"/>
+            </customData>
+          </CheckBox>
+          <CheckBox text="{questions>/currentQuestion/option_b}"
+                    selected="{= ${questions>/currentQuestion/selectedIndices}.includes(1) }"
+                    select="onSelectMSQOption">
+            <customData>
+              <core:CustomData key="key" value="1" writeToDom="false"/>
+            </customData>
+          </CheckBox>
+          <CheckBox text="{questions>/currentQuestion/option_c}"
+                    selected="{= ${questions>/currentQuestion/selectedIndices}.includes(2) }"
+                    select="onSelectMSQOption">
+            <customData>
+              <core:CustomData key="key" value="2" writeToDom="false"/>
+            </customData>
+          </CheckBox>
+          <CheckBox text="{questions>/currentQuestion/option_d}"
+                    selected="{= ${questions>/currentQuestion/selectedIndices}.includes(3) }"
+                    select="onSelectMSQOption">
+            <customData>
+              <core:CustomData key="key" value="3" writeToDom="false"/>
+            </customData>
+          </CheckBox>
+        </VBox>
 
         <HBox class="sapUiSmallMarginTop">
           <Button text="Save &amp; Next" press="onSaveNext"/>
