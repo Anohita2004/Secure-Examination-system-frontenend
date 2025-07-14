@@ -1158,7 +1158,9 @@ sap.ui.define([
         content: [
           new Input("examTitle", { placeholder: "Title" }),
           new Input("examDescription", { placeholder: "Description" }),
-          new Input("examDueDate", { placeholder: "Due Date (YYYY-MM-DD)" })
+          new Input("examDueDate", { placeholder: "Due Date (YYYY-MM-DD)" }),
+          new sap.m.DatePicker("examStartDate", { placeholder: "Start Date" }),
+          new sap.m.DatePicker("examEndDate", { placeholder: "End Date" }),
         ],
         beginButton: new Button({
           text: "Create",
@@ -1168,7 +1170,9 @@ sap.ui.define([
             var dueDate = sap.ui.getCore().byId("examDueDate").getValue();
             var user = that.getView().getModel("user").getData();
             var createdBy = user.id;
-            ExamService.createExam({ title, description, due_date: dueDate, created_by: createdBy })
+            var startDate = sap.ui.getCore().byId("examStartDate").getValue();
+            var endDate = sap.ui.getCore().byId("examEndDate").getValue();
+            ExamService.createExam({ title, description, due_date: dueDate, created_by: createdBy, start_date: startDate, end_date: endDate})
               .then(data => MessageBox.success("Exam created!"))
               .catch(err => MessageBox.error("Error: " + err.message));
             dialog.close();
