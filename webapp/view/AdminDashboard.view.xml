@@ -37,8 +37,14 @@
         <!-- Admin Actions -->
         <Panel headerText="Admin Actions" class="sapUiSmallMargin">
           <VBox>
+            <ComboBox
+  id="examCategory"
+  items="{exams>/}">
+  <core:Item key="{exams>id}" text="{exams>title}" />
+</ComboBox>
             <Button
               text="Create Exam"
+  
               press="onOpenCreateExamDialog"
               type="Emphasized"
               class="sapUiTinyMarginBottom" />
@@ -97,6 +103,27 @@
       </ColumnListItem>
     </items>
   </Table>
+  </Panel>
+  <Panel>
+  <Table items="{exams>/}">
+  <columns>
+    <Column><Text text="ID"/></Column>
+    <Column><Text text="Title"/></Column>
+    <Column><Text text="Start Date"/></Column>
+    <Column><Text text="End Date"/></Column>
+  </columns>
+  <items>
+    <ColumnListItem>
+      <cells>
+        <Text text="{exams>id}"/>
+        <Text text="{exams>title}"/>
+        <Text text="{exams>start_date}"/>
+        <Text text="{exams>end_date}"/>
+      </cells>
+    </ColumnListItem>
+  </items>
+</Table>
+
 </Panel>
 
       </l:Grid>

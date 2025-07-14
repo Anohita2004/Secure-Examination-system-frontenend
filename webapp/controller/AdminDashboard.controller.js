@@ -1079,7 +1079,16 @@ sap.ui.define([
           MessageBox.error("Authentication failed: " + err.message);
           that.getRouter().navTo("main");
         });
+        this.loadExams();
     },
+    loadExams: function() {
+    fetch("http://localhost:4000/api/exam/exams", { credentials: "include" })
+      .then(res => res.json())
+      .then((data) => {
+        var examsModel = new sap.ui.model.json.JSONModel(data);
+        this.getView().setModel(examsModel, "exams");
+      });
+  },
 
     loadPermissionsAndSetupUI: function(user) {
       var that = this;
@@ -1157,15 +1166,28 @@ sap.ui.define([
         title: "Create Exam",
         content: [
           new Input("examTitle", { placeholder: "Title" }),
+        new sap.m.ComboBox("examCategory", {
+  placeholder: "Select Exam",
+  items: {
+    path: "exams>/",
+    template: new sap.ui.core.Item({
+      key: "{exams>id}",
+      text: "{exams>title}"
+    })
+  }
+}),
           new Input("examDescription", { placeholder: "Description" }),
           new Input("examDueDate", { placeholder: "Due Date (YYYY-MM-DD)" }),
           new sap.m.DatePicker("examStartDate", { placeholder: "Start Date" }),
           new sap.m.DatePicker("examEndDate", { placeholder: "End Date" }),
+  
+
         ],
         beginButton: new Button({
           text: "Create",
           press: function() {
             var title = sap.ui.getCore().byId("examTitle").getValue();
+            var selectedExamId = sap.ui.getCore().byId("examCategory").getSelectedKey();
             var description = sap.ui.getCore().byId("examDescription").getValue();
             var dueDate = sap.ui.getCore().byId("examDueDate").getValue();
             var user = that.getView().getModel("user").getData();
@@ -1343,3 +1365,5 @@ sap.ui.define([
     }
   });
 });
+
+
