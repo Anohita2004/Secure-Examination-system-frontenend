@@ -10,17 +10,11 @@
 
   return BaseController.extend("exam.controller.Exam", {
     onInit: function () {
-      console.log("Exam controller onInit");
-      // Set an empty model immediately to prevent empty bindings
-      this.getView().setModel(new sap.ui.model.json.JSONModel({
-        questions: [],
-        currentIndex: 0,
-        currentQuestion: {},
-        timeLeft: 900
-      }), "questions");
-      const that = this;
+      // Attach the route handler immediately!
+      var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+      oRouter.getRoute("exam").attachPatternMatched(this._onRouteMatched, this);
 
-      // --- Secure Exam: Add event listeners ---
+      // Secure Exam: Add event listeners
       this._onFullscreenChangeBound = this._onFullscreenChange.bind(this);
       document.addEventListener("fullscreenchange", this._onFullscreenChangeBound);
       document.addEventListener("webkitfullscreenchange", this._onFullscreenChangeBound);
@@ -28,16 +22,23 @@
       document.addEventListener("MSFullscreenChange", this._onFullscreenChangeBound);
       this._onContextMenuBound = function(e) { e.preventDefault(); };
       document.addEventListener("contextmenu", this._onContextMenuBound);
-      // --- End Secure Exam listeners ---
 
+      // Set an empty model immediately to prevent empty bindings
+      this.getView().setModel(new sap.ui.model.json.JSONModel({
+        questions: [],
+        currentIndex: 0,
+        currentQuestion: {},
+        timeLeft: 900
+      }), "questions");
+
+      // Check authentication (async, but do NOT attach route handler here)
       AuthService.getCurrentUser()
         .then(user => {
-          that.getView().setModel(new sap.ui.model.json.JSONModel(user), "user");
-          that._setupExamRoute();
+          this.getView().setModel(new sap.ui.model.json.JSONModel(user), "user");
         })
         .catch(() => {
           MessageBox.error("Unauthorized access.");
-          that.getRouter().navTo("login-employee");
+          this.getRouter().navTo("login-employee");
         });
     },
 
@@ -76,12 +77,15 @@
       }
     },
 
-    _setupExamRoute: function () {
-      const oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-      oRouter.getRoute("exam").attachPatternMatched(this._onRouteMatched, this);
-    },
-
     _onRouteMatched: function (oEvent) {
+      // Reset model to empty
+      this.getView().setModel(new sap.ui.model.json.JSONModel({
+        questions: [],
+        currentIndex: 0,
+        currentQuestion: {},
+        timeLeft: 900
+      }), "questions");
+
       const examId = oEvent.getParameter("arguments").examId;
       const that = this;
 
@@ -316,6 +320,18 @@
       const oRouter = sap.ui.core.UIComponent.getRouterFor(this);
       const oHash = oRouter.getHashChanger().getHash();
       return oHash.split("/")[1];
+    },
+
+    onPreviousQuestion: function () {
+      const model = this.getView().getModel("questions");
+      let index = model.getProperty("/currentIndex");
+      const questions = model.getProperty("/questions");
+
+      if (index > 0) {
+        index -= 1;
+        model.setProperty("/currentIndex", index);
+        model.setProperty("/currentQuestion", questions[index]);
+      }
     }
   });
 });*/
@@ -331,17 +347,11 @@ sap.ui.define([
 
   return BaseController.extend("exam.controller.Exam", {
     onInit: function () {
-      console.log("Exam controller onInit");
-      // Set an empty model immediately to prevent empty bindings
-      this.getView().setModel(new sap.ui.model.json.JSONModel({
-        questions: [],
-        currentIndex: 0,
-        currentQuestion: {},
-        timeLeft: 900
-      }), "questions");
-      const that = this;
+      // Attach the route handler immediately!
+      var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+      oRouter.getRoute("exam").attachPatternMatched(this._onRouteMatched, this);
 
-      // --- Secure Exam: Add event listeners ---
+      // Secure Exam: Add event listeners
       this._onFullscreenChangeBound = this._onFullscreenChange.bind(this);
       document.addEventListener("fullscreenchange", this._onFullscreenChangeBound);
       document.addEventListener("webkitfullscreenchange", this._onFullscreenChangeBound);
@@ -349,16 +359,23 @@ sap.ui.define([
       document.addEventListener("MSFullscreenChange", this._onFullscreenChangeBound);
       this._onContextMenuBound = function(e) { e.preventDefault(); };
       document.addEventListener("contextmenu", this._onContextMenuBound);
-      // --- End Secure Exam listeners ---
 
+      // Set an empty model immediately to prevent empty bindings
+      this.getView().setModel(new sap.ui.model.json.JSONModel({
+        questions: [],
+        currentIndex: 0,
+        currentQuestion: {},
+        timeLeft: 900
+      }), "questions");
+
+      // Check authentication (async, but do NOT attach route handler here)
       AuthService.getCurrentUser()
         .then(user => {
-          that.getView().setModel(new sap.ui.model.json.JSONModel(user), "user");
-          that._setupExamRoute();
+          this.getView().setModel(new sap.ui.model.json.JSONModel(user), "user");
         })
         .catch(() => {
           MessageBox.error("Unauthorized access.");
-          that.getRouter().navTo("login-employee");
+          this.getRouter().navTo("login-employee");
         });
     },
 
@@ -397,12 +414,15 @@ sap.ui.define([
       }
     },
 
-    _setupExamRoute: function () {
-      const oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-      oRouter.getRoute("exam").attachPatternMatched(this._onRouteMatched, this);
-    },
-
     _onRouteMatched: function (oEvent) {
+      // Reset model to empty
+      this.getView().setModel(new sap.ui.model.json.JSONModel({
+        questions: [],
+        currentIndex: 0,
+        currentQuestion: {},
+        timeLeft: 900
+      }), "questions");
+
       const examId = oEvent.getParameter("arguments").examId;
       const that = this;
 
@@ -638,16 +658,17 @@ sap.ui.define([
       const oHash = oRouter.getHashChanger().getHash();
       return oHash.split("/")[1];
     },
-    onPreviousQuestion: function () {
-  const model = this.getView().getModel("questions");
-  let index = model.getProperty("/currentIndex");
-  const questions = model.getProperty("/questions");
 
-  if (index > 0) {
-    index -= 1;
-    model.setProperty("/currentIndex", index);
-    model.setProperty("/currentQuestion", questions[index]);
-  }
-}
+    onPreviousQuestion: function () {
+      const model = this.getView().getModel("questions");
+      let index = model.getProperty("/currentIndex");
+      const questions = model.getProperty("/questions");
+
+      if (index > 0) {
+        index -= 1;
+        model.setProperty("/currentIndex", index);
+        model.setProperty("/currentQuestion", questions[index]);
+      }
+    }
   });
 });

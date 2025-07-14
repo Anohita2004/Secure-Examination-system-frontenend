@@ -107,7 +107,7 @@ sap.ui.define([], function () {
         credentials: "include"
       }).then(res => res.json());
     },
-    assignExam: function(assignData) {
+    /*assignExam: function(assignData) {
       return fetch(BASE_URL + "/exam/assign", {
         method: "POST",
         headers: {
@@ -116,7 +116,24 @@ sap.ui.define([], function () {
         body: JSON.stringify(assignData),
         credentials: "include"
       }).then(res => res.json());
+    }*/
+   assignExam: function(assignData) {
+  return fetch(BASE_URL + "/exam/assign", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
     },
+    body: JSON.stringify(assignData),
+    credentials: "include"
+  }).then(async res => {
+    const data = await res.json();
+    if (!res.ok) {
+      // Attach status for further handling if needed
+      throw data;
+    }
+    return data;
+  });
+},
     getAssignedExams: function(userId) {
       return fetch(BASE_URL + "/exam/assigned/" + userId, {
         method: "GET",
