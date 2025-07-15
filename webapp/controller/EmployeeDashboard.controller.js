@@ -239,7 +239,64 @@ sap.ui.define([
       }
       window.location.replace("http://localhost:8080/test/flpSandbox.html?sap-ui-xx-viewCache=false#app-tile");
     },
-
+   onOpenChangePasswordDialog: function() {
+  var dialog = new sap.m.Dialog({
+    title: "Change Password",
+    content: [
+      new sap.m.Label({ text: "Old Password" }),
+      new sap.m.Input("oldPasswordInput", { type: "Password" }),
+      new sap.m.Label({ text: "New Password" }),
+      new sap.m.Input("newPasswordInput", { type: "Password" }),
+      new sap.m.Label({ text: "Confirm New Password" }),
+      new sap.m.Input("confirmPasswordInput", { type: "Password" })
+    ],
+    beginButton: new sap.m.Button({
+      text: "Change",
+      press: function() {
+        var oldPassword = sap.ui.getCore().byId("oldPasswordInput").getValue();
+        var newPassword = sap.ui.getCore().byId("newPasswordInput").getValue();
+        var confirmPassword = sap.ui.getCore().byId("confirmPasswordInput").getValue();
+        if (!oldPassword || !newPassword || !confirmPassword) {
+          sap.m.MessageBox.error("All fields are required.");
+          return;
+        }
+        if (newPassword !== confirmPassword) {
+          sap.m.MessageBox.error("New passwords do not match.");
+          return;
+        }
+        // Get user_id from model
+        var user = this.getView().getModel("user").getData();
+        fetch("http://localhost:4000/api/user/change-password", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user_id: user.id,
+            old_password: oldPassword,
+            new_password: newPassword
+          }),
+          credentials: "include"
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.error) {
+            sap.m.MessageBox.error(data.error);
+          } else {
+            sap.m.MessageBox.success("Password changed successfully!");
+            dialog.close();
+          }
+        })
+        .catch(err => {
+          sap.m.MessageBox.error("Error: " + err.message);
+        });
+      }.bind(this)
+    }),
+    endButton: new sap.m.Button({
+      text: "Cancel",
+      press: function() { dialog.close(); }
+    })
+  });
+  dialog.open();
+},
     // Helper to show exam list dialog
     _showExamListDialog: function(title, exams, attempted) {
       var that = this;

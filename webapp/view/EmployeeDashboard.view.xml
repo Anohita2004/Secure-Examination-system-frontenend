@@ -14,6 +14,7 @@
         <StandardListItem icon="sap-icon://education" title="My Exams" type="Inactive"/>
         <StandardListItem icon="sap-icon://business-objects-experience" title="Results" type="Inactive"/>
         <StandardListItem icon="sap-icon://log" title="Logout" type="Active" press="onLogout"/>
+        
       </List>
     </VBox>
 
@@ -65,6 +66,7 @@
             <StandardListItem title="{exams>subject}" info="{exams>count}"/>
           </List>
         </VBox>
+        <Button text="Change Password" press="onOpenChangePasswordDialog" />
       </HBox>
     </VBox>
   </HBox>
