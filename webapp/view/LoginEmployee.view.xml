@@ -33,6 +33,7 @@
           text="Show Password"
           select="onTogglePassword"
           class="sapUiTinyMarginTop"/>
+        <Link text="Forgot Password?" press="onForgotPassword" />
         <Button
           text="Login"
           type="Emphasized"
