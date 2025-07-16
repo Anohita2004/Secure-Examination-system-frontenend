@@ -1,0 +1,119 @@
+/* Super Admin Dashboard Custom Styles */
+
+.superAdminSidebar {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  box-shadow: 0 4px 24px rgba(33, 150, 243, 0.08);
+  border-radius: 20px;
+  min-height: 100vh;
+  padding: 32px 0 32px 0;
+  align-items: center;
+}
+
+.sidebarName {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #1976d2;
+  margin-top: 12px;
+}
+
+.sidebarRole {
+  font-size: 1rem;
+  color: #757575;
+  margin-bottom: 16px;
+}
+
+.superAdminSidebar .sapMList {
+  width: 100%;
+  margin-top: 24px;
+  background: transparent;
+  border: none;
+}
+
+.superAdminSidebar .sapMLIB {
+  border-radius: 12px;
+  margin: 4px 12px;
+  transition: background 0.2s;
+}
+.superAdminSidebar .sapMLIBActive, .superAdminSidebar .sapMLIB:hover {
+  background: #1976d2 !important;
+  color: #fff !important;
+}
+
+.superAdminMainContent {
+  background: #f5f7fa;
+  border-radius: 24px;
+  min-height: 100vh;
+  box-shadow: 0 2px 16px rgba(33, 150, 243, 0.04);
+}
+
+.welcomeBanner {
+  background: linear-gradient(90deg, #e3f2fd 60%, #bbdefb 100%);
+  color: #1976d2;
+  font-weight: bold;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px #e3f2fd;
+  padding: 12px 24px;
+}
+
+.statsRow {
+  margin-top: 32px;
+  gap: 16px;
+}
+
+.statCard {
+  min-width: 180px;
+  max-width: 220px;
+  background: linear-gradient(135deg, #fff 60%, #e3f2fd 100%);
+  border-radius: 16px;
+  box-shadow: 0 2px 8px #eee;
+  padding: 24px 16px;
+  margin: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: box-shadow 0.2s;
+}
+.statCard:hover {
+  box-shadow: 0 6px 24px #90caf9;
+}
+
+.statCard .sapMObjectNumber {
+  font-size: 2rem;
+  color: #1976d2;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+/* Table and Panel tweaks */
+.sapMPanel {
+  border-radius: 16px;
+  box-shadow: 0 2px 8px #e3f2fd;
+  margin-top: 24px;
+}
+
+.sapMTable {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Permission Management Panel */
+.sapMPanel .sapMLabel {
+  font-weight: bold;
+  color: #1976d2;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .superAdminSidebar {
+    min-width: 100px;
+    padding: 12px 0;
+  }
+  .superAdminMainContent {
+    padding: 12px;
+  }
+  .statCard {
+    min-width: 120px;
+    max-width: 100%;
+    padding: 12px 8px;
+  }
+} 

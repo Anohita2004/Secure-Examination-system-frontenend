@@ -3,120 +3,101 @@
   xmlns="sap.m"
   xmlns:mvc="sap.ui.core.mvc"
   xmlns:core="sap.ui.core"
-  xmlns:l="sap.ui.layout"
-  xmlns:f="sap.ui.layout.form"
-  xmlns:table="sap.ui.table"
   displayBlock="true">
-  
-  <Page title="Super Admin Dashboard" showNavButton="false">
-    <content>
-      <l:Grid defaultSpan="XL6 L6 M12 S12" class="sapUiSmallMargin">
-        
-        <!-- Users and Permissions Table -->
-        <Panel headerText="Users and Permissions" class="sapUiSmallMargin">
-          <table:Table
-            id="usersTable"
-            rows="{/users}"
-            selectionMode="Single"
-            visibleRowCount="8">
-            <table:columns>
-              <table:Column>
-                <Label text="Name" />
-                <table:template>
-                  <Text text="{name}" />
-                </table:template>
-              </table:Column>
-              <table:Column>
-                <Label text="Email" />
-                <table:template>
-                  <Text text="{email}" />
-                </table:template>
-              </table:Column>
-              <table:Column>
-                <Label text="Role" />
-                <table:template>
-                  <Text text="{role}" />
-                </table:template>
-              </table:Column>
-              <table:Column>
-                <Label text="Permissions" />
-                <table:template>
-                  <Text text="{permissions}" />
-                </table:template>
-              </table:Column>
-              <table:Column>
-                <Label text="Actions" />
-                <table:template>
-                  <Button
-                    text="Manage Permissions"
-                    press="onManagePermissions"
-                    type="Emphasized"
-                    class="sapUiTinyMarginEnd" />
-                </table:template>
-              </table:Column>
-            </table:columns>
-          </table:Table>
-        </Panel>
 
-        <!-- Permission Management Panel -->
-        <Panel headerText="Permission Management" class="sapUiSmallMargin">
-          <VBox>
-            <HBox class="sapUiTinyMarginBottom">
-              <Label text="Selected User:" class="sapUiTinyMarginEnd" />
-              <Text text="{/selectedUser/name}" class="sapUiTinyMarginEnd" />
-              <Text text="({/selectedUser/email})" />
-            </HBox>
-            
-            <HBox class="sapUiTinyMarginBottom">
-              <Label text="Available Permissions:" class="sapUiTinyMarginEnd" />
-              <Select
-                id="permissionSelect"
-                items="{/permissions}"
-                class="sapUiTinyMarginEnd">
-                <core:Item key="{id}" text="{name}" />
-              </Select>
-              <Button
-                text="Assign Permission"
-                press="onAssignPermission"
-                type="Accept"
-                class="sapUiTinyMarginEnd" />
-              <Button
-                text="Remove Permission"
-                press="onRemovePermission"
-                type="Reject" />
-            </HBox>
-            <Button
-  text="Go to Admin Dashboard"
-  press="onGoToAdminDashboard"
-  type="Emphasized"
-  class="sapUiTinyMarginBottom" />
-  <Button text="Add Employee" press="onOpenAddEmployeeDialog" type="Emphasized" />
-  <Button text="View Analytics" press=".onGoToAnalytics"/>
-            <Label text="Current Permissions:" class="sapUiTinyMarginTop" />
-            
-            <List
-              items="{/selectedUser/permissions}"
-              class="sapUiTinyMarginTop">
-              <StandardListItem title="{name}" />
-            </List>
-          </VBox>
-        </Panel>
+  <HBox>
+    <!-- Sidebar -->
+    <VBox width="240px" class="superAdminSidebar" style="background:#f8f8f8; border-radius:20px; min-height:100vh;">
+      <Avatar initials="{user>name}" displaySize="L" class="sapUiMediumMarginTop"/>
+      <Text text="{user>name}" class="sidebarName sapUiTinyMarginTop"/>
+      <Text text="{user>role}" class="sidebarRole sapUiTinyMarginBottom"/>
+      <List>
+        <StandardListItem icon="sap-icon://home" title="Dashboard" type="Active" press="onGoToAdminDashboard"/>
+        <StandardListItem icon="sap-icon://bar-chart" title="Analytics" type="Active" press="onGoToAnalytics"/>
+        <StandardListItem icon="sap-icon://add-employee" title="Add Employee" type="Active" press="onOpenAddEmployeeDialog"/>
+        <StandardListItem icon="sap-icon://log" title="Logout" type="Active" press="onLogout"/>
+      </List>
+    </VBox>
 
-      </l:Grid>
-    </content>
-    
-    <footer>
-      <Toolbar>
-        <ToolbarSpacer />
-        <Button
-          text="Refresh Data"
-          press="onRefreshData"
-          icon="sap-icon://refresh" />
-        <Button
-          text="Logout"
-          press="onLogout"
-          type="Emphasized" />
-      </Toolbar>
-    </footer>
-  </Page>
+    <!-- Main Content -->
+    <VBox width="100%" class="superAdminMainContent" style="padding:32px;">
+      <HBox justifyContent="SpaceBetween" alignItems="Center">
+        <Title text="Super Admin Dashboard" level="H1"/>
+        <!-- Optional: Banner or notification -->
+        <Panel headerText="Welcome, Super Admin!" class="welcomeBanner" style="background:#e3f2fd; border-radius:16px;">
+          <Text text="Manage users, permissions, and more."/>
+        </Panel>
+      </HBox>
+
+      <!-- Stats Cards -->
+      <HBox class="statsRow" wrap="Wrap" style="margin-top:24px;">
+        <VBox class="statCard" style="background:#fff; border-radius:16px; box-shadow:0 2px 8px #eee; padding:16px; margin:8px;">
+          <Text text="Total Users"/>
+          <ObjectNumber number="{dashboardModel>/userCount}" unit=""/>
+        </VBox>
+        <VBox class="statCard" style="background:#fff; border-radius:16px; box-shadow:0 2px 8px #eee; padding:16px; margin:8px;">
+          <Text text="Total Permissions"/>
+          <ObjectNumber number="{dashboardModel>/permissionCount}" unit=""/>
+        </VBox>
+        <VBox class="statCard" style="background:#fff; border-radius:16px; box-shadow:0 2px 8px #eee; padding:16px; margin:8px;">
+          <Text text="Admins"/>
+          <ObjectNumber number="{dashboardModel>/adminCount}" unit=""/>
+        </VBox>
+        <VBox class="statCard" style="background:#fff; border-radius:16px; box-shadow:0 2px 8px #eee; padding:16px; margin:8px;">
+          <Text text="Employees"/>
+          <ObjectNumber number="{dashboardModel>/employeeCount}" unit=""/>
+        </VBox>
+      </HBox>
+
+      <!-- Users and Permissions Table -->
+      <Panel headerText="Users and Permissions" class="sapUiSmallMarginTop">
+        <Table items="{/users}">
+          <columns>
+            <Column><Text text="Name" /></Column>
+            <Column><Text text="Email" /></Column>
+            <Column><Text text="Role" /></Column>
+            <Column><Text text="Permissions" /></Column>
+            <Column><Text text="Actions" /></Column>
+          </columns>
+          <items>
+            <ColumnListItem>
+              <cells>
+                <Text text="{name}" />
+                <Text text="{email}" />
+                <Text text="{role}" />
+                <Text text="{permissions}" />
+                <Button text="Manage" press="onManagePermissions" type="Emphasized"/>
+              </cells>
+            </ColumnListItem>
+          </items>
+        </Table>
+      </Panel>
+
+      <!-- Permission Management Panel -->
+      <Panel headerText="Permission Management" class="sapUiSmallMarginTop">
+        <VBox>
+          <HBox class="sapUiTinyMarginBottom">
+            <Label text="Selected User:" class="sapUiTinyMarginEnd" />
+            <Text text="{/selectedUser/name}" class="sapUiTinyMarginEnd" />
+            <Text text="({/selectedUser/email})" />
+          </HBox>
+          <HBox class="sapUiTinyMarginBottom">
+            <Label text="Available Permissions:" class="sapUiTinyMarginEnd" />
+            <Select
+              id="permissionSelect"
+              items="{/permissions}"
+              class="sapUiTinyMarginEnd">
+              <core:Item key="{id}" text="{name}" />
+            </Select>
+            <Button text="Assign" press="onAssignPermission" type="Accept" class="sapUiTinyMarginEnd"/>
+            <Button text="Remove" press="onRemovePermission" type="Reject"/>
+          </HBox>
+          <Label text="Current Permissions:" class="sapUiTinyMarginTop" />
+          <List items="{/selectedUser/permissions}" class="sapUiTinyMarginTop">
+            <StandardListItem title="{name}" />
+          </List>
+        </VBox>
+      </Panel>
+    </VBox>
+  </HBox>
 </mvc:View>
