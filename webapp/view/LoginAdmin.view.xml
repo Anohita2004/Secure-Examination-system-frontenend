@@ -1,17 +1,33 @@
-<mvc:View controllerName="exam.controller.LoginAdmin" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc">
-  <VBox class="loginContainer" alignItems="Center" justifyContent="Center">
-    
-    <Panel
-      headerText="🔐 Admin Login"
-      class="sapUiResponsiveMargin loginPanel"
-      width="400px"
-    >
-      <VBox class="sapUiSmallMargin" renderType="Bare">
-        <Input id="email" type="Email" placeholder="Enter admin email" />
-        <Input id="password" type="Password" placeholder="Enter password" />
-        <Button text="Login as Admin" press="onLogin" type="Emphasized" class="loginButton" />
-      </VBox>
-    </Panel>
+<mvc:View
+  controllerName="exam.controller.LoginAdmin"
+  xmlns="sap.m"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:core="sap.ui.core"
+  displayBlock="true">
 
-  </VBox>
+  <HBox class="loginPageRoot" justifyContent="Center" alignItems="Center" width="100%" height="100vh">
+    <!-- Left Illustration -->
+    <VBox width="50%" class="loginIllustrationBox" alignItems="Center" justifyContent="Center">
+      <Image src="images/login-illustration.jpg" width="80%" />
+    </VBox>
+
+    <!-- Right Login Form -->
+    <VBox width="50%" class="loginFormBox" alignItems="Center" justifyContent="Center">
+      <Title text="WELCOME BACK" level="H2" class="loginWelcome"/>
+      <Text text="ADMIN LOGIN" class="loginPageTitle"/>
+      <VBox width="350px" class="loginForm" alignItems="Stretch" justifyContent="Center">
+        <HBox class="loginInputBox" alignItems="Center">
+          <core:Icon src="sap-icon://email" class="loginInputIcon emailIcon"/>
+          <Input id="email" placeholder="Email address" type="Email" width="100%" class="loginInput"/>
+        </HBox>
+        <HBox class="loginInputBox" alignItems="Center">
+          <core:Icon src="sap-icon://locked" class="loginInputIcon passwordIcon"/>
+          <Input id="password" placeholder="Password" type="Password" width="100%" class="loginInput"/>
+        </HBox>
+        
+        <Button text="SIGN IN" type="Emphasized" press="onLogin" class="loginButtonGradient"/>
+        
+      </VBox>
+    </VBox>
+  </HBox>
 </mvc:View>

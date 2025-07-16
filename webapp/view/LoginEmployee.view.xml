@@ -1,5 +1,3 @@
-
-
 <mvc:View
   controllerName="exam.controller.LoginEmployee"
   xmlns="sap.m"
@@ -7,40 +5,30 @@
   xmlns:core="sap.ui.core"
   displayBlock="true">
 
-  <VBox class="loginContainer" justifyContent="Center" alignItems="Center">
-    <Panel class="loginPanel" width="350px" height="auto" 
-           backgroundDesign="Translucent" 
-           headerText="Welcome Back!">
-      <VBox alignItems="Center" justifyContent="Center" class="sapUiSmallMargin">
-        <core:Icon src="sap-icon://employee" size="3rem" color="#e75480"/>
-        <Title text="Employee Login" level="H2" class="sapUiSmallMarginTop"/>
-        <Text text="Please enter your credentials to continue." class="welcome-subtext"/>
-        <Input
-          id="email"
-          placeholder="Email"
-          type="Email"
-          width="100%"
-          icon="sap-icon://email"
-          class="sapUiSmallMarginTop"/>
-        <Input
-          id="password"
-          placeholder="Password"
-          type="Password"
-          width="100%"
-          icon="sap-icon://key"
-          class="sapUiSmallMarginTop"/>
-        <CheckBox
-          text="Show Password"
-          select="onTogglePassword"
-          class="sapUiTinyMarginTop"/>
-        <Link text="Forgot Password?" press="onForgotPassword" />
-        <Button
-          text="Login"
-          type="Emphasized"
-          width="100%"
-          press="onLogin"
-          class="loginButton sapUiSmallMarginTop"/>
+  <HBox class="loginPageRoot" justifyContent="Center" alignItems="Center" width="100%" height="100vh">
+    <!-- Left Illustration -->
+    <VBox width="50%" class="loginIllustrationBox" alignItems="Center" justifyContent="Center">
+      <Image src="images/login-illustration1.jpg" width="80%" />
+    </VBox>
+
+    <!-- Right Login Form -->
+    <VBox width="50%" class="loginFormBox" alignItems="Center" justifyContent="Center">
+      <Title text="WELCOME BACK" level="H2" class="loginWelcome"/>
+      <Text text="LOGIN PAGE" class="loginPageTitle"/>
+      <VBox width="350px" class="loginForm" alignItems="Stretch" justifyContent="Center">
+        <HBox class="loginInputBox" alignItems="Center">
+          <core:Icon src="sap-icon://email" class="loginInputIcon emailIcon"/>
+          <Input id="email" placeholder="Email address" type="Email" width="100%" class="loginInput"/>
+        </HBox>
+        <HBox class="loginInputBox" alignItems="Center">
+          <core:Icon src="sap-icon://locked" class="loginInputIcon passwordIcon"/>
+          <Input id="password" placeholder="Password" type="Password" width="100%" class="loginInput"/>
+        </HBox>
+        <HBox justifyContent="End">
+          <Link text="Forgot password?" press="onForgotPassword" class="forgotPasswordLink"/>
+        </HBox>
+        <Button text="SIGN IN" type="Emphasized" press="onLogin" class="loginButtonGradient"/>
       </VBox>
-    </Panel>
-  </VBox>
+    </VBox>
+  </HBox>
 </mvc:View>
