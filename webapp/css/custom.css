@@ -301,3 +301,46 @@ h1, h2, h3 {
   margin-bottom: 1.5rem;
   font-size: 1rem;
 }
+  .adminSidebar { background: #f8f8f8; border-radius: 20px; }
+  .statCard { background: #fff; border-radius: 16px; box-shadow: 0 2px 8px #eee; padding: 16px; margin: 8px; }
+  .upgradeBanner { background: #ffe0b2; border-radius: 16px; }
+  .adminSidebar {
+  background: #f8f8f8;
+  border-radius: 20px;
+  min-height: 100vh;
+  padding: 24px 0;
+  box-shadow: 0 2px 8px #eee;
+}
+.sidebarName {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 8px;
+}
+.sidebarRole {
+  color: #888;
+  font-size: 1rem;
+  margin-bottom: 16px;
+}
+.statCard {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px #eee;
+  padding: 16px;
+  margin: 8px;
+  min-width: 160px;
+  text-align: center;
+}
+.upgradeBanner {
+  background: #ffe0b2;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.adminMainContent {
+  padding: 32px;
+}
+.statsRow {
+  margin-top: 24px;
+}

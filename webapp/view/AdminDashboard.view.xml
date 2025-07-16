@@ -2,143 +2,109 @@
   controllerName="exam.controller.AdminDashboard"
   xmlns="sap.m"
   xmlns:mvc="sap.ui.core.mvc"
-  xmlns:l="sap.ui.layout"
   xmlns:core="sap.ui.core"
   displayBlock="true">
-  
-  <Page title="Admin Dashboard" showNavButton="false">
-    <content>
-      <l:Grid defaultSpan="XL6 L6 M12 S12" class="sapUiSmallMargin">
-        
-        <!-- Dashboard Stats -->
-        <Panel headerText="Dashboard Statistics" class="sapUiSmallMargin">
-          <VBox>
-            <HBox>
-              <VBox class="sapUiTinyMarginEnd">
-                <Label text="Total Exams:" />
-                <Text text="{dashboardModel>/examCount}" />
-              </VBox>
-              <VBox class="sapUiTinyMarginEnd">
-                <Label text="Total Questions:" />
-                <Text text="{dashboardModel>/questionCount}" />
-              </VBox>
-              <VBox>
-                <Label text="Assigned Questions:" />
-                <Text text="{dashboardModel>/assignedCount}" />
-              </VBox>
-              <VBox>
-                <Label text="Pending Exams:" />
-                <Text text="{dashboardModel>/pendingCount}" />
-              </VBox>
-            </HBox>
-          </VBox>
+
+  <HBox>
+    <!-- Sidebar -->
+    <VBox width="220px" class="adminSidebar" style="background:#f8f8f8; border-radius:20px; min-height:100vh;">
+      <Avatar src="path/to/avatar.jpg" displaySize="L" class="sapUiMediumMarginTop"/>
+      <Text text="{user>name}" class="sidebarName sapUiTinyMarginTop"/>
+      <Text text="{user>role}" class="sidebarRole sapUiTinyMarginBottom"/>
+      <List>
+        <StandardListItem icon="sap-icon://home" title="Dashboard" type="Active"/>
+        <StandardListItem icon="sap-icon://bar-chart" title="Analytics" type="Active" press="onGoToAnalytics"/>
+        <StandardListItem icon="sap-icon://question-mark" title="Question Bank" type="Active" press="onGoToQuestionBank"/>
+        <StandardListItem icon="sap-icon://log" title="Logout" type="Active" press="onLogout"/>
+      </List>
+    </VBox>
+
+    <!-- Main Content -->
+    <VBox width="100%" class="adminMainContent" style="padding:32px;">
+      <HBox justifyContent="SpaceBetween" alignItems="Center">
+        <Title text="Dashboard" level="H1"/>
+        <!-- Upgrade Banner -->
+        <Panel headerText="Upgrade Your Crowd" class="upgradeBanner" style="background:#ffe0b2; border-radius:16px;">
+          <Text text="Pro plan for better results"/>
+          <Button text="Upgrade Now" type="Emphasized"/>
         </Panel>
+      </HBox>
 
-        <!-- Admin Actions -->
-        <Panel headerText="Admin Actions" class="sapUiSmallMargin">
-          <VBox>
-            <ComboBox
-  id="examCategory"
-  items="{exams>/}">
-  <core:Item key="{exams>id}" text="{exams>title}" />
-</ComboBox>
-            <Button
-              text="Create Exam"
-  
-              press="onOpenCreateExamDialog"
-              type="Emphasized"
-              class="sapUiTinyMarginBottom" />
-            
-            <Button
-              text="Add Question"
-              press="onOpenAddQuestionDialog"
-              type="Emphasized"
-              class="sapUiTinyMarginBottom" />
-            
-            <Button
-              text="Assign Exam"
-              press="onOpenAssignExamDialog"
-              type="Emphasized"
-              class="sapUiTinyMarginBottom" />
-            
-            <Button
-              text="View Results"
-              press="onOpenResultsDialog"
-              type="Emphasized" />
-          </VBox>
-          
-        </Panel>
+      <!-- Stats Cards -->
+      <HBox class="statsRow" wrap="Wrap" style="margin-top:24px;">
+        <VBox class="statCard" style="background:#fff; border-radius:16px; box-shadow:0 2px 8px #eee; padding:16px; margin:8px;">
+          <Text text="Total Exams"/>
+          <ObjectNumber number="{dashboardModel>/examCount}" unit=""/>
+        </VBox>
+        <VBox class="statCard" style="background:#fff; border-radius:16px; box-shadow:0 2px 8px #eee; padding:16px; margin:8px;">
+          <Text text="Total Questions"/>
+          <ObjectNumber number="{dashboardModel>/questionCount}" unit=""/>
+        </VBox>
+        <VBox class="statCard" style="background:#fff; border-radius:16px; box-shadow:0 2px 8px #eee; padding:16px; margin:8px;">
+          <Text text="Assigned Questions"/>
+          <ObjectNumber number="{dashboardModel>/assignedCount}" unit=""/>
+        </VBox>
+        <VBox class="statCard" style="background:#fff; border-radius:16px; box-shadow:0 2px 8px #eee; padding:16px; margin:8px;">
+          <Text text="Pending Exams"/>
+          <ObjectNumber number="{dashboardModel>/pendingCount}" unit=""/>
+        </VBox>
+      </HBox>
 
-        <!-- Users Table -->
-        <!--/*<Panel headerText="Users" class="sapUiSmallMargin">
-          <List
-  items="{users>/}"
-  class="sapUiTinyMarginTop">
-  <StandardListItem
-    title="{users>name}"
-    description="{users>email}"
-    info="{users>role}" />
-          </List>
-        </Panel>*/-->
-        <Panel headerText="Dashboard Table" class="sapUiSmallMargin">
-  <Table
-    id="dashboardTable"
-    items="{tableModel>/}">
-    <!-- Define your columns and cells here, e.g.: -->
-    <columns>
-      <Column><Text text="Name" /></Column>
-      <Column><Text text="Email" /></Column>
-      <Column><Text text="Role" /></Column>
-      <Column><Text text="Exam Title" /></Column>
-      <Column><Text text="Attempted" /></Column>
-    </columns>
-    <items>
-      <ColumnListItem>
-        <cells>
-          <Text text="{tableModel>name}" />
-          <Text text="{tableModel>email}" />
-          <Text text="{tableModel>role}" />
-          <Text text="{tableModel>title}" />
-          <Text text="{tableModel>attempted}" />
-        </cells>
-      </ColumnListItem>
-    </items>
-  </Table>
-  </Panel>
-  <Panel>
-  <Table items="{exams>/}">
-  <columns>
-    <Column><Text text="ID"/></Column>
-    <Column><Text text="Title"/></Column>
-    <Column><Text text="Start Date"/></Column>
-    <Column><Text text="End Date"/></Column>
-  </columns>
-  <items>
-    <ColumnListItem>
-      <cells>
-        <Text text="{exams>id}"/>
-        <Text text="{exams>title}"/>
-        <Text text="{exams>start_date}"/>
-        <Text text="{exams>end_date}"/>
-      </cells>
-    </ColumnListItem>
-  </items>
-</Table>
+      <!-- Admin Actions -->
+      <Panel headerText="Admin Actions" class="sapUiSmallMarginTop">
+        <HBox>
+          <Button text="Create Exam" press="onOpenCreateExamDialog" type="Emphasized" class="sapUiTinyMarginEnd"/>
+          <Button text="Add Question" press="onOpenAddQuestionDialog" type="Emphasized" class="sapUiTinyMarginEnd"/>
+          <Button text="Assign Exam" press="onOpenAssignExamDialog" type="Emphasized" class="sapUiTinyMarginEnd"/>
+          <Button text="View Results" press="onOpenResultsDialog" type="Emphasized"/>
+        </HBox>
+      </Panel>
 
-</Panel>
+      <!-- Dashboard Table -->
+      <Panel headerText="Dashboard Table" class="sapUiSmallMarginTop">
+        <Table id="dashboardTable" items="{tableModel>/}">
+          <columns>
+            <Column><Text text="Name" /></Column>
+            <Column><Text text="Email" /></Column>
+            <Column><Text text="Role" /></Column>
+            <Column><Text text="Exam Title" /></Column>
+            <Column><Text text="Attempted" /></Column>
+          </columns>
+          <items>
+            <ColumnListItem>
+              <cells>
+                <Text text="{tableModel>name}" />
+                <Text text="{tableModel>email}" />
+                <Text text="{tableModel>role}" />
+                <Text text="{tableModel>title}" />
+                <Text text="{tableModel>attempted}" />
+              </cells>
+            </ColumnListItem>
+          </items>
+        </Table>
+      </Panel>
 
-      </l:Grid>
-    </content>
-    
-    <footer>
-      <Toolbar>
-        <ToolbarSpacer />
-        <Button
-          text="Logout"
-          press="onLogout"
-          type="Emphasized" />
-      </Toolbar>
-    </footer>
-  </Page>
-  
+      <!-- Exams Table -->
+      <Panel headerText="Exams" class="sapUiSmallMarginTop">
+        <Table items="{exams>/}">
+          <columns>
+            <Column><Text text="ID"/></Column>
+            <Column><Text text="Title"/></Column>
+            <Column><Text text="Start Date"/></Column>
+            <Column><Text text="End Date"/></Column>
+          </columns>
+          <items>
+            <ColumnListItem>
+              <cells>
+                <Text text="{exams>id}"/>
+                <Text text="{exams>title}"/>
+                <Text text="{exams>start_date}"/>
+                <Text text="{exams>end_date}"/>
+              </cells>
+            </ColumnListItem>
+          </items>
+        </Table>
+      </Panel>
+    </VBox>
+  </HBox>
 </mvc:View>
