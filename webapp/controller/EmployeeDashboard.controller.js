@@ -494,7 +494,8 @@ sap.ui.define([
       if (document.fullscreenElement) {
         document.exitFullscreen();
       }
-      window.location.replace("http://localhost:8080/test/flpSandbox.html?sap-ui-xx-viewCache=false#app-tile");
+      /*window.location.replace("http://localhost:8080/test/flpSandbox.html?sap-ui-xx-viewCache=false#app-tile");*/
+      this.getRouter().navTo("main");
     },
 
     onOpenChangePasswordDialog: function() {
