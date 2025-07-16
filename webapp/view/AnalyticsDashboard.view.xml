@@ -1,0 +1,49 @@
+<mvc:View
+  controllerName="exam.controller.AnalyticsDashboard"
+  xmlns="sap.m"
+  xmlns:mvc="sap.ui.core.mvc">
+
+  <VBox class="sapUiSmallMargin">
+    <Title text="Exam Analytics" level="H1" class="sapUiSmallMarginBottom"/>
+    
+    <Panel headerText="Exam Summary" expandable="true" expanded="true">
+      <Table items="{summary>/}">
+        <columns>
+          <Column><Text text="Exam"/></Column>
+          <Column><Text text="Attempts"/></Column>
+          <Column><Text text="Avg. Score"/></Column>
+          <Column><Text text="Passes"/></Column>
+          <Column><Text text="Fails"/></Column>
+        </columns>
+        <items>
+          <ColumnListItem>
+            <cells>
+              <Text text="{summary>title}"/>
+              <Text text="{summary>attempts}"/>
+              <Text text="{summary>avg_score}"/>
+              <Text text="{summary>pass_count}"/>
+              <Text text="{summary>fail_count}"/>
+            </cells>
+          </ColumnListItem>
+        </items>
+      </Table>
+    </Panel>
+
+    <Panel headerText="Most Missed Questions" expandable="true" expanded="true" class="sapUiSmallMarginTop">
+      <Table items="{missed>/}">
+        <columns>
+          <Column><Text text="Question"/></Column>
+          <Column><Text text="Wrong Answers"/></Column>
+        </columns>
+        <items>
+          <ColumnListItem>
+            <cells>
+              <Text text="{missed>question_text}"/>
+              <Text text="{missed>wrong_count}"/>
+            </cells>
+          </ColumnListItem>
+        </items>
+      </Table>
+    </Panel>
+  </VBox>
+</mvc:View>

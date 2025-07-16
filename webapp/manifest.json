@@ -75,7 +75,12 @@
           "pattern": "",
           "name": "main",
           "target": "main"
-        }
+        },
+        {
+  "pattern": "analytics-dashboard",
+  "name": "analytics-dashboard",
+  "target": "analyticsDashboard"
+}
       ],
       "targets": {
         "loginAdmin": { "viewName": "LoginAdmin", "viewId": "loginAdmin" },
@@ -87,7 +92,11 @@
         "main": {
           "viewId": "main",
           "viewName": "Main"
-        }
+        },
+        "analyticsDashboard": {
+  "viewName": "AnalyticsDashboard",
+  "viewId": "analyticsDashboard"
+}
       }
     }
   }

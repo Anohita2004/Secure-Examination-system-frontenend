@@ -91,6 +91,7 @@
   type="Emphasized"
   class="sapUiTinyMarginBottom" />
   <Button text="Add Employee" press="onOpenAddEmployeeDialog" type="Emphasized" />
+  <Button text="View Analytics" press=".onGoToAnalytics"/>
             <Label text="Current Permissions:" class="sapUiTinyMarginTop" />
             
             <List

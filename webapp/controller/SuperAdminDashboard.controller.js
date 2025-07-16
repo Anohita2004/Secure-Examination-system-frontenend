@@ -200,7 +200,9 @@ onOpenAddEmployeeDialog: function() {
   });
   this._addEmployeeDialog.open();
 },
-
+onGoToAnalytics: function() {
+  this.getRouter().navTo("analytics-dashboard");
+},
     onLogout: function() {
       AuthService.logout()
         .then(function() {
