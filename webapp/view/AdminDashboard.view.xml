@@ -23,11 +23,7 @@
     <VBox width="100%" class="adminMainContent" style="padding:32px;">
       <HBox justifyContent="SpaceBetween" alignItems="Center">
         <Title text="Dashboard" level="H1"/>
-        <!-- Upgrade Banner -->
-        <Panel headerText="Upgrade Your Crowd" class="upgradeBanner" style="background:#ffe0b2; border-radius:16px;">
-          <Text text="Pro plan for better results"/>
-          <Button text="Upgrade Now" type="Emphasized"/>
-        </Panel>
+        
       </HBox>
 
       <!-- Stats Cards -->

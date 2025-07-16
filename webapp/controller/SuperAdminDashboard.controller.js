@@ -20,10 +20,10 @@ sap.ui.define([
       that.getView().setModel(userModel, "user");
 
       // FIX: Set a default model for dashboard data
-      var oModel = new sap.ui.model.json.JSONModel({});
-      that.getView().setModel(oModel);
-
+        var oModel = new sap.ui.model.json.JSONModel({});
+      that.getView().setModel(oModel, "dashboardModel");
       // Load initial data
+      that.loadDashboardStats();
       return that.loadData();
     })
     .catch(function(err) {
@@ -185,6 +185,13 @@ onOpenAddEmployeeDialog: function() {
         .catch(err => {
           sap.m.MessageBox.error("Error: " + err.message);
         });
+        fetch("http://localhost:4000/api/dashboard/stats", { credentials: "include" })
+  .then(res => res.json())
+  .then(data => {
+    var oModel = new sap.ui.model.json.JSONModel(data);
+    that.getView().setModel(oModel, "dashboardModel");
+  })
+  .catch(err => console.error("Failed to load dashboard stats", err));
       }
     }),
     endButton: new sap.m.Button({
@@ -203,6 +210,26 @@ onOpenAddEmployeeDialog: function() {
 onGoToAnalytics: function() {
   this.getRouter().navTo("analytics-dashboard");
 },
+// In your SuperAdminDashboard.controller.js
+
+loadDashboardStats: function() {
+  var that = this;
+  fetch("http://localhost:4000/api/dashboard/stats", { credentials: "include" })
+    .then(res => res.json())
+    .then(data => {
+      // Set the stats in the dashboardModel
+      var oModel = that.getView().getModel("dashboardModel");
+      if (!oModel) {
+        oModel = new sap.ui.model.json.JSONModel({});
+        that.getView().setModel(oModel, "dashboardModel");
+      }
+      oModel.setData(data);
+    })
+    .catch(err => {
+      sap.m.MessageBox.error("Failed to load dashboard stats: " + err.message);
+    });
+},
+
     onLogout: function() {
       AuthService.logout()
         .then(function() {
