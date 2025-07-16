@@ -431,6 +431,8 @@ sap.ui.define([
           MessageBox.error("Failed to load exams: " + err.message);
           that.getRouter().navTo("login-employee");
         });
+        window.addEventListener("popstate", this._onBrowserBack = function() {
+        that.onLogout();});
     },
 
     // Card click handlers
@@ -489,7 +491,11 @@ sap.ui.define([
       });
       dialog.open();
     },
-
+    onExit: function() {
+  if (this._onBrowserBack) {
+    window.removeEventListener("popstate", this._onBrowserBack);
+  }
+},
     onLogout: function () {
       if (document.fullscreenElement) {
         document.exitFullscreen();
