@@ -22,6 +22,7 @@ sap.ui.define([
       // FIX: Set a default model for dashboard data
         var oModel = new sap.ui.model.json.JSONModel({});
       that.getView().setModel(oModel, "dashboardModel");
+      
       // Load initial data
       that.loadDashboardStats();
       return that.loadData();
@@ -33,28 +34,31 @@ sap.ui.define([
     },
 
     loadData: function() {
-      var that = this;
-      
-      // Load users with permissions
-      PermissionService.getAllUsersWithPermissions()
-        .then(function(users) {
-          var model = that.getView().getModel();
-          model.setProperty("/users", users);
-        })
-        .catch(function(err) {
-          MessageBox.error("Failed to load users: " + err.message);
-        });
-      
-      // Load available permissions
-      PermissionService.getAllPermissions()
-        .then(function(permissions) {
-          var model = that.getView().getModel();
-          model.setProperty("/permissions", permissions);
-        })
-        .catch(function(err) {
-          MessageBox.error("Failed to load permissions: " + err.message);
-        });
-    },
+  var that = this;
+  var model = that.getView().getModel("dashboardModel");
+  if (!model) {
+    model = new sap.ui.model.json.JSONModel({});
+    that.getView().setModel(model, "dashboardModel");
+  }
+
+  // Load users with permissions
+  PermissionService.getAllUsersWithPermissions()
+    .then(function(users) {
+      model.setProperty("/users", users);
+    })
+    .catch(function(err) {
+      MessageBox.error("Failed to load users: " + err.message);
+    });
+
+  // Load available permissions
+  PermissionService.getAllPermissions()
+    .then(function(permissions) {
+      model.setProperty("/permissions", permissions);
+    })
+    .catch(function(err) {
+      MessageBox.error("Failed to load permissions: " + err.message);
+    });
+},
 
     onManagePermissions: function(oEvent) {
       var oContext = oEvent.getSource().getBindingContext();
@@ -217,13 +221,16 @@ loadDashboardStats: function() {
   fetch("http://localhost:4000/api/dashboard/stats", { credentials: "include" })
     .then(res => res.json())
     .then(data => {
-      // Set the stats in the dashboardModel
       var oModel = that.getView().getModel("dashboardModel");
       if (!oModel) {
         oModel = new sap.ui.model.json.JSONModel({});
         that.getView().setModel(oModel, "dashboardModel");
       }
-      oModel.setData(data);
+      // Set each stat property individually to avoid overwriting users/permissions
+      oModel.setProperty("/userCount", data.userCount);
+      oModel.setProperty("/permissionCount", data.permissionCount);
+      oModel.setProperty("/adminCount", data.adminCount);
+      oModel.setProperty("/employeeCount", data.employeeCount);
     })
     .catch(err => {
       sap.m.MessageBox.error("Failed to load dashboard stats: " + err.message);

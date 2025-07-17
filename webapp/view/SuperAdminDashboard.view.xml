@@ -51,26 +51,26 @@
 
       <!-- Users and Permissions Table -->
       <Panel headerText="Users and Permissions" class="sapUiSmallMarginTop">
-        <Table items="{/users}">
-          <columns>
-            <Column><Text text="Name" /></Column>
-            <Column><Text text="Email" /></Column>
-            <Column><Text text="Role" /></Column>
-            <Column><Text text="Permissions" /></Column>
-            <Column><Text text="Actions" /></Column>
-          </columns>
-          <items>
-            <ColumnListItem>
-              <cells>
-                <Text text="{name}" />
-                <Text text="{email}" />
-                <Text text="{role}" />
-                <Text text="{permissions}" />
-                <Button text="Manage" press="onManagePermissions" type="Emphasized"/>
-              </cells>
-            </ColumnListItem>
-          </items>
-        </Table>
+       <Table items="{dashboardModel>/users}">
+  <columns>
+    <Column><Text text="Name" /></Column>
+    <Column><Text text="Email" /></Column>
+    <Column><Text text="Role" /></Column>
+    <Column><Text text="Permissions" /></Column>
+    <Column><Text text="Actions" /></Column>
+  </columns>
+  <items>
+    <ColumnListItem>
+      <cells>
+        <Text text="{dashboardModel>name}" />
+        <Text text="{dashboardModel>email}" />
+        <Text text="{dashboardModel>role}" />
+        <Text text="{dashboardModel>permissions}" />
+        <Button text="Manage" press="onManagePermissions" type="Emphasized"/>
+      </cells>
+    </ColumnListItem>
+  </items>
+</Table>
       </Panel>
 
       <!-- Permission Management Panel -->
