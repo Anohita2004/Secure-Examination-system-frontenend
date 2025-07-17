@@ -39,13 +39,17 @@
   color: #fff !important;
 }
 
+
 .superAdminMainContent {
   background: #f5f7fa;
   border-radius: 24px;
   min-height: 100vh;
+  max-height: 100vh;
   box-shadow: 0 2px 16px rgba(33, 150, 243, 0.04);
+  overflow-y: auto;
+  /* Optional: for horizontal scroll if needed */
+  /* overflow-x: auto; */
 }
-
 .welcomeBanner {
   background: linear-gradient(90deg, #e3f2fd 60%, #bbdefb 100%);
   color: #1976d2;

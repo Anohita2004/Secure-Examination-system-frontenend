@@ -74,30 +74,30 @@
       </Panel>
 
       <!-- Permission Management Panel -->
-      <Panel headerText="Permission Management" class="sapUiSmallMarginTop">
-        <VBox>
-          <HBox class="sapUiTinyMarginBottom">
-            <Label text="Selected User:" class="sapUiTinyMarginEnd" />
-            <Text text="{/selectedUser/name}" class="sapUiTinyMarginEnd" />
-            <Text text="({/selectedUser/email})" />
-          </HBox>
-          <HBox class="sapUiTinyMarginBottom">
-            <Label text="Available Permissions:" class="sapUiTinyMarginEnd" />
-            <Select
-              id="permissionSelect"
-              items="{/permissions}"
-              class="sapUiTinyMarginEnd">
-              <core:Item key="{id}" text="{name}" />
-            </Select>
-            <Button text="Assign" press="onAssignPermission" type="Accept" class="sapUiTinyMarginEnd"/>
-            <Button text="Remove" press="onRemovePermission" type="Reject"/>
-          </HBox>
-          <Label text="Current Permissions:" class="sapUiTinyMarginTop" />
-          <List items="{/selectedUser/permissions}" class="sapUiTinyMarginTop">
-            <StandardListItem title="{name}" />
-          </List>
-        </VBox>
-      </Panel>
+     <Panel headerText="Permission Management" class="sapUiSmallMarginTop">
+  <VBox>
+    <HBox class="sapUiTinyMarginBottom">
+      <Label text="Selected User:" class="sapUiTinyMarginEnd" />
+      <Text text="{dashboardModel>/selectedUser/name}" class="sapUiTinyMarginEnd" />
+      <Text text="({dashboardModel>/selectedUser/email})" />
+    </HBox>
+    <HBox class="sapUiTinyMarginBottom">
+      <Label text="Available Permissions:" class="sapUiTinyMarginEnd" />
+      <Select
+        id="permissionSelect"
+        items="{dashboardModel>/permissions}"
+        class="sapUiTinyMarginEnd">
+        <core:Item key="{dashboardModel>id}" text="{dashboardModel>name}" />
+      </Select>
+      <Button text="Assign" press="onAssignPermission" type="Accept" class="sapUiTinyMarginEnd"/>
+      <Button text="Remove" press="onRemovePermission" type="Reject"/>
+    </HBox>
+    <Label text="Current Permissions:" class="sapUiTinyMarginTop" />
+    <List items="{dashboardModel>/selectedUser/permissions}" class="sapUiTinyMarginTop">
+      <StandardListItem title="{dashboardModel>name}" />
+    </List>
+  </VBox>
+</Panel>
     </VBox>
   </HBox>
 </mvc:View>

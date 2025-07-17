@@ -31,6 +31,7 @@ sap.ui.define([
       MessageBox.error("Authentication failed: " + err.message);
       that.getRouter().navTo("main");
     });
+    
     },
 
     loadData: function() {
@@ -39,7 +40,9 @@ sap.ui.define([
   if (!model) {
     model = new sap.ui.model.json.JSONModel({});
     that.getView().setModel(model, "dashboardModel");
+
   }
+  
 
   // Load users with permissions
   PermissionService.getAllUsersWithPermissions()
@@ -61,57 +64,72 @@ sap.ui.define([
 },
 
     onManagePermissions: function(oEvent) {
-      var oContext = oEvent.getSource().getBindingContext();
-      var user = oContext.getObject();
-      
-      // Load user's current permissions
-      PermissionService.getUserPermissions(user.id)
-        .then(function(permissions) {
-          var model = this.getView().getModel();
-          model.setProperty("/selectedUser", {
-            ...user,
-            permissions: permissions
-          });
-        }.bind(this))
-        .catch(function(err) {
-          MessageBox.error("Failed to load user permissions: " + err.message);
-        });
-    },
+  // Get the context from the button's parent row, using the correct model name
+  var oContext = oEvent.getSource().getParent().getBindingContext("dashboardModel");
+  if (!oContext) {
+    sap.m.MessageBox.error("No user context found.");
+    return;
+  }
+  var user = oContext.getObject();
+
+  // Load user's current permissions
+  PermissionService.getUserPermissions(user.id)
+    .then(function(permissions) {
+      var model = this.getView().getModel("dashboardModel");
+      model.setProperty("/selectedUser", {
+        ...user,
+        permissions: permissions
+      });
+    }.bind(this))
+    .catch(function(err) {
+      MessageBox.error("Failed to load user permissions: " + err.message);
+    });
+},
 
     onAssignPermission: function() {
-      var that = this;
-      var selectedUser = this.getView().getModel().getProperty("/selectedUser");
-      var permissionSelect = this.byId("permissionSelect");
-      var permissionId = permissionSelect.getSelectedKey();
-      
-      if (!selectedUser || !selectedUser.id) {
-        MessageBox.warning("Please select a user first.");
-        return;
-      }
-      
-      if (!permissionId) {
-        MessageBox.warning("Please select a permission to assign.");
-        return;
-      }
-      
-      PermissionService.assignPermission(selectedUser.id, permissionId)
-        .then(function() {
-          MessageBox.success("Permission assigned successfully!");
-          that.loadData(); // Refresh the data
-          that.onManagePermissions({ getSource: function() { 
-            return { getBindingContext: function() { 
-              return { getObject: function() { return selectedUser; } }; 
-            }}; 
-          }});
-        })
-        .catch(function(err) {
-          MessageBox.error("Failed to assign permission: " + err.message);
-        });
-    },
+  var selectedUser = this.getView().getModel("dashboardModel").getProperty("/selectedUser");
+  var permissionSelect = this.byId("permissionSelect");
+  var permissionId = permissionSelect.getSelectedKey();
+
+  if (!selectedUser || !selectedUser.id) {
+    sap.m.MessageBox.warning("Please select a user first.");
+    return;
+  }
+
+  if (!permissionId) {
+    sap.m.MessageBox.warning("Please select a permission to assign.");
+    return;
+  }
+ console.log("Assigning permission", selectedUser.id, permissionId);
+  PermissionService.assignPermission(selectedUser.id, permissionId)
+    .then(function() {
+      sap.m.MessageBox.success("Permission assigned successfully!");
+      // Optionally refresh permissions for the selected user
+      this.onManagePermissions({
+        getSource: function() {
+          return {
+            getParent: function() {
+              return {
+                getBindingContext: function() {
+                  return {
+                    getObject: function() { return selectedUser; }
+                  };
+                }
+              };
+            }
+          };
+        }
+      });
+      this.loadData();
+    }.bind(this))
+    .catch(function(err) {
+      sap.m.MessageBox.error("Failed to assign permission: " + err.message);
+    });
+},
 
     onRemovePermission: function() {
       var that = this;
-      var selectedUser = this.getView().getModel().getProperty("/selectedUser");
+      var selectedUser = this.getView().getModel("dashboardModel").getProperty("/selectedUser");
       var permissionSelect = this.byId("permissionSelect");
       var permissionId = permissionSelect.getSelectedKey();
       
