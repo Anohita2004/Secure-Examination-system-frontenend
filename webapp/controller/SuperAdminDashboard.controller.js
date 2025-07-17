@@ -258,8 +258,9 @@ loadDashboardStats: function() {
     onLogout: function() {
       AuthService.logout()
         .then(function() {
-          window.location.replace("http://localhost:8080/test/flpSandbox.html?sap-ui-xx-viewCache=false#app-tile");
-        })
+         /* window.location.replace("http://localhost:8080/test/flpSandbox.html?sap-ui-xx-viewCache=false#app-tile");*/
+         this.getRouter().navTo("main");
+        }.bind(this))
         .catch(function(err) {
           MessageBox.error("Logout failed: " + err.message);
         });
