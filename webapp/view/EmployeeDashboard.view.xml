@@ -2,6 +2,7 @@
   xmlns="sap.m"
   xmlns:mvc="sap.ui.core.mvc"
   xmlns:core="sap.ui.core"
+  xmlns:unified="sap.ui.unified"
   displayBlock="true">
 
   <HBox class="employeeDashboardRoot">
@@ -58,6 +59,7 @@
           <Text text="Check your exam results."/>
           <Button text="View Results" press="onGoToResults"/>
         </VBox>
+      
         <!-- Total Exams Assigned Card -->
         <VBox class="employeeCard" width="260px">
           <core:Icon src="sap-icon://number-sign" size="2.5rem"/>
@@ -82,11 +84,28 @@
             state="Success"
           />
         </VBox>
-        <Button text="Change Password" press="onOpenChangePasswordDialog" />
+        
       </HBox>
+      <Panel headerText="Exam Calendar" expandable="true" expanded="true">
+  <HBox>
+    <unified:Calendar
+      id="examCalendar"
+      select="onCalendarSelect"
+    />
+    <VBox class="calendarResultsBox" width="100%" style="padding-left: 2rem;">
+      <Text text="Exams on Selected Date" class="calendarTitle" />
+      <List items="{calendarModel>/}">
+        <StandardListItem title="{calendarModel>title}" info="{calendarModel>status}" />
+      </List>
     </VBox>
   </HBox>
+</Panel>
 
+    </VBox>
+    
+
+  </HBox>
+ 
   <!-- Edit Profile Dialog -->
   <Dialog
     id="profileDialog"
@@ -110,5 +129,6 @@
     </endButton>
   </Dialog>
 </mvc:View>
+
 
 

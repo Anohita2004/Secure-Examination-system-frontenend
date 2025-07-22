@@ -35,7 +35,9 @@
       "libs": {
         "sap.ui.core": {},
         "sap.m": {},
-        "sap.viz": {}
+        "sap.viz": {},
+        "sap.ui.unified": {}
+
       }
     },
     "handleValidation": true,

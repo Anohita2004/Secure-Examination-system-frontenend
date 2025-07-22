@@ -44,7 +44,33 @@ sap.ui.define([
         });
         window.addEventListener("popstate", this._onBrowserBack = function() {
         that.onLogout();});
+        this._examData = [];
+        this.loadExamCalendar();
+        // Initialize calendar model
+  const oCalendarModel = new sap.ui.model.json.JSONModel([]);
+  this.getView().setModel(oCalendarModel, "calendarModel");
+
+
+
     },
+    onCalendarSelect: function (oEvent) {
+  const oCalendar = oEvent.getSource();
+  const selectedDate = oCalendar.getSelectedDates()[0].getStartDate();
+
+  const yyyyMMdd = selectedDate.toISOString().split('T')[0];
+
+  fetch(`http://localhost:4000/api/calendar/${yyyyMMdd}`)
+
+    .then(response => response.json())
+    .then(data => {
+      this.getView().getModel("calendarModel").setData(data);
+    })
+    .catch(err => {
+      console.error("Failed to fetch calendar data", err);
+      sap.m.MessageToast.show("Failed to load exams.");
+    });
+},
+
 
     // Card click handlers
     onGoToUnattempted: function () {
@@ -190,6 +216,59 @@ onSaveProfile: function() {
 onCancelProfile: function() {
   this.byId("profileDialog").close();
 },
+loadExamCalendar: function () {
+  const that = this;
+  fetch("/api/exams") // ← Use your existing endpoint here
+    .then(res => res.json())
+    .then(data => {
+      // Optional: convert all dates to YYYY-MM-DD format
+      data.forEach(exam => {
+        exam.date = new Date(exam.date).toISOString().split("T")[0];
+      });
+      that._examData = data;
+    })
+    .catch(err => {
+      console.error("Error loading exam data:", err);
+    });
+},
+
+onDateSelect: function (oEvent) {
+  const oCalendar = oEvent.getSource();
+  const aSelectedDates = oCalendar.getSelectedDates();
+
+  if (aSelectedDates.length) {
+    const oSelectedDate = aSelectedDates[0].getStartDate();
+    const sFormattedDate = this._formatDate(oSelectedDate); // "2025-07-22"
+
+    // Simulate or fetch exams for the selected date
+    const aExams = this._getExamsForDate(sFormattedDate); // static for now
+    const oModel = new sap.ui.model.json.JSONModel(aExams);
+    this.getView().setModel(oModel, "calendar");
+  }
+},
+
+_formatDate: function (oDate) {
+  const year = oDate.getFullYear();
+  const month = String(oDate.getMonth() + 1).padStart(2, "0");
+  const day = String(oDate.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+},
+
+_getExamsForDate: function (dateString) {
+  const mockData = {
+    "2025-07-22": [
+      { title: "Java Final", time: "10:00 AM", status: "Upcoming" },
+      { title: "Database Systems", time: "2:00 PM", status: "Upcoming" }
+    ],
+    "2025-07-23": [
+      { title: "SAP ABAP", time: "11:00 AM", status: "Upcoming" }
+    ]
+  };
+
+  return mockData[dateString] || [];
+}
+,
+
     // Helper to show exam list dialog
     _showExamListDialog: function(title, exams, attempted) {
       var that = this;
