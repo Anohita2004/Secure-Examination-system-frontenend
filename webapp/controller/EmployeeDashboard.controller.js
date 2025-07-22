@@ -59,7 +59,7 @@ sap.ui.define([
 
   const yyyyMMdd = selectedDate.toISOString().split('T')[0];
 
-  fetch(`http://localhost:4000/api/calendar/${yyyyMMdd}`)
+  fetch(`http://localhost:4000/api/exams/calendar/${yyyyMMdd}`)
 
     .then(response => response.json())
     .then(data => {
