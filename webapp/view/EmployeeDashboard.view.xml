@@ -11,10 +11,10 @@
       <Text text="Hi, {user>name}" class="employeeSidebarName"/>
       <List mode="None" class="employeeSidebarList">
         <StandardListItem icon="sap-icon://home" title="Dashboard" type="Inactive"/>
-        <StandardListItem icon="sap-icon://education" title="My Exams" type="Inactive"/>
-        <StandardListItem icon="sap-icon://business-objects-experience" title="Results" type="Inactive"/>
+        <StandardListItem icon="sap-icon://education" title="My Exams" type="Active" press="onGoToUnattempted"/>
+        <StandardListItem icon="sap-icon://business-objects-experience" title="Results" type="Active" press="onGoToResults"/>
+        <StandardListItem icon="sap-icon://key" title="Change Password" type="Active" press="onOpenChangePasswordDialog"/>
         <StandardListItem icon="sap-icon://log" title="Logout" type="Active" press="onLogout"/>
-        
       </List>
     </VBox>
 
@@ -28,6 +28,9 @@
         </VBox>
         <Avatar initials="{user>name}" displaySize="M"/>
       </HBox>
+
+      <!-- Notification Message -->
+      <MessageStrip text="Your next exam is scheduled soon. Check 'My Exams' for details." type="Information"/>
 
       <!-- Cards Grid -->
       <HBox class="employeeCardsRow" wrap="Wrap" renderType="Bare">
@@ -66,9 +69,20 @@
             <StandardListItem title="{exams>subject}" info="{exams>count}"/>
           </List>
         </VBox>
+        <!-- Completion Progress Card -->
+        <VBox class="employeeCard" width="260px">
+          <core:Icon src="sap-icon://activity-individual" size="2.5rem"/>
+          <Text text="Completion Progress" class="cardTitle"/>
+          <ProgressIndicator
+            percentValue="{= Math.round(100 * ${exams>/attempted}.length / (${exams>/attempted}.length + ${exams>/unattempted}.length)) }"
+            displayValue="{= Math.round(100 * ${exams>/attempted}.length / (${exams>/attempted}.length + ${exams>/unattempted}.length)) + '%'}"
+            state="Success"
+          />
+        </VBox>
         <Button text="Change Password" press="onOpenChangePasswordDialog" />
       </HBox>
     </VBox>
   </HBox>
 </mvc:View>
+
 
