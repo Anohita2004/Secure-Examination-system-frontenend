@@ -49,6 +49,8 @@ sap.ui.define([
         // Initialize calendar model
   const oCalendarModel = new sap.ui.model.json.JSONModel([]);
   this.getView().setModel(oCalendarModel, "calendarModel");
+  this.loadAnnouncements();
+
 
 
 
@@ -231,6 +233,19 @@ loadExamCalendar: function () {
       console.error("Error loading exam data:", err);
     });
 },
+loadAnnouncements: function () {
+  fetch("http://localhost:4000/api/announcements")
+    .then(res => res.json())
+    .then(data => {
+      const oModel = new sap.ui.model.json.JSONModel(data);
+      this.getView().setModel(oModel, "announcements");
+    })
+    .catch(err => {
+      console.error("Failed to load announcements:", err);
+      sap.m.MessageToast.show("Could not fetch announcements.");
+    });
+}
+,
 
 onDateSelect: function (oEvent) {
   const oCalendar = oEvent.getSource();
