@@ -26,7 +26,10 @@
           <Text text="Welcome, {user>name}!" class="employeeWelcome"/>
           <Text text="Role: {user>role} | Email: {user>email}" class="employeeDetails"/>
         </VBox>
-        <Avatar initials="{user>name}" displaySize="M"/>
+        <HBox alignItems="Center" gap="1rem">
+          <Avatar initials="{user>name}" displaySize="M"/>
+          <Button text="Edit Profile" icon="sap-icon://edit" press="onEditProfile"/>
+        </HBox>
       </HBox>
 
       <!-- Notification Message -->
@@ -83,6 +86,29 @@
       </HBox>
     </VBox>
   </HBox>
+
+  <!-- Edit Profile Dialog -->
+  <Dialog
+    id="profileDialog"
+    title="Edit Profile"
+    draggable="true"
+    resizable="true"
+    contentWidth="400px"
+  >
+    <VBox>
+      <Label text="Name"/>
+      <Input value="{user>/name}" width="100%"/>
+      <Label text="Email"/>
+      <Input value="{user>/email}" width="100%"/>
+      <!-- Add more fields as needed -->
+    </VBox>
+    <beginButton>
+      <Button text="Save" type="Emphasized" press="onSaveProfile"/>
+    </beginButton>
+    <endButton>
+      <Button text="Cancel" press="onCancelProfile"/>
+    </endButton>
+  </Dialog>
 </mvc:View>
 
 
