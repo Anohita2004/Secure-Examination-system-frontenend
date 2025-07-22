@@ -427,9 +427,12 @@ h1, h2, h3 {
 /*Employee dashboard */
 
 .employeeDashboardRoot {
-  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+  display: flex;
+  flex-direction: row;
   min-height: 100vh;
-  padding: 2rem;
+  height: auto; /* Remove height: 100vh */
+  background: linear-gradient(120deg, #f5f7fa 0%, #c3cfe2 100%);
+  /* Remove overflow: hidden; */
 }
 .dashboardHeaderBar {
   margin-bottom: 2rem;
@@ -477,34 +480,24 @@ h1, h2, h3 {
   box-shadow: 2px 0 8px rgba(0,0,0,0.04);
   padding: 32px 16px;
   border-radius: 12px 0 0 12px;
-  min-height: 90vh;
+  min-width: 220px;
+  max-width: 260px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
   align-items: center;
-}
-
-.employeeAvatar {
-  margin-bottom: 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-
-.employeeSidebarName {
-  font-weight: bold;
-  margin-bottom: 24px;
-  font-size: 1.1rem;
-}
-
-.employeeSidebarList .sapMLIB {
-  border-radius: 8px;
-  margin-bottom: 8px;
-  transition: background 0.2s;
-}
-.employeeSidebarList .sapMLIB:hover {
-  background: #f0f4f8;
+  overflow-y: auto;
 }
 
 /* Main content */
 .employeeMainContent {
+  flex: 1 1 auto;
   padding: 32px 40px;
   width: 100%;
+  overflow-y: auto;
+  height: auto; /* Remove height: 100vh */
+  max-height: 100vh; /* Ensures it doesn't exceed viewport */
+  box-sizing: border-box;
 }
 
 /* Header */
