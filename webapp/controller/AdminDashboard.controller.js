@@ -1061,7 +1061,7 @@ sap.ui.define([
 
   return BaseController.extend("exam.controller.AdminDashboard", {
     onInit: function () {
-      var that = this;
+      const that = this;
       AuthService.getCurrentUser()
         .then(function(user) {
           if (!user) {
