@@ -5,6 +5,8 @@
   xmlns:viz="sap.viz.ui5.controls"
   xmlns:viz.data="sap.viz.ui5.data"
   xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds">
+  <ScrollContainer vertical="true" height="100%" width="100%">
+  <VBox>
 
   <VBox class="sapUiSmallMargin">
     <Title text="Exam Analytics" level="H1" class="sapUiSmallMarginBottom"/>
@@ -89,4 +91,6 @@
 
 </Panel>
   </VBox>
+    </VBox>
+</ScrollContainer>
 </mvc:View>
