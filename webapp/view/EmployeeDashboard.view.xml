@@ -32,11 +32,15 @@
           <Button text="Edit Profile" icon="sap-icon://edit" press="onEditProfile"/>
         </HBox>
       </HBox>
-      <Panel headerText="📣 Announcements" class="sapUiResponsiveMargin" width="auto">
-  <List id="announcementList" items="{announcements>/}">
-    <StandardListItem title="{announcements>title}" description="{announcements>message}" />
+      <Panel headerText="Latest Announcements" class="sapUiSmallMargin">
+  <List id="announcementList"
+        items="{announcements>/}">
+    <StandardListItem title="{announcements>title}"
+                      description="{announcements>message}"
+                      info="{announcements>created_at}" />
   </List>
 </Panel>
+
 
       <!-- Notification Message -->
       <MessageStrip text="Your next exam is scheduled soon. Check 'My Exams' for details." type="Information"/>

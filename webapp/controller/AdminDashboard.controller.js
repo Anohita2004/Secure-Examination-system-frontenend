@@ -1353,6 +1353,39 @@ sap.ui.define([
         })
         .catch(err => MessageBox.error("Failed to load results: " + err.message));
     },
+    onPostAnnouncement: function () {
+  const title = this.byId("announceTitle").getValue().trim();
+  const message = this.byId("announceMessage").getValue().trim();
+
+  if (!title || !message) {
+    sap.m.MessageBox.warning("Both title and message are required.");
+    return;
+  }
+
+  fetch("http://localhost:4000/api/announcements", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ title, message })
+  })
+  .then(res => {
+    if (!res.ok) {
+      throw new Error("Failed to post announcement.");
+    }
+    return res.json();
+  })
+  .then(() => {
+    sap.m.MessageToast.show("Announcement posted successfully!");
+    this.byId("announceTitle").setValue("");
+    this.byId("announceMessage").setValue("");
+  })
+  .catch(err => {
+    console.error(err);
+    sap.m.MessageBox.error("Error posting announcement.");
+  });
+}
+,
 
     onLogout: function() {
       AuthService.logout()

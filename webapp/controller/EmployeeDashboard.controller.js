@@ -241,10 +241,10 @@ loadAnnouncements: function () {
       this.getView().setModel(oModel, "announcements");
     })
     .catch(err => {
-      console.error("Failed to load announcements:", err);
-      sap.m.MessageToast.show("Could not fetch announcements.");
+      console.error("Error loading announcements", err);
     });
 }
+
 ,
 
 onDateSelect: function (oEvent) {

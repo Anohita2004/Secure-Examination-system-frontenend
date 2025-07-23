@@ -4,6 +4,22 @@
   xmlns:mvc="sap.ui.core.mvc"
   xmlns:core="sap.ui.core"
   displayBlock="true">
+  <Button text="Create Announcement" press="onOpenAnnouncementDialog" />
+
+<Panel headerText="Create Announcement" class="sapUiSmallMargin">
+  <VBox>
+    <Label text="Title" />
+    <Input id="announceTitle" placeholder="Enter title" />
+
+    <Label text="Message" />
+    <TextArea id="announceMessage" rows="4" placeholder="Write announcement..." />
+
+    <Button text="Post Announcement"
+            press=".onPostAnnouncement"
+            type="Emphasized"
+            class="sapUiSmallMarginTop"/>
+  </VBox>
+</Panel>
 
   <HBox>
     <!-- Sidebar -->
