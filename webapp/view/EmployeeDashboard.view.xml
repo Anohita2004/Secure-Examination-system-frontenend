@@ -27,22 +27,18 @@
           <Text text="Welcome, {user>name}!" class="employeeWelcome"/>
           <Text text="Role: {user>role} | Email: {user>email}" class="employeeDetails"/>
         </VBox>
+
         <HBox alignItems="Center" gap="1rem">
           <Avatar initials="{user>name}" displaySize="M"/>
           <Button text="Edit Profile" icon="sap-icon://edit" press="onEditProfile"/>
         </HBox>
+        <Button icon="sap-icon://bell"
+        type="Transparent"
+        tooltip="View Announcements"
+        press=".onOpenAnnouncementDialog"
+        class="sapUiTinyMarginTopRight"/>
       </HBox>
-      <Panel headerText="Latest Announcements" class="sapUiSmallMargin">
-  <List id="announcementList"
-        items="{announcements>/}">
-    <StandardListItem title="{announcements>title}"
-                      description="{announcements>message}"
-                      info="{announcements>created_at}" />
-  </List>
-</Panel>
-
-
-      <!-- Notification Message -->
+     <!-- Notification Message -->
       <MessageStrip text="Your next exam is scheduled soon. Check 'My Exams' for details." type="Information"/>
 
       <!-- Cards Grid -->

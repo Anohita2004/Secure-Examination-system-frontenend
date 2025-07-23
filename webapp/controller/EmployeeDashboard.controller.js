@@ -1,9 +1,11 @@
 sap.ui.define([
   "./BaseController",
   "sap/m/MessageBox",
+  "sap/ui/core/Fragment",
   "exam/model/ExamService",
-  "exam/model/AuthService"
-], function (BaseController, MessageBox, ExamService, AuthService) {
+  "exam/model/AuthService",
+  "sap/ui/model/json/JSONModel"
+  ], function (BaseController, MessageBox, Fragment, ExamService, AuthService, JSONModel) {
   "use strict";
   return BaseController.extend("exam.controller.EmployeeDashboard", {
     onInit: function () {
@@ -135,6 +137,42 @@ sap.ui.define([
     window.removeEventListener("popstate", this._onBrowserBack);
   }
 },
+onOpenAnnouncementDialog: function () {
+  const that = this;
+
+  // Load announcements first
+  fetch("http://localhost:4000/api/announcements")
+    .then(res => res.json())
+    .then(data => {
+      const oModel = new JSONModel(data);
+      that.getView().setModel(oModel, "announcements");
+
+      // Load dialog fragment
+      if (!that._pDialog) {
+        Fragment.load({
+          name: "exam.view.AnnouncementDialog", // replace with actual namespace
+          controller: that
+        }).then(function (oDialog) {
+          that._pDialog = oDialog;
+          that.getView().addDependent(oDialog);
+          oDialog.open();
+        });
+      } else {
+        that._pDialog.open();
+      }
+    })
+    .catch(err => {
+      console.error("Error fetching announcements", err);
+      MessageBox.error("Could not load announcements.");
+    });
+},
+
+onCloseAnnouncementDialog: function () {
+  if (this._pDialog) {
+    this._pDialog.close();
+  }
+}
+,
     onLogout: function () {
       if (document.fullscreenElement) {
         document.exitFullscreen();

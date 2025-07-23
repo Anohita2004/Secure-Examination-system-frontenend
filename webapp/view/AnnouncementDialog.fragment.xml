@@ -1,0 +1,22 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+  <Dialog id="announcementDialog"
+          title="Announcements"
+          contentWidth="400px"
+          contentHeight="auto"
+          stretchOnPhone="true"
+          draggable="true"
+          resizable="true">
+    <List items="{announcements>/}">
+      <CustomListItem>
+        <VBox class="sapUiSmallMargin">
+          <Text text="{announcements>title}" design="Bold"/>
+          <Text text="{announcements>message}" wrapping="true"/>
+          <Text text="{announcements>created_at}" class="sapUiTinyMarginTop" />
+        </VBox>
+      </CustomListItem>
+    </List>
+    <endButton>
+      <Button text="Close" press=".onCloseAnnouncementDialog"/>
+    </endButton>
+  </Dialog>
+</core:FragmentDefinition>
