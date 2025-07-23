@@ -51,12 +51,76 @@ sap.ui.define([
         // Initialize calendar model
   const oCalendarModel = new sap.ui.model.json.JSONModel([]);
   this.getView().setModel(oCalendarModel, "calendarModel");
-  this.loadAnnouncements();
+  this._loadAnnouncements();
 
 
 
 
     },
+    _loadAnnouncements: function () {
+  const employeeId = 3; // Replace with actual logged-in ID
+
+  // Load announcements
+  fetch("http://localhost:4000/api/announcements")
+    .then(res => res.json())
+    .then(data => {
+      const oModel = new JSONModel({ announcements: data });
+      this.getView().setModel(oModel, "announcementModel");
+    });
+
+  // Load unread count
+  fetch(`http://localhost:4000/api/announcements/unread/${employeeId}`)
+    .then(res => res.json())
+    .then(data => {
+      const oHeaderModel = new JSONModel({
+        hasUnread: data.unreadCount > 0
+      });
+      this.getView().setModel(oHeaderModel, "headerModel");
+    });
+  },
+  onMarkAnnouncementRead: function (oEvent) {
+  const item = oEvent.getSource();
+  const context = item.getBindingContext("announcementModel");
+  const data = context.getObject();
+
+  const employeeId = 3; // Replace with logged-in ID
+  const announcementId = data.id;
+
+  fetch("http://localhost:4000/api/announcements/mark-read", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ employeeId, announcementId })
+  })
+    .then(res => res.json())
+    .then(() => {
+      data.read = true; // Update local model
+      context.getModel().refresh();
+      this._loadAnnouncements(); // Reload unread count
+    });
+},
+onOpenAnnouncementDialog: function () {
+  if (!this._oAnnouncementDialog) {
+    Fragment.load({
+      name: "exam.view.AnnouncementDialog",
+      controller: this
+    }).then(function (oDialog) {
+      this._oAnnouncementDialog = oDialog;
+      this.getView().addDependent(this._oAnnouncementDialog);
+      this._oAnnouncementDialog.open();
+    }.bind(this));
+  } else {
+    this._oAnnouncementDialog.open();
+  }
+}
+,
+onCloseAnnouncementDialog: function () {
+  console.log("Close dialog called ✅");
+  if (this._oAnnouncementDialog) {
+    this._oAnnouncementDialog.close();
+  }
+}
+
+,
     onCalendarSelect: function (oEvent) {
   const oCalendar = oEvent.getSource();
   const selectedDate = oCalendar.getSelectedDates()[0].getStartDate();
@@ -173,6 +237,23 @@ onCloseAnnouncementDialog: function () {
   }
 }
 ,
+onAnnouncementIconPress: function () {
+  const oView = this.getView();
+
+  if (!this.pAnnouncementDialog) {
+    Fragment.load({
+      name: "exam.view.AnnouncementDialog",
+      type: "XML",
+      controller: this
+    }).then(function (oDialog) {
+      oView.addDependent(oDialog);
+      oDialog.open();
+    });
+  } else {
+    this.pAnnouncementDialog.open();
+  }
+},
+
     onLogout: function () {
       if (document.fullscreenElement) {
         document.exitFullscreen();

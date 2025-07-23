@@ -32,11 +32,25 @@
           <Avatar initials="{user>name}" displaySize="M"/>
           <Button text="Edit Profile" icon="sap-icon://edit" press="onEditProfile"/>
         </HBox>
-        <Button icon="sap-icon://bell"
-        type="Transparent"
-        tooltip="View Announcements"
-        press=".onOpenAnnouncementDialog"
-        class="sapUiTinyMarginTopRight"/>
+      
+ <FlexBox direction="Row" alignItems="Start" styleClass="bellContainer">
+  <Button
+    icon="sap-icon://bell"
+    type="Transparent"
+    press="onOpenAnnouncementDialog"
+    id="bellButton" />
+    
+  <core:Icon
+    visible="{= ${headerModel>/hasUnread} }"
+    src="sap-icon://circle-task"
+    size="0.5rem"
+    color="red"
+    styleClass="redDot" />
+</FlexBox>
+
+
+
+
       </HBox>
      <!-- Notification Message -->
       <MessageStrip text="Your next exam is scheduled soon. Check 'My Exams' for details." type="Information"/>
