@@ -1,32 +1,53 @@
-name: Frontend CI
+name: Frontend CI/CD
 
 on:
   push:
-    branches: [master]
-  pull_request:
-    branches: [master]
+    branches: [ master ]  # Run CI on every push
+  workflow_dispatch:      # Allow manual triggering
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: 18
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm install
 
-      - name: Run lint
+      - name: Lint Code
         run: npm run lint
 
-      - name: Run UI5 tests (optional)
-        run: npm run karma-ci || echo "Tests skipped"
+      - name: Run Tests
+        run: npm run test
 
-      - name: Build UI5 app
+      - name: Build Project
         run: npm run build
+
+  deploy:
+    needs: build-and-test   # Only run if build+test passed
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'  # Manual trigger only
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Project
+        run: npm run build
+
+      - name: Deploy to Server (update this step)
+        run: |
+          echo "✅ Replace this with your deployment script"
