@@ -2,7 +2,7 @@ name: Frontend CI/CD
 
 on:
   push:
-    branches: [ master ]  # Run CI on every push
+    branches: [ master ]  
   workflow_dispatch:      # Allow manual triggering
 
 jobs:

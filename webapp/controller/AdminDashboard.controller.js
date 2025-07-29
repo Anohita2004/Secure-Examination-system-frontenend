@@ -1069,9 +1069,9 @@ sap.ui.define([
             that.getRouter().navTo("main");
             return;
           }
-          var userModel = new sap.ui.model.json.JSONModel(user);
+          const userModel = new sap.ui.model.json.JSONModel(user);
           that.getView().setModel(userModel, "user");
-          var oModel = new sap.ui.model.json.JSONModel({});
+          const oModel = new sap.ui.model.json.JSONModel({});
           that.getView().setModel(oModel);
           return that.loadPermissionsAndSetupUI(user);
         })
@@ -1085,13 +1085,13 @@ sap.ui.define([
     fetch("http://localhost:4000/api/exam/exams", { credentials: "include" })
       .then(res => res.json())
       .then((data) => {
-        var examsModel = new sap.ui.model.json.JSONModel(data);
+        const examsModel = new sap.ui.model.json.JSONModel(data);
         this.getView().setModel(examsModel, "exams");
       });
   },
 
     loadPermissionsAndSetupUI: function(user) {
-      var that = this;
+      const that = this;
       if (isSuperAdmin(user)) {
         return that.loadDashboardData();
       }
@@ -1107,11 +1107,11 @@ sap.ui.define([
     },
 
     loadDashboardData: function() {
-      var that = this;
+      const that = this;
       fetch("http://localhost:4000/api/dashboard/stats", { credentials: "include" })
         .then(res => res.json())
         .then(data => {
-          var oModel = new sap.ui.model.json.JSONModel(data);
+          const oModel = new sap.ui.model.json.JSONModel(data);
           that.getView().setModel(oModel, "dashboardModel");
         })
         .catch(err => console.error("Failed to load dashboard stats", err));
@@ -1122,11 +1122,11 @@ sap.ui.define([
           return res.json();
         })
         .then(data => {
-          var userModel = new sap.ui.model.json.JSONModel(data);
+          const userModel = new sap.ui.model.json.JSONModel(data);
           that.getView().setModel(userModel, "users");
         })
         .catch(err => console.warn("Error loading users", err));
-      var oTableModel = new JSONModel();
+      const oTableModel = new JSONModel();
       that.getView().setModel(oTableModel, "tableModel");
       fetch("http://localhost:4000/api/dashboard/table", { credentials: "include" })
         .then(res => res.json())
@@ -1139,13 +1139,13 @@ sap.ui.define([
     },
 
     onOpenCreateExamDialog: function() {
-      var that = this;
-      var userModel = this.getView().getModel("user");
+      const that = this;
+      const userModel = this.getView().getModel("user");
       if (!userModel) {
         MessageBox.error("User information not loaded. Please log in again.");
         return;
       }
-      var user = userModel.getData();
+      const user = userModel.getData();
       if (isSuperAdmin(user)) {
         that._showCreateExamDialog();
         return;
