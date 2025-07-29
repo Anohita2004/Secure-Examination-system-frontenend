@@ -9,14 +9,14 @@ sap.ui.define([
   "use strict";
   return BaseController.extend("exam.controller.EmployeeDashboard", {
     onInit: function () {
-      var that = this;
+      const that = this;
       AuthService.getCurrentUser()
         .then(function(user) {
           // Add initials for avatar
           user.initials = user.name ? user.name.split(" ").map(n => n[0]).join("").toUpperCase() : "";
-          var userModel = new sap.ui.model.json.JSONModel(user);
+          const userModel = new sap.ui.model.json.JSONModel(user);
           that.getView().setModel(userModel, "user");
-          var userId = user.id;
+          const userId = user.id;
           that._fetchResults(user.id);
           return ExamService.getAssignedExams(userId);
         })
@@ -44,8 +44,7 @@ sap.ui.define([
           MessageBox.error("Failed to load exams: " + err.message);
           that.getRouter().navTo("login-employee");
         });
-        window.addEventListener("popstate", this._onBrowserBack = function() {
-        that.onLogout();});
+        window.addEventListener("popstate", this._onBrowserBack = function() {that.onLogout();});
         this._examData = [];
         this.loadExamCalendar();
         // Initialize calendar model

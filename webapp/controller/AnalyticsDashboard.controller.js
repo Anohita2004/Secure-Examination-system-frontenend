@@ -4,7 +4,7 @@ sap.ui.define([
   "use strict";
   return BaseController.extend("exam.controller.AnalyticsDashboard", {
     onInit: function() {
-      var that = this;
+      const that = this;
       // Fetch exam summary
       fetch("http://localhost:4000/api/analytics/exam-summary")
         .then(res => res.json())

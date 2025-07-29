@@ -1187,7 +1187,7 @@ sap.ui.define([
           text: "Create",
           press: function() {
             const title = sap.ui.getCore().byId("examTitle").getValue();
-            const selectedExamId = sap.ui.getCore().byId("examCategory").getSelectedKey();
+            //const selectedExamId = sap.ui.getCore().byId("examCategory").getSelectedKey();
             const description = sap.ui.getCore().byId("examDescription").getValue();
             const dueDate = sap.ui.getCore().byId("examDueDate").getValue();
             const user = that.getView().getModel("user").getData();
@@ -1195,7 +1195,7 @@ sap.ui.define([
             const startDate = sap.ui.getCore().byId("examStartDate").getValue();
             const endDate = sap.ui.getCore().byId("examEndDate").getValue();
             ExamService.createExam({ title, description, due_date: dueDate, created_by: createdBy, start_date: startDate, end_date: endDate})
-              .then(data => MessageBox.success("Exam created!"))
+              .then(_data => MessageBox.success("Exam created!"))
               .catch(err => MessageBox.error("Error: " + err.message));
             dialog.close();
           }
@@ -1253,7 +1253,7 @@ sap.ui.define([
             const option_d = sap.ui.getCore().byId("optionD").getValue();
             const correct_option = sap.ui.getCore().byId("correctOption").getValue();
             ExamService.addQuestion({ exam_id, question_text, option_a, option_b, option_c, option_d, correct_option })
-              .then(data => MessageBox.success("Question added!"))
+              .then(_data => MessageBox.success("Question added!"))
               .catch(err => MessageBox.error("Error: " + err.message));
             dialog.close();
           }
@@ -1303,7 +1303,7 @@ sap.ui.define([
             const user_id = sap.ui.getCore().byId("assignUserId").getValue();
             const email = sap.ui.getCore().byId("assignEmail").getValue();
             ExamService.assignExam({ exam_id, user_id, email })
-              .then(data => {
+              .then(_data => {
                 MessageBox.success("Exam assigned!");
               })
               .catch(err => {
@@ -1343,7 +1343,7 @@ sap.ui.define([
     },
 
     _showResultsDialog: function() {
-      const that = this;
+      //const that = this;
       const examId = prompt("Enter Exam ID to view results:");
       if (!examId) return;
       ExamService.getAllExamResults(examId)
