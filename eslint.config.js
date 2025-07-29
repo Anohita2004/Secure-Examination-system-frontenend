@@ -9,10 +9,13 @@ module.exports = [
 		languageOptions: {
 			globals: {
 				...globals.browser,
+				...globals.node,
+				$: "readonly", // jQuery
 				sap: "readonly"
 			},
 			ecmaVersion: 2023,
-			sourceType: "script"
+			sourceType: "script",
+			
 		},
 		rules: {
 			"brace-style": [

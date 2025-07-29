@@ -1055,6 +1055,10 @@ sap.ui.define([
 ], function(BaseController, MessageBox, Dialog, Button, Input, JSONModel, ExamService, AuthService, PermissionChecker) {
   "use strict";
 
+  /**
+   *
+   * @param user
+   */
   function isSuperAdmin(user) {
     return user && user.role === "super_admin";
   }
@@ -1195,7 +1199,7 @@ sap.ui.define([
             const startDate = sap.ui.getCore().byId("examStartDate").getValue();
             const endDate = sap.ui.getCore().byId("examEndDate").getValue();
             ExamService.createExam({ title, description, due_date: dueDate, created_by: createdBy, start_date: startDate, end_date: endDate})
-              .then(_data => MessageBox.success("Exam created!"))
+              .then(() => MessageBox.success("Exam created!"))
               .catch(err => MessageBox.error("Error: " + err.message));
             dialog.close();
           }
@@ -1253,7 +1257,7 @@ sap.ui.define([
             const option_d = sap.ui.getCore().byId("optionD").getValue();
             const correct_option = sap.ui.getCore().byId("correctOption").getValue();
             ExamService.addQuestion({ exam_id, question_text, option_a, option_b, option_c, option_d, correct_option })
-              .then(_data => MessageBox.success("Question added!"))
+              .then(() => MessageBox.success("Question added!"))
               .catch(err => MessageBox.error("Error: " + err.message));
             dialog.close();
           }
@@ -1303,7 +1307,7 @@ sap.ui.define([
             const user_id = sap.ui.getCore().byId("assignUserId").getValue();
             const email = sap.ui.getCore().byId("assignEmail").getValue();
             ExamService.assignExam({ exam_id, user_id, email })
-              .then(_data => {
+              .then(() => {
                 MessageBox.success("Exam assigned!");
               })
               .catch(err => {

@@ -47,7 +47,7 @@ exports.requestPasswordReset = async (req, res) => {
   await db.query('UPDATE users SET reset_token = ?, reset_token_expires = ? WHERE email = ?', [token, expires, email]);
 
   // Send email with link (implement sendResetEmail in your mailer)
-  const resetLink = `http://localhost:8080/reset-password?token=${token}`;
+  //const resetLink = `http://localhost:8080/reset-password?token=${token}`;
   // await sendResetEmail(email, resetLink);
 
   res.json({ message: "Password reset link sent to your email." });

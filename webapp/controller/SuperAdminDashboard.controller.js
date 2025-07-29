@@ -8,7 +8,7 @@ sap.ui.define([
   
   return BaseController.extend("exam.controller.SuperAdminDashboard", {
     onInit: function () {
-       var that = this;
+       const that = this;
   AuthService.getCurrentUser()
     .then(function(user) {
       if (user.role !== 'super_admin') {
@@ -16,11 +16,11 @@ sap.ui.define([
         that.getRouter().navTo("main");
         return;
       }
-      var userModel = new sap.ui.model.json.JSONModel(user);
+      const userModel = new sap.ui.model.json.JSONModel(user);
       that.getView().setModel(userModel, "user");
 
       // FIX: Set a default model for dashboard data
-        var oModel = new sap.ui.model.json.JSONModel({});
+        const oModel = new sap.ui.model.json.JSONModel({});
       that.getView().setModel(oModel, "dashboardModel");
       
       // Load initial data
@@ -35,8 +35,8 @@ sap.ui.define([
     },
 
     loadData: function() {
-  var that = this;
-  var model = that.getView().getModel("dashboardModel");
+  const that = this;
+  let model = that.getView().getModel("dashboardModel");
   if (!model) {
     model = new sap.ui.model.json.JSONModel({});
     that.getView().setModel(model, "dashboardModel");
@@ -65,17 +65,17 @@ sap.ui.define([
 
     onManagePermissions: function(oEvent) {
   // Get the context from the button's parent row, using the correct model name
-  var oContext = oEvent.getSource().getParent().getBindingContext("dashboardModel");
+  const oContext = oEvent.getSource().getParent().getBindingContext("dashboardModel");
   if (!oContext) {
     sap.m.MessageBox.error("No user context found.");
     return;
   }
-  var user = oContext.getObject();
+  const user = oContext.getObject();
 
   // Load user's current permissions
   PermissionService.getUserPermissions(user.id)
     .then(function(permissions) {
-      var model = this.getView().getModel("dashboardModel");
+      const model = this.getView().getModel("dashboardModel");
       model.setProperty("/selectedUser", {
         ...user,
         permissions: permissions
@@ -87,9 +87,9 @@ sap.ui.define([
 },
 
     onAssignPermission: function() {
-  var selectedUser = this.getView().getModel("dashboardModel").getProperty("/selectedUser");
-  var permissionSelect = this.byId("permissionSelect");
-  var permissionId = permissionSelect.getSelectedKey();
+  const selectedUser = this.getView().getModel("dashboardModel").getProperty("/selectedUser");
+  const permissionSelect = this.byId("permissionSelect");
+  const permissionId = permissionSelect.getSelectedKey();
 
   if (!selectedUser || !selectedUser.id) {
     sap.m.MessageBox.warning("Please select a user first.");
@@ -128,10 +128,10 @@ sap.ui.define([
 },
 
     onRemovePermission: function() {
-      var that = this;
-      var selectedUser = this.getView().getModel("dashboardModel").getProperty("/selectedUser");
-      var permissionSelect = this.byId("permissionSelect");
-      var permissionId = permissionSelect.getSelectedKey();
+      const that = this;
+      const selectedUser = this.getView().getModel("dashboardModel").getProperty("/selectedUser");
+      const permissionSelect = this.byId("permissionSelect");
+      const permissionId = permissionSelect.getSelectedKey();
       
       if (!selectedUser || !selectedUser.id) {
         MessageBox.warning("Please select a user first.");
@@ -166,7 +166,7 @@ sap.ui.define([
   this.getRouter().navTo("admin-dashboard");
 },
 onOpenAddEmployeeDialog: function() {
-  var that = this;
+  const that = this;
   if (this._addEmployeeDialog) {
     this._addEmployeeDialog.open();
     return;
@@ -181,9 +181,9 @@ onOpenAddEmployeeDialog: function() {
     beginButton: new sap.m.Button({
       text: "Add",
       press: function() {
-        var name = sap.ui.getCore().byId("addEmpName").getValue();
-        var email = sap.ui.getCore().byId("addEmpEmail").getValue();
-        var password = sap.ui.getCore().byId("addEmpPassword").getValue();
+        const name = sap.ui.getCore().byId("addEmpName").getValue();
+        const email = sap.ui.getCore().byId("addEmpEmail").getValue();
+        const password = sap.ui.getCore().byId("addEmpPassword").getValue();
         if (!name || !email || !password) {
           sap.m.MessageBox.error("Please fill all fields.");
           return;
@@ -199,7 +199,7 @@ onOpenAddEmployeeDialog: function() {
           if (!res.ok) throw new Error("Failed to add employee");
           return res.json();
         })
-        .then(data => {
+        .then(() => {
           sap.m.MessageBox.success("Employee added!");
           that.loadData(); // Refresh user list
           that._addEmployeeDialog.close();
@@ -210,7 +210,7 @@ onOpenAddEmployeeDialog: function() {
         fetch("http://localhost:4000/api/dashboard/stats", { credentials: "include" })
   .then(res => res.json())
   .then(data => {
-    var oModel = new sap.ui.model.json.JSONModel(data);
+    const oModel = new sap.ui.model.json.JSONModel(data);
     that.getView().setModel(oModel, "dashboardModel");
   })
   .catch(err => console.error("Failed to load dashboard stats", err));
@@ -235,11 +235,11 @@ onGoToAnalytics: function() {
 // In your SuperAdminDashboard.controller.js
 
 loadDashboardStats: function() {
-  var that = this;
+  const that = this;
   fetch("http://localhost:4000/api/dashboard/stats", { credentials: "include" })
     .then(res => res.json())
     .then(data => {
-      var oModel = that.getView().getModel("dashboardModel");
+      let oModel = that.getView().getModel("dashboardModel");
       if (!oModel) {
         oModel = new sap.ui.model.json.JSONModel({});
         that.getView().setModel(oModel, "dashboardModel");

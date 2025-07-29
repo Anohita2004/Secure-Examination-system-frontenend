@@ -1,9 +1,9 @@
 (function (sap) {
-    var fioriToolsGetManifestLibs = function (manifestPath) {
-        var url = manifestPath;
-        var result = "";
+    const fioriToolsGetManifestLibs = function (manifestPath) {
+        const url = manifestPath;
+        let result = "";
         // SAPUI5 delivered namespaces from https://ui5.sap.com/#/api/sap
-        var ui5Libs = [
+        const ui5Libs = [
             "sap.apf",
             "sap.base",
             "sap.chart",
@@ -27,8 +27,13 @@
             "sap.webanalytics",
             "sap.zen"
         ];
+        /**
+         *
+         * @param libOrComp
+         * @param libOrCompKeysString
+         */
         function getKeys(libOrComp, libOrCompKeysString) {
-            var libOrCompKeysStringTmp = libOrCompKeysString;
+            let libOrCompKeysStringTmp = libOrCompKeysString;
             Object.keys(libOrComp).forEach(function (libOrCompKey) {
                 // ignore libs or Components that start with SAPUI5 delivered namespaces
                 if (!ui5Libs.some(function (substring) { return libOrCompKey === substring || libOrCompKey.startsWith(substring + "."); })) {
@@ -41,9 +46,14 @@
             });
             return libOrCompKeysStringTmp;
         };
+        /**
+         *
+         * @param compUsages
+         * @param libOrCompKeysString
+         */
         function getComponentUsageNames(compUsages, libOrCompKeysString) {
-            var libOrCompKeysStringTmp = libOrCompKeysString;
-            var compNames = Object.keys(compUsages).map(function (compUsageKey) {
+            let libOrCompKeysStringTmp = libOrCompKeysString;
+            const compNames = Object.keys(compUsages).map(function (compUsageKey) {
                 return compUsages[compUsageKey].name;
             });
             compNames.forEach(function (compName) {
@@ -87,9 +97,13 @@
                 });
         });
     };
+    /**
+     *
+     * @param dataFromAppIndex
+     */
     function registerModules(dataFromAppIndex) {
         Object.keys(dataFromAppIndex).forEach(function (moduleDefinitionKey) {
-            var moduleDefinition = dataFromAppIndex[moduleDefinitionKey];
+            const moduleDefinition = dataFromAppIndex[moduleDefinitionKey];
             if (moduleDefinition && moduleDefinition.dependencies) {
                 moduleDefinition.dependencies.forEach(function (dependency) {
                     if (dependency.url && dependency.url.length > 0 && dependency.type === "UI5LIB") {
@@ -99,8 +113,8 @@
                                 " from server " +
                                 encodeURI(dependency.url));
                         });
-                        var compId = dependency.componentId.replace(/\./g, "/");
-                        var config = {
+                        const compId = dependency.componentId.replace(/\./g, "/");
+                        const config = {
                             paths: {
                             }
                         };
@@ -122,8 +136,8 @@
 
         return fioriToolsGetManifestLibs(manifestPath).then(function (libs) {
             if (libs && libs.length > 0) {
-                var url = "/sap/bc/ui2/app_index/ui5_app_info?id=" + libs;
-                var sapClient = "";
+                let url = "/sap/bc/ui2/app_index/ui5_app_info?id=" + libs;
+                let sapClient = "";
 
                 return new Promise(
                     function (resolve) {
@@ -148,17 +162,20 @@
     };
 })(sap);
 
+/**
+ *
+ */
 function registerSAPFonts() {  
     sap.ui.require(["sap/ui/core/IconPool"], function (IconPool) {  
     //Fiori Theme font family and URI
-    var fioriTheme = {
+    const fioriTheme = {
         fontFamily: "SAP-icons-TNT",
         fontURI: sap.ui.require.toUrl("sap/tnt/themes/base/fonts/")
     };
     //Registering to the icon pool
     IconPool.registerFont(fioriTheme);
     //SAP Business Suite Theme font family and URI
-    var bSuiteTheme = {
+    const bSuiteTheme = {
         fontFamily: "BusinessSuiteInAppSymbols",
         fontURI: sap.ui.require.toUrl("sap/ushell/themes/base/fonts/")
     };
@@ -167,14 +184,14 @@ function registerSAPFonts() {
     });
 };
 
-/*eslint-disable sap-browser-api-warning, sap-no-dom-access*/
-var currentScript = document.getElementById("locate-reuse-libs");
+//eslint-disable sap-browser-api-warning, sap-no-dom-access*/
+let currentScript = document.getElementById("locate-reuse-libs");
 if (!currentScript) {
     currentScript = document.currentScript;
 }
-var manifestUri = currentScript.getAttribute("data-sap-ui-manifest-uri");
-var componentName = currentScript.getAttribute("data-sap-ui-componentName");
-var useMockserver = currentScript.getAttribute("data-sap-ui-use-mockserver");
+const manifestUri = currentScript.getAttribute("data-sap-ui-manifest-uri");
+const componentName = currentScript.getAttribute("data-sap-ui-componentName");
+const useMockserver = currentScript.getAttribute("data-sap-ui-use-mockserver");
 
 sap.registerComponentDependencyPaths(manifestUri)
     .catch(function (error) {
@@ -186,9 +203,9 @@ sap.registerComponentDependencyPaths(manifestUri)
 
         // setting the app title with internationalization 
         sap.ui.getCore().attachInit(function () {
-            var sLocale = sap.ui.getCore().getConfiguration().getLanguage();
+            const sLocale = sap.ui.getCore().getConfiguration().getLanguage();
             sap.ui.require(["sap/base/i18n/ResourceBundle"], function (ResourceBundle) {
-                var oResourceBundle = ResourceBundle.create({
+                const oResourceBundle = ResourceBundle.create({
                     url: "i18n/i18n.properties",
                     locale: sLocale
                 });
@@ -214,9 +231,9 @@ sap.registerComponentDependencyPaths(manifestUri)
                 // setting the app title with the i18n text 
                 sap.ui.getCore().attachInit(function () {
                     registerSAPFonts();
-                    var sLocale = sap.ui.getCore().getConfiguration().getLanguage();
+                    const sLocale = sap.ui.getCore().getConfiguration().getLanguage();
                     sap.ui.require(["sap/base/i18n/ResourceBundle"], function (ResourceBundle) {
-                        var oResourceBundle = ResourceBundle.create({
+                        const oResourceBundle = ResourceBundle.create({
                             url: "i18n/i18n.properties",
                             locale: sLocale
                         });

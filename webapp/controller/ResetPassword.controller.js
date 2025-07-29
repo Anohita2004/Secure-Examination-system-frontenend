@@ -7,8 +7,8 @@ sap.ui.define([
   return BaseController.extend("exam.controller.ResetPassword", {
     onInit: function() {
       // Optionally, you can check for the token in the URL and show an error if missing
-      var urlParams = new URLSearchParams(window.location.search);
-      var token = urlParams.get("token");
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get("token");
       if (!token) {
         MessageBox.error("Invalid or missing reset token.");
         // Optionally, redirect to login or home
@@ -16,10 +16,10 @@ sap.ui.define([
     },
 
     onResetPassword: function() {
-      var urlParams = new URLSearchParams(window.location.search);
-      var token = urlParams.get("token");
-      var newPassword = this.byId("newPasswordInput").getValue();
-      var confirmPassword = this.byId("confirmPasswordInput").getValue();
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get("token");
+      const newPassword = this.byId("newPasswordInput").getValue();
+      const confirmPassword = this.byId("confirmPasswordInput").getValue();
 
       if (!newPassword || !confirmPassword) {
         MessageBox.error("All fields are required.");

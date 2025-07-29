@@ -97,7 +97,7 @@ sap.ui.define([
       this._loadAnnouncements(); // Reload unread count
     });
 },
-onOpenAnnouncementDialog: function () {
+/*onOpenAnnouncementDialog: function () {
   if (!this._oAnnouncementDialog) {
     Fragment.load({
       name: "exam.view.AnnouncementDialog",
@@ -110,8 +110,8 @@ onOpenAnnouncementDialog: function () {
   } else {
     this._oAnnouncementDialog.open();
   }
-}
-,
+}*/
+
 onCloseAnnouncementDialog: function () {
   console.log("Close dialog called ✅");
   if (this._oAnnouncementDialog) {
@@ -141,12 +141,12 @@ onCloseAnnouncementDialog: function () {
 
     // Card click handlers
     onGoToUnattempted: function () {
-      var examsModel = this.getView().getModel("exams");
+      const examsModel = this.getView().getModel("exams");
       if (!examsModel) {
         sap.m.MessageBox.error("Exam data not loaded yet.");
         return;
       }
-      var exams = examsModel.getProperty("/unattempted");
+      const exams = examsModel.getProperty("/unattempted");
       if (!exams || exams.length === 0) {
         sap.m.MessageBox.information("No unattempted exams.");
         return;
@@ -155,12 +155,12 @@ onCloseAnnouncementDialog: function () {
     },
 
     onGoToAttempted: function () {
-      var examsModel = this.getView().getModel("exams");
+      const examsModel = this.getView().getModel("exams");
       if (!examsModel) {
         sap.m.MessageBox.error("Exam data not loaded yet.");
         return;
       }
-      var exams = examsModel.getProperty("/attempted");
+      const exams = examsModel.getProperty("/attempted");
       if (!exams || exams.length === 0) {
         sap.m.MessageBox.information("No attempted exams.");
         return;
@@ -169,19 +169,19 @@ onCloseAnnouncementDialog: function () {
     },
 
     onGoToResults: function () {
-      var results = this.getView().getModel("results")?.getData();
+      const results = this.getView().getModel("results")?.getData();
       if (!results || results.length === 0) {
         sap.m.MessageBox.information("No results available yet.");
         return;
       }
-      var items = results.map(function(r) {
+      const items = results.map(function(r) {
         return new sap.m.StandardListItem({
           title: r.examTitle,
           description: `Score: ${r.total_score} | ${r.passed ? "Passed" : "Failed"}`,
           info: new Date(r.evaluated_at).toLocaleString()
         });
       });
-      var dialog = new sap.m.Dialog({
+      const dialog = new sap.m.Dialog({
         title: "Your Results",
         content: [
           new sap.m.List({
@@ -230,12 +230,7 @@ onOpenAnnouncementDialog: function () {
     });
 },
 
-onCloseAnnouncementDialog: function () {
-  if (this._pDialog) {
-    this._pDialog.close();
-  }
-}
-,
+
 onAnnouncementIconPress: function () {
   const oView = this.getView();
 
@@ -262,7 +257,7 @@ onAnnouncementIconPress: function () {
     },
 
     onOpenChangePasswordDialog: function() {
-      var dialog = new sap.m.Dialog({
+      const dialog = new sap.m.Dialog({
         title: "Change Password",
         content: [
           new sap.m.Label({ text: "Old Password" }),
@@ -275,9 +270,9 @@ onAnnouncementIconPress: function () {
         beginButton: new sap.m.Button({
           text: "Change",
           press: function() {
-            var oldPassword = sap.ui.getCore().byId("oldPasswordInput").getValue();
-            var newPassword = sap.ui.getCore().byId("newPasswordInput").getValue();
-            var confirmPassword = sap.ui.getCore().byId("confirmPasswordInput").getValue();
+            const oldPassword = sap.ui.getCore().byId("oldPasswordInput").getValue();
+            const newPassword = sap.ui.getCore().byId("newPasswordInput").getValue();
+            const confirmPassword = sap.ui.getCore().byId("confirmPasswordInput").getValue();
             if (!oldPassword || !newPassword || !confirmPassword) {
               sap.m.MessageBox.error("All fields are required.");
               return;
@@ -287,7 +282,7 @@ onAnnouncementIconPress: function () {
               return;
             }
             // Get user_id from model
-            var user = this.getView().getModel("user").getData();
+            const user = this.getView().getModel("user").getData();
             fetch("http://localhost:4000/api/user/change-password", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -325,8 +320,8 @@ onAnnouncementIconPress: function () {
 },
 
 onSaveProfile: function() {
-  var userModel = this.getView().getModel("user");
-  var updatedData = userModel.getData();
+  //const userModel = this.getView().getModel("user");
+  //const updatedData = userModel.getData();
   // TODO: Call backend service to save updated profile
   // Example: AuthService.updateProfile(updatedData).then(...)
   this.byId("profileDialog").close();
@@ -404,8 +399,8 @@ _getExamsForDate: function (dateString) {
 
     // Helper to show exam list dialog
     _showExamListDialog: function(title, exams, attempted) {
-      var that = this;
-      var items = exams.map(function(e) {
+      const that = this;
+      const items = exams.map(function(e) {
         return new sap.m.StandardListItem({
           title: e.title,
           description: e.subject,
@@ -418,7 +413,7 @@ _getExamsForDate: function (dateString) {
           }
         });
       });
-      var dialog = new sap.m.Dialog({
+      const dialog = new sap.m.Dialog({
         title: title,
         content: [
           new sap.m.List({
@@ -434,13 +429,13 @@ _getExamsForDate: function (dateString) {
     },
 
     _fetchResults: function(userId) {
-      var that = this;
+      const that = this;
       return fetch(`http://localhost:4000/api/user/${userId}/results`, {
         credentials: "include"
       })
         .then(res => res.json())
         .then(data => {
-          var resultsModel = new sap.ui.model.json.JSONModel(data);
+          const resultsModel = new sap.ui.model.json.JSONModel(data);
           that.getView().setModel(resultsModel, "results");
           return data;
         })

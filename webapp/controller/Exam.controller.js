@@ -687,7 +687,7 @@ sap.ui.define([
 
     onInit: function () {
       // Attach the route handler immediately!
-      var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+      const oRouter = sap.ui.core.UIComponent.getRouterFor(this);
       oRouter.getRoute("exam").attachPatternMatched(this._onRouteMatched, this);
 
       // Secure Exam: Add event listeners
@@ -728,7 +728,7 @@ sap.ui.define([
     },
 
     _requestFullscreen: function() {
-      var elem = document.documentElement;
+      const elem = document.documentElement;
       if (elem.requestFullscreen) {
         elem.requestFullscreen();
       } else if (elem.mozRequestFullScreen) { // Firefox
@@ -815,7 +815,7 @@ sap.ui.define([
       that._isExamActive = true; // Exam is now active
       that._requestFullscreen();
     })
-    .catch(err => {
+    .catch(() => {
       MessageBox.error("Failed to load exam.");
       that._initEmptyModel();
     });

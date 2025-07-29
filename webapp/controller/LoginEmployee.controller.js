@@ -6,13 +6,13 @@ sap.ui.define([
   "use strict";
   return BaseController.extend("exam.controller.LoginEmployee", {
     onLogin: function() {
-  var email = this.byId("email").getValue();
-  var password = this.byId("password").getValue();
-  var that = this;
+  const email = this.byId("email").getValue();
+  const password = this.byId("password").getValue();
+  const that = this;
   AuthService.login(email, password)
     .then(() => AuthService.getCurrentUser())
     .then(user => {
-  var userModel = new sap.ui.model.json.JSONModel(user);
+  const userModel = new sap.ui.model.json.JSONModel(user);
   that.getView().setModel(userModel, "user");
   if (user.role && user.role.toLowerCase() === "employee") {
     that.getRouter().navTo("employee-dashboard");
@@ -23,12 +23,12 @@ sap.ui.define([
     .catch(err => MessageBox.error("Login failed: " + err.message));
 },
 onTogglePassword: function(oEvent) {
-  var bSelected = oEvent.getParameter("selected");
-  var oPasswordInput = this.byId("password");
+  const bSelected = oEvent.getParameter("selected");
+  const oPasswordInput = this.byId("password");
   oPasswordInput.setType(bSelected ? "Text" : "Password");
 },
 onForgotPassword: function() {
-  var dialog = new sap.m.Dialog({
+  const dialog = new sap.m.Dialog({
     title: "Forgot Password",
     content: [
       new sap.m.Label({ text: "Enter your email address:" }),
@@ -37,7 +37,7 @@ onForgotPassword: function() {
     beginButton: new sap.m.Button({
       text: "Send Reset Link",
       press: function() {
-        var email = sap.ui.getCore().byId("forgotEmailInput").getValue();
+        const email = sap.ui.getCore().byId("forgotEmailInput").getValue();
         if (!email) {
           sap.m.MessageBox.error("Please enter your email.");
           return;

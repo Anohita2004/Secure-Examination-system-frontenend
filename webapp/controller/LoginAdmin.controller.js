@@ -7,13 +7,13 @@ sap.ui.define([
   "use strict";
   return BaseController.extend("exam.controller.LoginAdmin", {
    onLogin: function() {
-  var email = this.byId("email").getValue();
-  var password = this.byId("password").getValue();
-  var that = this;
+  const email = this.byId("email").getValue();
+  const password = this.byId("password").getValue();
+  const that = this;
   AuthService.login(email, password)
     .then(() => AuthService.getCurrentUser())
     .then(function(user) {
-      var userModel = new sap.ui.model.json.JSONModel(user);
+      const userModel = new sap.ui.model.json.JSONModel(user);
       that.getView().setModel(userModel, "user");
 
       if (user.role && user.role.toLowerCase() === "super_admin") {
