@@ -1161,8 +1161,8 @@ sap.ui.define([
     },
 
     _showCreateExamDialog: function() {
-      var that = this;
-      var dialog = new Dialog({
+      const that = this;
+      const dialog = new Dialog({
         title: "Create Exam",
         content: [
           new Input("examTitle", { placeholder: "Title" }),
@@ -1186,14 +1186,14 @@ sap.ui.define([
         beginButton: new Button({
           text: "Create",
           press: function() {
-            var title = sap.ui.getCore().byId("examTitle").getValue();
-            var selectedExamId = sap.ui.getCore().byId("examCategory").getSelectedKey();
-            var description = sap.ui.getCore().byId("examDescription").getValue();
-            var dueDate = sap.ui.getCore().byId("examDueDate").getValue();
-            var user = that.getView().getModel("user").getData();
-            var createdBy = user.id;
-            var startDate = sap.ui.getCore().byId("examStartDate").getValue();
-            var endDate = sap.ui.getCore().byId("examEndDate").getValue();
+            const title = sap.ui.getCore().byId("examTitle").getValue();
+            const selectedExamId = sap.ui.getCore().byId("examCategory").getSelectedKey();
+            const description = sap.ui.getCore().byId("examDescription").getValue();
+            const dueDate = sap.ui.getCore().byId("examDueDate").getValue();
+            const user = that.getView().getModel("user").getData();
+            const createdBy = user.id;
+            const startDate = sap.ui.getCore().byId("examStartDate").getValue();
+            const endDate = sap.ui.getCore().byId("examEndDate").getValue();
             ExamService.createExam({ title, description, due_date: dueDate, created_by: createdBy, start_date: startDate, end_date: endDate})
               .then(data => MessageBox.success("Exam created!"))
               .catch(err => MessageBox.error("Error: " + err.message));
@@ -1209,13 +1209,13 @@ sap.ui.define([
     },
 
     onOpenAddQuestionDialog: function() {
-      var that = this;
-      var userModel = this.getView().getModel("user");
+      const that = this;
+      const userModel = this.getView().getModel("user");
       if (!userModel) {
         MessageBox.error("User information not loaded. Please log in again.");
         return;
       }
-      var user = userModel.getData();
+      const user = userModel.getData();
       if (isSuperAdmin(user)) {
         that._showAddQuestionDialog();
         return;
@@ -1231,7 +1231,7 @@ sap.ui.define([
     },
 
     _showAddQuestionDialog: function() {
-      var dialog = new Dialog({
+      const dialog = new Dialog({
         title: "Add Question",
         content: [
           new Input("questionExamId", { placeholder: "Exam ID" }),
@@ -1245,13 +1245,13 @@ sap.ui.define([
         beginButton: new Button({
           text: "Add",
           press: function() {
-            var exam_id = sap.ui.getCore().byId("questionExamId").getValue();
-            var question_text = sap.ui.getCore().byId("questionText").getValue();
-            var option_a = sap.ui.getCore().byId("optionA").getValue();
-            var option_b = sap.ui.getCore().byId("optionB").getValue();
-            var option_c = sap.ui.getCore().byId("optionC").getValue();
-            var option_d = sap.ui.getCore().byId("optionD").getValue();
-            var correct_option = sap.ui.getCore().byId("correctOption").getValue();
+            const exam_id = sap.ui.getCore().byId("questionExamId").getValue();
+            const question_text = sap.ui.getCore().byId("questionText").getValue();
+            const option_a = sap.ui.getCore().byId("optionA").getValue();
+            const option_b = sap.ui.getCore().byId("optionB").getValue();
+            const option_c = sap.ui.getCore().byId("optionC").getValue();
+            const option_d = sap.ui.getCore().byId("optionD").getValue();
+            const correct_option = sap.ui.getCore().byId("correctOption").getValue();
             ExamService.addQuestion({ exam_id, question_text, option_a, option_b, option_c, option_d, correct_option })
               .then(data => MessageBox.success("Question added!"))
               .catch(err => MessageBox.error("Error: " + err.message));
@@ -1267,13 +1267,13 @@ sap.ui.define([
     },
 
     onOpenAssignExamDialog: function() {
-      var that = this;
-      var userModel = this.getView().getModel("user");
+      const that = this;
+      const userModel = this.getView().getModel("user");
       if (!userModel) {
         MessageBox.error("User information not loaded. Please log in again.");
         return;
       }
-      var user = userModel.getData();
+      const user = userModel.getData();
       if (isSuperAdmin(user)) {
         that._showAssignExamDialog();
         return;
@@ -1289,7 +1289,7 @@ sap.ui.define([
     },
 
     _showAssignExamDialog: function() {
-      var dialog = new Dialog({
+      const dialog = new Dialog({
         title: "Assign Exam",
         content: [
           new Input("assignExamId", { placeholder: "Exam ID" }),
@@ -1299,9 +1299,9 @@ sap.ui.define([
         beginButton: new Button({
           text: "Assign",
           press: function() {
-            var exam_id = sap.ui.getCore().byId("assignExamId").getValue();
-            var user_id = sap.ui.getCore().byId("assignUserId").getValue();
-            var email = sap.ui.getCore().byId("assignEmail").getValue();
+            const exam_id = sap.ui.getCore().byId("assignExamId").getValue();
+            const user_id = sap.ui.getCore().byId("assignUserId").getValue();
+            const email = sap.ui.getCore().byId("assignEmail").getValue();
             ExamService.assignExam({ exam_id, user_id, email })
               .then(data => {
                 MessageBox.success("Exam assigned!");
@@ -1321,13 +1321,13 @@ sap.ui.define([
     },
 
     onOpenResultsDialog: function() {
-      var that = this;
-      var userModel = this.getView().getModel("user");
+      const that = this;
+      const userModel = this.getView().getModel("user");
       if (!userModel) {
         MessageBox.error("User information not loaded. Please log in again.");
         return;
       }
-      var user = userModel.getData();
+      const user = userModel.getData();
       if (isSuperAdmin(user)) {
         that._showResultsDialog();
         return;
@@ -1343,12 +1343,12 @@ sap.ui.define([
     },
 
     _showResultsDialog: function() {
-      var that = this;
-      var examId = prompt("Enter Exam ID to view results:");
+      const that = this;
+      const examId = prompt("Enter Exam ID to view results:");
       if (!examId) return;
       ExamService.getAllExamResults(examId)
         .then(data => {
-          var resultsText = data.map(r => r.name + ": " + r.score + "/" + r.total).join("\n");
+          const resultsText = data.map(r => r.name + ": " + r.score + "/" + r.total).join("\n");
           MessageBox.information(resultsText || "No results yet.");
         })
         .catch(err => MessageBox.error("Failed to load results: " + err.message));
