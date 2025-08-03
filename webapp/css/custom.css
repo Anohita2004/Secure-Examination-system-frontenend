@@ -621,60 +621,137 @@ h1, h2, h3 {
   right: 3px;
   z-index: 10;
 }
-.login-container {
-  height: 100vh;
-  padding: 2rem;
-  background: linear-gradient(135deg, #f3f4f6, #ffffff);
+html, body, #container, .sapUiBody, .sapMPage, .sapMPageEnableScrolling {
+  height: 100% !important;
+  width: 100% !important;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+
+
+.login-container {
+  margin: auto;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 500px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.login-panel {
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.fullscreen-center-wrapper {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  height: 100vh !important;
+  width: 100vw !important;
+}
+
+
 .login-title {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
+  font-size: 2.2rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
 }
 
 .login-subtitle {
   font-size: 1.2rem;
-  color: #666;
+  color: #7f8c8d;
   margin-bottom: 2rem;
 }
 
 .avatar-carousel {
-  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
 }
 
 .avatar-section {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 3px solid #007aff;
-  padding: 0.5rem;
-  background-color: white;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .avatar-image {
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   object-fit: cover;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 .role-label {
-  margin-top: 1rem;
-  font-weight: bold;
+  margin-top: 0.8rem;
   font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
 }
 
 .nav-arrow {
-  background-color: transparent;
-  color: #007aff;
+  border-radius: 50%;
+  min-width: 40px;
+  height: 40px;
 }
 
 .login-continue-btn {
-  margin-top: 2rem;
-  width: 200px;
-  font-weight: bold;
-}
-.login-continue-btn:hover {
-  background-color: #005bb5;
+  background-color: #0070f2;
   color: white;
+  font-weight: bold;
+  padding: 0.6rem 2rem;
+  border-radius: 25px;
+}
+
+.avatar-carousel {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.avatar-section {
+  text-align: center;
+}
+
+.login-title, .login-subtitle {
+  text-align: center;
+  width: 100%;
+}
+/* This is the key CSS to make the Page center its content */
+/* The .sapMPage class is the internal class for the sap.m.Page control */
+.login-page.sapMPage .sapMPageEnableScrolling {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Now, style your actual login panel with a max-width and background */
+.login-container {
+  /* Remove width and height, they are handled by the parent VBox's centering */
+  max-width: 500px;
+  width: 90%; /* This makes it responsive */
+  padding: 2rem;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }

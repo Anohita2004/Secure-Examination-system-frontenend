@@ -1,46 +1,63 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-	<link rel="stylesheet" href="css/custom.css">
-	<link rel="stylesheet" href="css/superadmin.css">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title></title>
-	<style>
-		html, body, body > div, #container, #container-uiarea {
-			height: 100%;
-			overflow: hidden;
-		}
-	</style>
-	<script>
-  (function() {
-    var urlParams = new URLSearchParams(window.location.search);
-    var token = urlParams.get("token");
-    var userId = urlParams.get("userId");
-    var role = urlParams.get("role");
-    if (token) localStorage.setItem("jwt", token);
-    if (userId) localStorage.setItem("userId", userId);
-    if (role) localStorage.setItem("role", role);
-  })();
-</script>
-	<script
-			id="sap-ui-bootstrap"
-			src="resources/sap-ui-core.js"
-			data-sap-ui-theme="sap_horizon"
-			data-sap-ui-resourceroots='{
-            "exam": "."
-        }'
-			data-sap-ui-oninit="module:sap/ui/core/ComponentSupport"
-			data-sap-ui-compatVersion="edge"
-			data-sap-ui-async="true"
-			data-sap-ui-preload="async"
-			data-sap-ui-libs="sap.m"
-			data-sap-ui-theme="sap_horizon">
-	</script>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secure Exam App</title>
+
+  <!-- Link your custom CSS files -->
+  <link rel="stylesheet" href="css/custom.css" />
+  <link rel="stylesheet" href="css/superadmin.css" />
+
+  <style>
+    /* Ensure all root elements take full height and width */
+    html, body, body > div, #container, #container-uiarea {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* Prevent body scrolling if content is centered */
+    }
+  </style>
+
+  <script>
+    // Script to handle URL parameters for JWT, userId, and role
+    (function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get("token");
+      const userId = urlParams.get("userId");
+      const role = urlParams.get("role");
+      if (token) localStorage.setItem("jwt", token);
+      if (userId) localStorage.setItem("userId", userId);
+      if (role) localStorage.setItem("role", role);
+    })();
+  </script>
+
+  <!-- SAP UI5 Bootstrap -->
+  <script
+    id="sap-ui-bootstrap"
+    src="resources/sap-ui-core.js"
+    data-sap-ui-theme="sap_horizon"
+    data-sap-ui-resourceroots='{
+      "exam": "."
+    }'
+    data-sap-ui-oninit="module:sap/ui/core/ComponentSupport"
+    data-sap-ui-compatVersion="edge"
+    data-sap-ui-async="true"
+    data-sap-ui-preload="async"
+    data-sap-ui-libs="sap.m"
+  ></script>
 </head>
+
 <body class="sapUiBody sapUiSizeCompact" id="content">
-<div data-sap-ui-component data-name="exam" data-id="container" data-settings='{"id" : "exam"}' data-handle-validation="true"></div>
+  <!-- This div is where your SAP UI5 component will be rendered -->
+  <div
+    data-sap-ui-component
+    data-name="exam"
+    data-id="container"
+    data-settings='{"id" : "exam"}'
+    data-handle-validation="true"
+  ></div>
 </body>
 </html>
