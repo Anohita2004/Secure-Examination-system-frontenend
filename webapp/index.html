@@ -8,21 +8,37 @@
 
   <!-- Link your custom CSS files -->
   <link rel="stylesheet" href="css/custom.css" />
-  <link rel="stylesheet" href="css/superadmin.css" />
+  <!-- If you have other CSS files like superadmin.css, link them here too -->
+  <!-- <link rel="stylesheet" href="css/superadmin.css" /> -->
 
   <style>
-    /* Ensure all root elements take full height and width */
-    html, body, body > div, #container, #container-uiarea {
+    /* Ensure html and body take full height and width */
+    html, body {
       height: 100%;
       width: 100%;
       margin: 0;
       padding: 0;
+      box-sizing: border-box; /* Include padding and border in element's total width and height */
       overflow: hidden; /* Prevent body scrolling if content is centered */
+    }
+
+    /* Target the main UI5 component container and make it a flex parent */
+    /* This is the div where your entire UI5 app is injected by ComponentSupport */
+    .app-root-container {
+      height: 100vh; /* Use viewport height to ensure it fills the screen */
+      width: 100vw;  /* Use viewport width to ensure it fills the screen */
+      display: flex;
+      justify-content: center; /* Center horizontally */
+      align-items: center;     /* Center vertically */
+      /* This background will cover the entire browser window */
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      padding: 0;
+      margin: 0;
     }
   </style>
 
   <script>
-    // Script to handle URL parameters for JWT, userId, and role
+    // Script to handle URL parameters for JWT, userId, and role (keep this if you need it)
     (function () {
       const urlParams = new URLSearchParams(window.location.search);
       const token = urlParams.get("token");
@@ -35,6 +51,7 @@
   </script>
 
   <!-- SAP UI5 Bootstrap -->
+  <!-- This script loads the UI5 core library and configures your app -->
   <script
     id="sap-ui-bootstrap"
     src="resources/sap-ui-core.js"
@@ -51,13 +68,15 @@
 </head>
 
 <body class="sapUiBody sapUiSizeCompact" id="content">
-  <!-- This div is where your SAP UI5 component will be rendered -->
+  <!-- This div is where your SAP UI5 component (your app) will be rendered -->
+  <!-- The 'app-root-container' class is crucial for the full-screen centering -->
   <div
     data-sap-ui-component
     data-name="exam"
     data-id="container"
     data-settings='{"id" : "exam"}'
     data-handle-validation="true"
+    class="app-root-container"
   ></div>
 </body>
 </html>

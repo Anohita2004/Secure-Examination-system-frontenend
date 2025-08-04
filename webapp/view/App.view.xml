@@ -4,6 +4,6 @@
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc">
 
-	<App id="app" height="100%" />
+	<App id="app" height="100%" width="100%" />
 
 </mvc:View>
