@@ -25,5 +25,11 @@ module.exports = function (config) {
 				]
 			}
 		}
+		client: {
+  loadScripts: [
+    "test/unit/unitTests.qunit.js" // ← Make sure path matches
+  ]
+}
+
 	});
 };
