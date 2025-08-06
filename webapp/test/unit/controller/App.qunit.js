@@ -1,6 +1,8 @@
 /* global QUnit */
 sap.ui.define(["exam/controller/App.controller"], function (AppController) {
 	"use strict";
+	console.log("App.qunit.js loaded ✅");
+
 
 	QUnit.module("App controller test");
 

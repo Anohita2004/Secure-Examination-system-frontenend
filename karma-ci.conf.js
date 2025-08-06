@@ -8,10 +8,10 @@ module.exports = function (config) {
     singleRun: true,
 
     // Timeout settings
-    browserNoActivityTimeout: 120000,
-    browserDisconnectTimeout: 12000,
+    browserNoActivityTimeout: 30000,
+    browserDisconnectTimeout: 3000,
     browserDisconnectTolerance: 2,
-    captureTimeout: 120000,
+    captureTimeout: 30000,
 
     // ❌ REMOVE this block completely:
     // client: {
