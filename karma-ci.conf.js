@@ -8,9 +8,10 @@ module.exports = function (config) {
 		singleRun: true,
 
 		// ⏱ Timeout fixes
-		browserNoActivityTimeout: 60000,       // Wait 60s before timing out
-		browserDisconnectTimeout: 10000,       // Wait 10s before disconnect
-		browserDisconnectTolerance: 2,         // Retry up to 2 times
+		browserNoActivityTimeout: 120000,       // Wait 2 mins before timing out
+		browserDisconnectTimeout: 12000,        // Wait 12s before disconnect
+		browserDisconnectTolerance: 2,          // Retry up to 2 times
+		captureTimeout: 120000,                 // Wait 2 mins for browser to start
 
 		// 🧪 Custom launcher for CI
 		customLaunchers: {
