@@ -5,30 +5,151 @@
   xmlns:core="sap.ui.core"
   displayBlock="true">
 
-  <HBox class="loginPageRoot" justifyContent="Center" alignItems="Center" width="100%" height="100vh">
-    <!-- Left Illustration -->
-    <VBox width="50%" class="loginIllustrationBox" alignItems="Center" justifyContent="Center">
-      <Image src="images/login-illustration1.jpg" width="80%" />
-    </VBox>
+  <Page
+    showHeader="false"
+    class="employee-login-page bg-override"
 
-    <!-- Right Login Form -->
-    <VBox width="50%" class="loginFormBox" alignItems="Center" justifyContent="Center">
-      <Title text="WELCOME BACK" level="H2" class="loginWelcome"/>
-      <Text text="LOGIN PAGE" class="loginPageTitle"/>
-      <VBox width="350px" class="loginForm" alignItems="Stretch" justifyContent="Center">
-        <HBox class="loginInputBox" alignItems="Center">
-          <core:Icon src="sap-icon://email" class="loginInputIcon emailIcon"/>
-          <Input id="email" placeholder="Email address" type="Email" width="100%" class="loginInput"/>
+    enableScrolling="false">
+    
+    <content>
+      <!-- Enhanced background with animated elements -->
+      <VBox class="employee-login-background" >
+        <!-- Animated background elements -->
+        <HBox class="employee-floating-shapes">
+          <core:Icon src="sap-icon://user" class="employee-floating-shape shape-1" />
+          <core:Icon src="sap-icon://shield" class="employee-floating-shape shape-2" />
+          <core:Icon src="sap-icon://settings" class="employee-floating-shape shape-3" />
+          <core:Icon src="sap-icon://analytics" class="employee-floating-shape shape-4" />
+          <core:Icon src="sap-icon://circle-task-2" class="employee-floating-shape shape-5" />
+          <core:Icon src="sap-icon://calendar" class="employee-floating-shape shape-6" />
         </HBox>
-        <HBox class="loginInputBox" alignItems="Center">
-          <core:Icon src="sap-icon://locked" class="loginInputIcon passwordIcon"/>
-          <Input id="password" placeholder="Password" type="Password" width="100%" class="loginInput"/>
+
+        <!-- Decorative grid pattern -->
+        <VBox class="employee-grid-pattern">
+          <HBox class="employee-grid-row">
+            <core:Icon src="sap-icon://circle-task" class="employee-grid-dot" />
+            <core:Icon src="sap-icon://circle-task" class="employee-grid-dot" />
+            <core:Icon src="sap-icon://circle-task" class="employee-grid-dot" />
+            <core:Icon src="sap-icon://circle-task" class="employee-grid-dot" />
+            <core:Icon src="sap-icon://circle-task" class="employee-grid-dot" />
+          </HBox>
+          <HBox class="employee-grid-row">
+            <core:Icon src="sap-icon://circle-task" class="employee-grid-dot" />
+            <core:Icon src="sap-icon://circle-task" class="employee-grid-dot" />
+            <core:Icon src="sap-icon://circle-task" class="employee-grid-dot" />
+            <core:Icon src="sap-icon://circle-task" class="employee-grid-dot" />
+            <core:Icon src="sap-icon://circle-task" class="employee-grid-dot" />
+          </HBox>
+        </VBox>
+
+        <!-- Main content container -->
+        <HBox class="employee-main-content-container">
+          <!-- Left side - Branding and company info -->
+          <VBox class="employee-branding-section">
+            <VBox class="employee-brand-content">
+              <core:Icon src="sap-icon://user" class="employee-brand-icon" />
+              <Title text="Employee Portal" level="H1" class="employee-brand-title" />
+              <Text text="Access your professional development journey" class="employee-brand-subtitle" />
+
+              <!-- Company highlights -->
+              <VBox class="employee-feature-highlights">
+                <HBox class="employee-feature-item">
+                  <core:Icon src="sap-icon://shield" class="employee-feature-icon" />
+                  <Text text="Secure Access" class="employee-feature-text" />
+                </HBox>
+                <HBox class="employee-feature-item">
+                  <core:Icon src="sap-icon://analytics" class="employee-feature-icon" />
+                  <Text text="Performance Tracking" class="employee-feature-text" />
+                </HBox>
+                <HBox class="employee-feature-item">
+                  <core:Icon src="sap-icon://calendar" class="employee-feature-icon" />
+                  <Text text="Exam Scheduling" class="employee-feature-text" />
+                </HBox>
+                <HBox class="employee-feature-item">
+                  <core:Icon src="sap-icon://chart" class="employee-feature-icon" />
+                  <Text text="Progress Analytics" class="employee-feature-text" />
+                </HBox>
+              </VBox>
+
+              <!-- Company stats -->
+              <VBox class="employee-stats-container">
+                <HBox class="employee-stat-item">
+                  <VBox class="employee-stat-number">
+                    <Text text="500+" class="employee-stat-value" />
+                    <Text text="Active Employees" class="employee-stat-label" />
+                  </VBox>
+                  <VBox class="employee-stat-number">
+                    <Text text="95%" class="employee-stat-value" />
+                    <Text text="Success Rate" class="employee-stat-label" />
+                  </VBox>
+                </HBox>
+              </VBox>
+            </VBox>
+          </VBox>
+
+          <!-- Right side - Login form -->
+          <VBox class="employee-login-section">
+            <VBox class="employee-login-container-modern">
+              <!-- Header section -->
+              <VBox class="employee-login-header" alignItems="Center">
+                <core:Icon src="sap-icon://user" class="employee-app-icon" />
+                <Title text="Welcome Back" level="H1" class="employee-modern-login-title" />
+                <Text text="Sign in to your employee account" class="employee-modern-login-subtitle" />
+              </VBox>
+
+              <!-- Login form -->
+              <VBox class="employee-login-form-container" alignItems="Center">
+                <VBox class="employee-input-group">
+                  <HBox class="employee-input-container">
+                    <core:Icon src="sap-icon://email" class="employee-input-icon" />
+                    <Input 
+                      id="email" 
+                      placeholder="Enter your email address" 
+                      type="Email" 
+                      class="employee-modern-input"
+                    />
+                  </HBox>
+                  
+                  <HBox class="employee-input-container">
+                    <core:Icon src="sap-icon://locked" class="employee-input-icon" />
+                    <Input 
+                      id="password" 
+                      placeholder="Enter your password" 
+                      type="Password" 
+                      class="employee-modern-input"
+                    />
+                  </HBox>
+                </VBox>
+
+                <!-- Forgot password link -->
+                <HBox justifyContent="End" width="100%" class="employee-forgot-password-container">
+                  <Link 
+                    text="Forgot password?" 
+                    press="onForgotPassword" 
+                    class="employee-forgot-password-link"
+                  />
+                </HBox>
+
+                <!-- Login button -->
+                <Button 
+                  text="Sign In" 
+                  type="Emphasized" 
+                  press="onLogin" 
+                  class="employee-modern-login-btn"
+                  icon="sap-icon://arrow-right"
+                  iconFirst="false"
+                />
+
+                <!-- Additional info -->
+                <HBox class="employee-login-info" justifyContent="Center">
+                  <core:Icon src="sap-icon://shield" class="employee-info-icon" />
+                  <Text text="Secure &amp; Encrypted Connection" class="employee-info-text" />
+                </HBox>
+              </VBox>
+            </VBox>
+          </VBox>
         </HBox>
-        <HBox justifyContent="End">
-          <Link text="Forgot password?" press="onForgotPassword" class="forgotPasswordLink"/>
-        </HBox>
-        <Button text="SIGN IN" type="Emphasized" press="onLogin" class="loginButtonGradient"/>
       </VBox>
-    </VBox>
-  </HBox>
+    </content>
+  </Page>
 </mvc:View>

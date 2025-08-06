@@ -53,7 +53,7 @@
               <VBox class="feature-highlights">
                 <HBox class="feature-item">
                   <core:Icon src="sap-icon://shield" class="feature-icon" />
-                                           <Text text="Secure &amp; Encrypted" class="feature-text" />
+                  <Text text="Secure & Encrypted" class="feature-text" />
                 </HBox>
                 <HBox class="feature-item">
                   <core:Icon src="sap-icon://user" class="feature-icon" />
@@ -132,7 +132,7 @@
                 <!-- Additional info -->
                 <HBox class="login-info" justifyContent="Center">
                   <core:Icon src="sap-icon://shield" class="info-icon" />
-                                           <Text text="Secure &amp; Encrypted" class="info-text" />
+                  <Text text="Secure & Encrypted" class="info-text" />
                 </HBox>
               </VBox>
             </VBox>
@@ -141,4 +141,4 @@
       </VBox>
     </content>
   </Page>
-</mvc:View> 
+</mvc:View>
