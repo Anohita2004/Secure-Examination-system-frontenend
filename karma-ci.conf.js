@@ -1,35 +1,34 @@
 module.exports = function (config) {
-	"use strict";
+  "use strict";
 
-	require("./karma.conf")(config);
+  require("./karma.conf")(config); // Load base config
 
-	config.set({
-		browsers: ["ChromeHeadlessCI"],
-		singleRun: true,
+  config.set({
+    browsers: ["ChromeHeadlessCI"],
+    singleRun: true,
 
-		// ⏱ Timeout fixes
-		browserNoActivityTimeout: 120000,       // Wait 2 mins before timing out
-		browserDisconnectTimeout: 12000,        // Wait 12s before disconnect
-		browserDisconnectTolerance: 2,          // Retry up to 2 times
-		captureTimeout: 120000,                 // Wait 2 mins for browser to start
+    // Timeout settings
+    browserNoActivityTimeout: 120000,
+    browserDisconnectTimeout: 12000,
+    browserDisconnectTolerance: 2,
+    captureTimeout: 120000,
 
-		// 🧪 Custom launcher for CI
-		customLaunchers: {
-			ChromeHeadlessCI: {
-				base: "ChromeHeadless",
-				flags: [
-					"--no-sandbox",
-					"--disable-gpu",
-					"--disable-dev-shm-usage",
-					"--disable-software-rasterizer"
-				]
-			}
-		}
-		client: {
-  loadScripts: [
-    "test/unit/unitTests.qunit.js" // ← Make sure path matches
-  ]
-}
+    // Load entry QUnit test file
+    client: {
+      loadScripts: ["test/unit/unitTests.qunit.js"]
+    },
 
-	});
+    // Custom launcher for CI environments
+    customLaunchers: {
+      ChromeHeadlessCI: {
+        base: "ChromeHeadless",
+        flags: [
+          "--no-sandbox",
+          "--disable-gpu",
+          "--disable-dev-shm-usage",
+          "--disable-software-rasterizer"
+        ]
+      }
+    }
+  });
 };
