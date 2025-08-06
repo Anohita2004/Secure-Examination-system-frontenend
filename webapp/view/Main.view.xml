@@ -2,48 +2,142 @@
   controllerName="exam.controller.Main"
   xmlns:mvc="sap.ui.core.mvc"
   xmlns="sap.m"
+  xmlns:core="sap.ui.core"
 >
-  <!-- The sap.m.Page is the primary container for your entire screen. -->
-  <!-- It should be the direct child of the mvc:View. -->
-  <!-- We apply the 'login-page' class to the Page for overall styling. -->
-  <!-- 'enableScrolling="false"' is good for a fixed, centered layout. -->
   <Page
     showHeader="false"
-    class="login-page"
+    class="modern-login-page"
     enableScrolling="false"
   >
     <content>
-      <!-- This VBox is responsible for centering the actual login content. -->
-      <!-- It will take up the full available space within the Page's content area. -->
-      <VBox
-        class="login-content-wrapper"
-        alignItems="Center"
-        justifyContent="Center"
-        width="100%"
-        height="100%"
-      >
-        <!-- This inner VBox will be your actual login panel, which we'll give a max-width. -->
-        <VBox
-          class="login-panel-content"
-          alignItems="Center"
-          justifyContent="Center"
-        >
-          <Title text="Secure Examination System" level="H1" class="login-title" />
-          <Text text="Please select your role" class="login-subtitle" />
-
-          <HBox class="avatar-carousel" alignItems="Center" justifyContent="Center">
-            <Button icon="sap-icon://nav-back" press="onPreviousAvatar" class="nav-arrow" />
-
-            <VBox alignItems="Center" class="avatar-section">
-              <Image src="{/selected/avatar}" width="100px" height="100px" class="avatar-image" />
-              <Text text="{/selected/role}" class="role-label" />
-            </VBox>
-
-            <Button icon="sap-icon://nav-forward" press="onNextAvatar" class="nav-arrow" />
+      <!-- Enhanced background with more visual elements -->
+      <VBox class="login-background">
+        <!-- Animated background elements -->
+        <HBox class="floating-shapes">
+          <core:Icon src="sap-icon://circle-task-2" class="floating-shape shape-1" />
+          <core:Icon src="sap-icon://circle-task-2" class="floating-shape shape-2" />
+          <core:Icon src="sap-icon://circle-task-2" class="floating-shape shape-3" />
+          <core:Icon src="sap-icon://shield" class="floating-shape shape-4" />
+          <core:Icon src="sap-icon://user" class="floating-shape shape-5" />
+          <core:Icon src="sap-icon://settings" class="floating-shape shape-6" />
+        </HBox>
+        
+        <!-- Decorative grid pattern -->
+        <VBox class="grid-pattern">
+          <HBox class="grid-row">
+            <core:Icon src="sap-icon://circle-task" class="grid-dot" />
+            <core:Icon src="sap-icon://circle-task" class="grid-dot" />
+            <core:Icon src="sap-icon://circle-task" class="grid-dot" />
+            <core:Icon src="sap-icon://circle-task" class="grid-dot" />
+            <core:Icon src="sap-icon://circle-task" class="grid-dot" />
           </HBox>
-
-          <Button text="Continue" press="onLoginContinue" class="login-continue-btn" />
+          <HBox class="grid-row">
+            <core:Icon src="sap-icon://circle-task" class="grid-dot" />
+            <core:Icon src="sap-icon://circle-task" class="grid-dot" />
+            <core:Icon src="sap-icon://circle-task" class="grid-dot" />
+            <core:Icon src="sap-icon://circle-task" class="grid-dot" />
+            <core:Icon src="sap-icon://circle-task" class="grid-dot" />
+          </HBox>
         </VBox>
+        
+        <!-- Main content container -->
+        <HBox class="main-content-container">
+          <!-- Left side - Branding and info -->
+          <VBox class="branding-section">
+            <VBox class="brand-content">
+              <core:Icon src="sap-icon://shield" class="brand-icon" />
+              <Title text="Secure Examination System" level="H1" class="brand-title" />
+              <Text text="Professional assessment platform for modern organizations" class="brand-subtitle" />
+              
+              <!-- Feature highlights -->
+              <VBox class="feature-highlights">
+                <HBox class="feature-item">
+                  <core:Icon src="sap-icon://shield" class="feature-icon" />
+                  <Text text="Secure & Encrypted" class="feature-text" />
+                </HBox>
+                <HBox class="feature-item">
+                  <core:Icon src="sap-icon://user" class="feature-icon" />
+                  <Text text="Multi-Role Access" class="feature-text" />
+                </HBox>
+                <HBox class="feature-item">
+                  <core:Icon src="sap-icon://analytics" class="feature-icon" />
+                  <Text text="Real-time Analytics" class="feature-text" />
+                </HBox>
+              </VBox>
+            </VBox>
+          </VBox>
+          
+          <!-- Right side - Login form -->
+          <VBox class="login-section">
+            <VBox class="login-container-modern">
+              <!-- Header section -->
+              <VBox class="login-header" alignItems="Center">
+                <core:Icon src="sap-icon://shield" class="app-icon" />
+                <Title text="Welcome Back" level="H1" class="modern-login-title" />
+                <Text text="Choose your role to continue" class="modern-login-subtitle" />
+              </VBox>
+
+              <!-- Role selection section -->
+              <VBox class="role-selection-container" alignItems="Center">
+                <HBox class="avatar-carousel-modern" alignItems="Center" justifyContent="Center">
+                  <Button 
+                    icon="sap-icon://nav-back" 
+                    press="onPreviousAvatar" 
+                    class="modern-nav-arrow" 
+                    tooltip="Previous Role"
+                  />
+
+                  <VBox alignItems="Center" class="avatar-section-modern">
+                    <VBox class="avatar-container">
+                      <Image src="{/selected/avatar}" class="modern-avatar-image" />
+                      <VBox class="avatar-overlay">
+                        <core:Icon src="sap-icon://user" class="avatar-icon" />
+                      </VBox>
+                    </VBox>
+                    <Text text="{/selected/role}" class="modern-role-label" />
+                    <Text text="Click to select" class="role-hint" />
+                  </VBox>
+
+                  <Button 
+                    icon="sap-icon://nav-forward" 
+                    press="onNextAvatar" 
+                    class="modern-nav-arrow" 
+                    tooltip="Next Role"
+                  />
+                </HBox>
+
+                <!-- Role indicators -->
+                <HBox class="role-indicators" justifyContent="Center">
+                  <core:Icon 
+                    src="{= ${/currentIndex} === 0 ? 'sap-icon://circle-task' : 'sap-icon://circle-task-2'}" 
+                    class="role-indicator" 
+                  />
+                  <core:Icon 
+                    src="{= ${/currentIndex} === 1 ? 'sap-icon://circle-task' : 'sap-icon://circle-task-2'}" 
+                    class="role-indicator" 
+                  />
+                </HBox>
+              </VBox>
+
+              <!-- Action section -->
+              <VBox class="login-actions" alignItems="Center">
+                <Button 
+                  text="Continue" 
+                  press="onLoginContinue" 
+                  class="modern-continue-btn" 
+                  icon="sap-icon://arrow-right"
+                  iconFirst="false"
+                />
+                
+                <!-- Additional info -->
+                <HBox class="login-info" justifyContent="Center">
+                  <core:Icon src="sap-icon://shield" class="info-icon" />
+                  <Text text="Secure & Encrypted" class="info-text" />
+                </HBox>
+              </VBox>
+            </VBox>
+          </VBox>
+        </HBox>
       </VBox>
     </content>
   </Page>
