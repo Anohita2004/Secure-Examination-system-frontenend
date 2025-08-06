@@ -13,10 +13,10 @@ module.exports = function (config) {
     browserDisconnectTolerance: 2,
     captureTimeout: 120000,
 
-    // Load entry QUnit test file
-    client: {
-      loadScripts: ["test/unit/unitTests.qunit.js"]
-    },
+    // ❌ REMOVE this block completely:
+    // client: {
+    //   loadScripts: ["test/unit/unitTests.qunit.js"]
+    // },
 
     // Custom launcher for CI environments
     customLaunchers: {
