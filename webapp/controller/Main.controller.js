@@ -1,8 +1,8 @@
 sap.ui.define([
   "./BaseController",
   "sap/ui/model/json/JSONModel",
-  "sap/m/MessageBox"
-], function (BaseController, JSONModel, MessageBox) {
+  
+], function (BaseController, JSONModel) {
   "use strict";
 
   return BaseController.extend("exam.controller.Main", {
