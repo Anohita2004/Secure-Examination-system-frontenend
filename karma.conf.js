@@ -12,10 +12,6 @@ module.exports = function (config) {
       }
     },
 
-    files: [
-      { pattern: "webapp/test/unit/unitTests.qunit.js", included: true },
-      { pattern: "webapp/test/unit/**/*.js", included: false, served: true }
-    ],
 
     browsers: ["ChromeHeadless"],
 
