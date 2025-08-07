@@ -5,29 +5,119 @@
   xmlns:core="sap.ui.core"
   displayBlock="true">
 
-  <HBox class="loginPageRoot" justifyContent="Center" alignItems="Center" width="100%" height="100vh">
-    <!-- Left Illustration -->
-    <VBox width="50%" class="loginIllustrationBox" alignItems="Center" justifyContent="Center">
-      <Image src="images/login-illustration.jpg" width="80%" />
-    </VBox>
+  <Page showHeader="false" class="admin-login-page bg-override" enableScrolling="false">
+    <content>
+      <VBox class="admin-login-background">
+        <!-- Animated floating icons -->
+        <HBox class="admin-floating-shapes">
+          <core:Icon src="sap-icon://key" class="admin-floating-shape shape-1" />
+          <core:Icon src="sap-icon://shield" class="admin-floating-shape shape-2" />
+          <core:Icon src="sap-icon://sys-monitor" class="admin-floating-shape shape-3" />
+          <core:Icon src="sap-icon://lock" class="admin-floating-shape shape-4" />
+        </HBox>
 
-    <!-- Right Login Form -->
-    <VBox width="50%" class="loginFormBox" alignItems="Center" justifyContent="Center">
-      <Title text="WELCOME BACK" level="H2" class="loginWelcome"/>
-      <Text text="ADMIN LOGIN" class="loginPageTitle"/>
-      <VBox width="350px" class="loginForm" alignItems="Stretch" justifyContent="Center">
-        <HBox class="loginInputBox" alignItems="Center">
-          <core:Icon src="sap-icon://email" class="loginInputIcon emailIcon"/>
-          <Input id="email" placeholder="Email address" type="Email" width="100%" class="loginInput"/>
+        <!-- Decorative grid pattern -->
+        <VBox class="admin-grid-pattern">
+          <HBox class="admin-grid-row">
+            <core:Icon src="sap-icon://circle-task" class="admin-grid-dot" />
+            <core:Icon src="sap-icon://circle-task" class="admin-grid-dot" />
+            <core:Icon src="sap-icon://circle-task" class="admin-grid-dot" />
+            <core:Icon src="sap-icon://circle-task" class="admin-grid-dot" />
+          </HBox>
+          <HBox class="admin-grid-row">
+            <core:Icon src="sap-icon://circle-task" class="admin-grid-dot" />
+            <core:Icon src="sap-icon://circle-task" class="admin-grid-dot" />
+            <core:Icon src="sap-icon://circle-task" class="admin-grid-dot" />
+            <core:Icon src="sap-icon://circle-task" class="admin-grid-dot" />
+          </HBox>
+        </VBox>
+
+        <!-- Main content -->
+        <HBox class="admin-main-content-container">
+          <!-- Left: Branding Section -->
+          <VBox class="admin-branding-section">
+            <VBox class="admin-brand-content">
+              <core:Icon src="sap-icon://key" class="admin-brand-icon" />
+              <Title text="Admin Control Panel" level="H1" class="admin-brand-title" />
+              <Text text="Manage exams, monitor progress, and configure system settings." class="admin-brand-subtitle" />
+
+              <!-- Feature highlights -->
+              <VBox class="admin-feature-highlights">
+                <HBox class="admin-feature-item">
+                  <core:Icon src="sap-icon://sys-monitor" class="admin-feature-icon" />
+                  <Text text="System Monitoring" class="admin-feature-text" />
+                </HBox>
+                <HBox class="admin-feature-item">
+                  <core:Icon src="sap-icon://employee-pane" class="admin-feature-icon" />
+                  <Text text="User Management" class="admin-feature-text" />
+                </HBox>
+                <HBox class="admin-feature-item">
+                  <core:Icon src="sap-icon://action-settings" class="admin-feature-icon" />
+                  <Text text="Configurable Settings" class="admin-feature-text" />
+                </HBox>
+                <HBox class="admin-feature-item">
+                  <core:Icon src="sap-icon://shield" class="admin-feature-icon" />
+                  <Text text="Enhanced Security" class="admin-feature-text" />
+                </HBox>
+              </VBox>
+            </VBox>
+          </VBox>
+
+          <!-- Right: Login Form -->
+          <VBox class="admin-login-section">
+            <VBox class="admin-login-container-modern">
+              <!-- Header -->
+              <VBox class="admin-login-header" alignItems="Center">
+                <core:Icon src="sap-icon://key" class="admin-app-icon" />
+                <Title text="Welcome Admin" level="H1" class="admin-modern-login-title" />
+                <Text text="Sign in to your control panel" class="admin-modern-login-subtitle" />
+              </VBox>
+
+              <!-- Form -->
+              <VBox class="admin-login-form-container" alignItems="Center">
+                <VBox class="admin-input-group">
+                  <HBox class="admin-input-container">
+                    <core:Icon src="sap-icon://email" class="admin-input-icon" />
+                    <Input 
+                      id="email" 
+                      placeholder="Enter admin email" 
+                      type="Email" 
+                      class="admin-modern-input"
+                    />
+                  </HBox>
+                  
+                  <HBox class="admin-input-container">
+                    <core:Icon src="sap-icon://locked" class="admin-input-icon" />
+                    <Input 
+                      id="password" 
+                      placeholder="Enter password" 
+                      type="Password" 
+                      class="admin-modern-input"
+                    />
+                  </HBox>
+                </VBox>
+
+                <!-- Login Button -->
+                <Button 
+                  text="Sign In" 
+                  type="Emphasized" 
+                  press="onLogin" 
+                  class="admin-modern-login-btn"
+                  icon="sap-icon://log"
+                  iconFirst="false"
+                />
+
+                <!-- Info -->
+                <HBox class="admin-login-info" justifyContent="Center">
+                  <core:Icon src="sap-icon://shield" class="admin-info-icon" />
+                  <Text text="Secure &amp; Admin-only Access" class="admin-info-text" />
+                </HBox>
+              </VBox>
+            </VBox>
+          </VBox>
         </HBox>
-        <HBox class="loginInputBox" alignItems="Center">
-          <core:Icon src="sap-icon://locked" class="loginInputIcon passwordIcon"/>
-          <Input id="password" placeholder="Password" type="Password" width="100%" class="loginInput"/>
-        </HBox>
-        
-        <Button text="SIGN IN" type="Emphasized" press="onLogin" class="loginButtonGradient"/>
-        
       </VBox>
-    </VBox>
-  </HBox>
+    </content>
+  </Page>
 </mvc:View>
+
