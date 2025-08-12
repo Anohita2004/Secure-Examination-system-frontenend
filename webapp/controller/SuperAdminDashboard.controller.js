@@ -189,7 +189,7 @@ onOpenAddEmployeeDialog: function() {
           return;
         }
         // Call backend API to add employee
-        fetch("http://localhost:4000/api/users", {
+        fetch("http://localhost:4000/api/auth", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
