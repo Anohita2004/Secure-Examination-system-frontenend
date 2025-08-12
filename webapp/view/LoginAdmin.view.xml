@@ -106,6 +106,8 @@
                   icon="sap-icon://log"
                   iconFirst="false"
                 />
+                <Button text="Forgot Password" press=".onForgotPassword"/>
+
 
                 <!-- Info -->
                 <HBox class="admin-login-info" justifyContent="Center">
