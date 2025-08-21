@@ -106,7 +106,7 @@
                   icon="sap-icon://log"
                   iconFirst="false"
                 />
-                <Button text="Forgot Password" press=".onForgotPassword"/>
+                <Button text="Forgot Password" press="onForgotPassword"/>
 
 
                 <!-- Info -->

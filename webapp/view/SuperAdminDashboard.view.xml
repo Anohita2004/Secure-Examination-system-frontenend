@@ -7,7 +7,7 @@
 
   <HBox>
     <!-- Sidebar -->
-    <VBox width="240px" class="superAdminSidebar" style="background:#f8f8f8; border-radius:20px; min-height:100vh;">
+    <VBox width="240px" class="superAdminSidebar">
       <Avatar initials="{user>name}" displaySize="L" class="sapUiMediumMarginTop"/>
       <Text text="{user>name}" class="sidebarName sapUiTinyMarginTop"/>
       <Text text="{user>role}" class="sidebarRole sapUiTinyMarginBottom"/>
@@ -20,30 +20,30 @@
     </VBox>
 
     <!-- Main Content -->
-    <VBox width="100%" class="superAdminMainContent" style="padding:32px;">
+    <VBox width="100%" class="superAdminMainContent">
       <HBox justifyContent="SpaceBetween" alignItems="Center">
         <Title text="Super Admin Dashboard" level="H1"/>
         <!-- Optional: Banner or notification -->
-        <Panel headerText="Welcome, Super Admin!" class="welcomeBanner" style="background:#e3f2fd; border-radius:16px;">
+        <Panel headerText="Welcome, Super Admin!" class="welcomeBanner">
           <Text text="Manage users, permissions, and more."/>
         </Panel>
       </HBox>
 
       <!-- Stats Cards -->
-      <HBox class="statsRow" wrap="Wrap" style="margin-top:24px;">
-        <VBox class="statCard" style="background:#fff; border-radius:16px; box-shadow:0 2px 8px #eee; padding:16px; margin:8px;">
+      <HBox class="statsRow" wrap="Wrap">
+        <VBox class="statCard">
           <Text text="Total Users"/>
           <ObjectNumber number="{dashboardModel>/userCount}" unit=""/>
         </VBox>
-        <VBox class="statCard" style="background:#fff; border-radius:16px; box-shadow:0 2px 8px #eee; padding:16px; margin:8px;">
+        <VBox class="statCard">
           <Text text="Total Permissions"/>
           <ObjectNumber number="{dashboardModel>/permissionCount}" unit=""/>
         </VBox>
-        <VBox class="statCard" style="background:#fff; border-radius:16px; box-shadow:0 2px 8px #eee; padding:16px; margin:8px;">
+        <VBox class="statCard">
           <Text text="Admins"/>
           <ObjectNumber number="{dashboardModel>/adminCount}" unit=""/>
         </VBox>
-        <VBox class="statCard" style="background:#fff; border-radius:16px; box-shadow:0 2px 8px #eee; padding:16px; margin:8px;">
+        <VBox class="statCard">
           <Text text="Employees"/>
           <ObjectNumber number="{dashboardModel>/employeeCount}" unit=""/>
         </VBox>
@@ -65,7 +65,7 @@
         <Text text="{dashboardModel>name}" />
         <Text text="{dashboardModel>email}" />
         <Text text="{dashboardModel>role}" />
-        <Text text="{dashboardModel>permissions}" />
+        <Text text="{path: 'dashboardModel>permissions', formatter: '.formatPermissions'}" />
         <Button text="Manage" press="onManagePermissions" type="Emphasized"/>
       </cells>
     </ColumnListItem>
