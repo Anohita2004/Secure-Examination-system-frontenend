@@ -8,9 +8,13 @@ sap.ui.define([], function () {
         method: "GET",
         credentials: "include"
       }).then(res => {
-        if (!res.ok) throw new Error("Failed to fetch permissions");
+        if (!res.ok) {
+          const err = new Error("Failed to fetch permissions");
+          err.status = res.status;
+          throw err;
+        }
         return res.json();
-      });
+      }).then(json => json.permissions || json.data || json);
     },
 
     getAllUsersWithPermissions: function() {
@@ -18,9 +22,13 @@ sap.ui.define([], function () {
         method: "GET",
         credentials: "include"
       }).then(res => {
-        if (!res.ok) throw new Error("Failed to fetch users");
+        if (!res.ok) {
+          const err = new Error("Failed to fetch users");
+          err.status = res.status;
+          throw err;
+        }
         return res.json();
-      });
+      }).then(json => json.users || json.data || json);
     },
 
     getUserPermissions: function(userId) {
@@ -28,9 +36,13 @@ sap.ui.define([], function () {
         method: "GET",
         credentials: "include"
       }).then(res => {
-        if (!res.ok) throw new Error("Failed to fetch user permissions");
+        if (!res.ok) {
+          const err = new Error("Failed to fetch user permissions");
+          err.status = res.status;
+          throw err;
+        }
         return res.json();
-      });
+      }).then(json => json.permissions || json.data || json);
     },
 
     assignPermission: function(userId, permissionId) {
@@ -42,7 +54,11 @@ sap.ui.define([], function () {
         body: JSON.stringify({ userId, permissionId }),
         credentials: "include"
       }).then(res => {
-        if (!res.ok) throw new Error("Failed to assign permission");
+        if (!res.ok) {
+          const err = new Error("Failed to assign permission");
+          err.status = res.status;
+          throw err;
+        }
         return res.json();
       });
     },
@@ -56,7 +72,11 @@ sap.ui.define([], function () {
         body: JSON.stringify({ userId, permissionId }),
         credentials: "include"
       }).then(res => {
-        if (!res.ok) throw new Error("Failed to remove permission");
+        if (!res.ok) {
+          const err = new Error("Failed to remove permission");
+          err.status = res.status;
+          throw err;
+        }
         return res.json();
       });
     }

@@ -83,7 +83,14 @@
   "pattern": "analytics-dashboard",
   "name": "analytics-dashboard",
   "target": "analyticsDashboard"
+
+},
+{
+  "pattern": "reset-password/{token}",
+  "name": "reset-password",
+  "target": "resetPassword"
 }
+
       ],
       "targets": {
         "loginAdmin": { "viewName": "LoginAdmin", "viewId": "loginAdmin" },
@@ -99,7 +106,11 @@
         "analyticsDashboard": {
   "viewName": "AnalyticsDashboard",
   "viewId": "analyticsDashboard"
-}
+},
+        "resetPassword": {
+          "viewName": "SuperAdminResetPassword",
+          "viewId": "superAdminResetPassword"
+        }
       }
     }
   }

@@ -2,13 +2,18 @@ sap.ui.define([
   "exam/model/PermissionService"
 ], function (PermissionService) {
   "use strict";
-  
+
+  function extractNames(permissions) {
+    return permissions.map(function (p) { return (typeof p === "string" ? p : p.name) || ""; })
+      .map(function (n) { return String(n).toLowerCase(); });
+  }
+
   return {
-    // Check if user has a specific permission
     hasPermission: function(userId, permissionName) {
       return PermissionService.getUserPermissions(userId)
         .then(function(permissions) {
-          return permissions.some(p => p.name === permissionName);
+          const names = extractNames(permissions);
+          return names.includes(String(permissionName).toLowerCase());
         })
         .catch(function(err) {
           console.error("Permission check failed:", err);
@@ -16,12 +21,11 @@ sap.ui.define([
         });
     },
 
-    // Check multiple permissions (user needs ALL of them)
     hasAllPermissions: function(userId, permissionNames) {
       return PermissionService.getUserPermissions(userId)
         .then(function(permissions) {
-          const userPermissionNames = permissions.map(p => p.name);
-          return permissionNames.every(name => userPermissionNames.includes(name));
+          const names = extractNames(permissions);
+          return permissionNames.map(function(n){return String(n).toLowerCase();}).every(function(name){ return names.includes(name); });
         })
         .catch(function(err) {
           console.error("Permission check failed:", err);
@@ -29,12 +33,11 @@ sap.ui.define([
         });
     },
 
-    // Check multiple permissions (user needs ANY of them)
     hasAnyPermission: function(userId, permissionNames) {
       return PermissionService.getUserPermissions(userId)
         .then(function(permissions) {
-          const userPermissionNames = permissions.map(p => p.name);
-          return permissionNames.some(name => userPermissionNames.includes(name));
+          const names = extractNames(permissions);
+          return permissionNames.map(function(n){return String(n).toLowerCase();}).some(function(name){ return names.includes(name); });
         })
         .catch(function(err) {
           console.error("Permission check failed:", err);
