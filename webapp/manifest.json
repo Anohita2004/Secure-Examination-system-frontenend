@@ -86,7 +86,7 @@
 
 },
 {
-  "pattern": "reset-password/{token}",
+  "pattern": "reset-password",
   "name": "reset-password",
   "target": "resetPassword"
 }
@@ -108,8 +108,8 @@
   "viewId": "analyticsDashboard"
 },
         "resetPassword": {
-          "viewName": "SuperAdminResetPassword",
-          "viewId": "superAdminResetPassword"
+          "viewName": "ResetPassword",
+          "viewId": "resetPassword"
         }
       }
     }

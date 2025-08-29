@@ -4,22 +4,39 @@ sap.ui.define([
 ], function(BaseController, MessageBox) {
   "use strict";
 
+  function getTokenFromUrl() {
+    // Try standard query string first
+    var searchParams = new URLSearchParams(window.location.search || "");
+    var tokenFromSearch = searchParams.get("token");
+    if (tokenFromSearch) {
+      return tokenFromSearch;
+    }
+    // Fallback: parse query params after the hash (e.g., index.html#/reset-password?token=...)
+    var hash = window.location.hash || ""; // e.g., #/reset-password?token=abc
+    var queryIndex = hash.indexOf("?");
+    if (queryIndex !== -1) {
+      var queryString = hash.substring(queryIndex + 1);
+      var hashParams = new URLSearchParams(queryString);
+      return hashParams.get("token");
+    }
+    return null;
+  }
+
   return BaseController.extend("exam.controller.ResetPassword", {
     onInit: function() {
-      // Optionally, you can check for the token in the URL and show an error if missing
-      const urlParams = new URLSearchParams(window.location.search);
-      const token = urlParams.get("token");
-      if (!token) {
+      // Cache the token so we don't lose it if the router rewrites the hash
+      this._resetToken = getTokenFromUrl();
+      if (!this._resetToken) {
         MessageBox.error("Invalid or missing reset token.");
         // Optionally, redirect to login or home
       }
     },
 
     onResetPassword: function() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const token = urlParams.get("token");
-      const newPassword = this.byId("newPasswordInput").getValue();
-      const confirmPassword = this.byId("confirmPasswordInput").getValue();
+      // Prefer cached token; fall back to current URL parsing
+      var token = this._resetToken || getTokenFromUrl();
+      var newPassword = this.byId("newPasswordInput").getValue();
+      var confirmPassword = this.byId("confirmPasswordInput").getValue();
 
       if (!newPassword || !confirmPassword) {
         MessageBox.error("All fields are required.");
@@ -38,8 +55,8 @@ sap.ui.define([
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: token, new_password: newPassword })
       })
-      .then(res => res.json())
-      .then(data => {
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
         if (data.error) {
           MessageBox.error(data.error);
         } else {
@@ -47,7 +64,7 @@ sap.ui.define([
           // Optionally redirect to login page after a short delay
         }
       })
-      .catch(err => {
+      .catch(function(err) {
         MessageBox.error("Error: " + err.message);
       });
     }
