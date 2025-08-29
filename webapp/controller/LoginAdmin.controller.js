@@ -169,7 +169,7 @@ sap.ui.define([
             }
 
             try {
-                const res = await fetch("http://localhost:4000/api/user/request-password-reset", {
+                const res = await fetch("http://localhost:4000/api/users/request-password-reset", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     credentials: "include",
