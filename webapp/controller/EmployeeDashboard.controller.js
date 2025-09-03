@@ -460,7 +460,7 @@ _getExamsForDate: function (dateString) {
           type: attempted ? "Inactive" : "Active",
           press: function() {
             if (!attempted) {
-              that.getRouter().navTo("exam", { examId: e.id });
+              that.getRouter().navTo("exam-intro", { examId: e.id });
             }
           }
         });

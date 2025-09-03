@@ -72,7 +72,17 @@
         { "pattern": "login-employee", "name": "login-employee", "target": "loginEmployee" },
         { "pattern": "admin-dashboard", "name": "admin-dashboard", "target": "adminDashboard" },
         { "pattern": "employee-dashboard", "name": "employee-dashboard", "target": "employeeDashboard" },
-        { "pattern": "exam/{examId}", "name": "exam", "target": "exam" },
+        {
+    "pattern": "exam-intro/{examId}",
+    "name": "exam-intro",
+    "target": "examIntro"
+  },
+  {
+    "pattern": "exam/{examId}",
+    "name": "exam",
+    "target": "exam"
+  }
+        ,
         { "pattern": "super-admin-dashboard", "name": "super-admin-dashboard", "target": "superAdminDashboard" },
         {
           "pattern": "",
@@ -110,7 +120,15 @@
         "resetPassword": {
           "viewName": "ResetPassword",
           "viewId": "resetPassword"
-        }
+        },
+        "examIntro": {
+    "viewName": "ExamIntro",
+    "viewType": "XML"
+  },
+  "exam": {
+    "viewName": "Exam",
+    "viewType": "XML"
+  }
       }
     }
   }

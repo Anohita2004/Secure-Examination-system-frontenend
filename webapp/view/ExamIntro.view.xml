@@ -1,0 +1,24 @@
+<mvc:View
+  controllerName="exam.controller.ExamIntro"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  displayBlock="true">
+
+  <Page title="Exam Instructions">
+    <content>
+      <VBox class="sapUiSmallMargin sapUiMediumMarginBegin sapUiMediumMarginEnd">
+        <Text text="Please read the following instructions carefully:" />
+        <List>
+          <CustomListItem><Text text="1. Do not switch tabs or minimize the window." /></CustomListItem>
+          <CustomListItem><Text text="2. Copy/Paste and screenshots are disabled." /></CustomListItem>
+          <CustomListItem><Text text="3. The exam will auto-submit if you cheat repeatedly." /></CustomListItem>
+          <CustomListItem><Text text="4. You have limited time once the exam starts." /></CustomListItem>
+        </List>
+
+        <Button text="Start Exam"
+          type="Emphasized"
+          press="onStartExam"/>
+      </VBox>
+    </content>
+  </Page>
+</mvc:View>
