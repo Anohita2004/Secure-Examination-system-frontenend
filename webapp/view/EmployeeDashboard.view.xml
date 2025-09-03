@@ -8,8 +8,8 @@
   <HBox class="employeeDashboardRoot">
     <!-- Sidebar -->
     <VBox class="employeeSidebar" width="220px">
-      <Avatar initials="{user>name}" displaySize="L" class="employeeAvatar"/>
-      <Text text="Hi, {user>name}" class="employeeSidebarName"/>
+      <Avatar initials="{user>/name}" displaySize="L" class="employeeAvatar"/>
+      <Text text="Hi, {user>/name}" class="employeeSidebarName"/>
       <List mode="None" class="employeeSidebarList">
         <StandardListItem icon="sap-icon://home" title="Dashboard" type="Inactive"/>
         <StandardListItem icon="sap-icon://education" title="My Exams" type="Active" press="onGoToUnattempted"/>
@@ -24,12 +24,12 @@
       <!-- Header -->
       <HBox class="employeeHeaderBar" alignItems="Center" justifyContent="SpaceBetween">
         <VBox>
-          <Text text="Welcome, {user>name}!" class="employeeWelcome"/>
-          <Text text="Role: {user>role} | Email: {user>email}" class="employeeDetails"/>
+          <Text text="Welcome, {user>/name}!" class="employeeWelcome"/>
+          <Text text="Role: {user>/role} | Email: {user>/email}" class="employeeDetails"/>
         </VBox>
 
         <HBox alignItems="Center" gap="1rem">
-          <Avatar initials="{user>name}" displaySize="M"/>
+          <Avatar initials="{user>/name}" displaySize="M"/>
           <Button text="Edit Profile" icon="sap-icon://edit" press="onEditProfile"/>
         </HBox>
       
@@ -61,14 +61,14 @@
         <VBox class="employeeCard" width="260px">
           <core:Icon src="sap-icon://education" size="2.5rem"/>
           <Text text="Unattempted Exams" class="cardTitle"/>
-          <Text text="{= ${exams>/unattempted}.length + ' pending' }"/>
+          <Text text="{= ${exams>/unattempted} ? ${exams>/unattempted}.length + ' pending' : 'Loading...'}"/>
           <Button text="View" press="onGoToUnattempted"/>
         </VBox>
         <!-- Attempted Exams Card -->
         <VBox class="employeeCard" width="260px">
           <core:Icon src="sap-icon://accept" size="2.5rem"/>
           <Text text="Attempted Exams" class="cardTitle"/>
-          <Text text="{= ${exams>/attempted}.length + ' completed' }"/>
+          <Text text="{= ${exams>/attempted} ? ${exams>/attempted}.length + ' completed' : 'Loading...'}"/>
           <Button text="View" press="onGoToAttempted"/>
         </VBox>
         <!-- Results Card -->

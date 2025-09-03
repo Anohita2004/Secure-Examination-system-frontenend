@@ -13,6 +13,7 @@ sap.ui.define([
       AuthService.getCurrentUser()
         .then(function(user) {
           // Add initials for avatar
+          console.log("Current user:", user);
           user.initials = user.name ? user.name.split(" ").map(n => n[0]).join("").toUpperCase() : "";
           const userModel = new sap.ui.model.json.JSONModel(user);
           that.getView().setModel(userModel, "user");
@@ -21,8 +22,9 @@ sap.ui.define([
           return ExamService.getAssignedExams(userId);
         })
         .then(function(data) {
-          const unattempted = data.filter(e => e.attempted === 0);
-          const attempted = data.filter(e => e.attempted === 1);
+          const unattempted = data.filter(e => Number(e.attempted) === 0);
+          const attempted = data.filter(e => Number(e.attempted) === 1);
+
           // Subject-wise breakdown
           const subjectMap = {};
           data.forEach(e => {
@@ -41,9 +43,18 @@ sap.ui.define([
           that.getView().setModel(model, "exams");
         })
         .catch(function(err) {
-          MessageBox.error("Failed to load exams: " + err.message);
-          that.getRouter().navTo("login-employee");
-        });
+  console.error("Dashboard load failed:", err);
+
+  // If it's an auth error → redirect
+  if (err.message && err.message.toLowerCase().includes("unauthorized")) {
+    MessageBox.error("Your session has expired. Please log in again.");
+    that.getRouter().navTo("login-employee");
+  } else {
+    // For other errors, just show them but don't kick user out
+    MessageBox.error("Failed to load exams: " + err.message);
+  }
+});
+
         window.addEventListener("popstate", this._onBrowserBack = function() {that.onLogout();});
         this._examData = [];
         this.loadExamCalendar();
@@ -283,7 +294,7 @@ onAnnouncementIconPress: function () {
             }
             // Get user_id from model
             const user = this.getView().getModel("user").getData();
-            fetch("http://localhost:4000/api/user/change-password", {
+            fetch("http://localhost:4000/api/users/change-password", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
@@ -333,20 +344,61 @@ onCancelProfile: function() {
 },
 loadExamCalendar: function () {
   const that = this;
-  fetch("/api/exams") // ← Use your existing endpoint here
+
+  fetch("http://localhost:4000/api/exams")
     .then(res => res.json())
     .then(data => {
-      // Optional: convert all dates to YYYY-MM-DD format
+      // Normalize exam dates
       data.forEach(exam => {
-        exam.date = new Date(exam.date).toISOString().split("T")[0];
+        if (exam.date) {
+          exam.date = new Date(exam.date).toISOString().split("T")[0];
+        }
       });
+
+      // Save raw exam data
       that._examData = data;
+
+      // --- Build Subject Breakdown ---
+      const subjectBreakdown = {};
+      data.forEach(exam => {
+        if (exam.subject) {
+          subjectBreakdown[exam.subject] = (subjectBreakdown[exam.subject] || 0) + 1;
+        }
+      });
+
+      // --- Separate attempted/unattempted ---
+      const attempted = data.filter(exam => exam.attempted === "1");
+      const unattempted = data.filter(exam => exam.attempted === "0");
+
+      // --- Set exams model ---
+      const examsModel = new sap.ui.model.json.JSONModel({
+        attempted,
+        unattempted,
+        subjectBreakdown: Object.keys(subjectBreakdown).map(s => ({
+          subject: s,
+          count: subjectBreakdown[s]
+        }))
+      });
+      that.getView().setModel(examsModel, "exams");
+
+      // --- Build calendar events ---
+      const calendarData = data.map(exam => ({
+        title: exam.title,
+        date: exam.date,
+        status: exam.status
+      }));
+      const calendarModel = new sap.ui.model.json.JSONModel(calendarData);
+      that.getView().setModel(calendarModel, "calendarModel");
+
+      console.log("✅ Exam data loaded:", data);
     })
     .catch(err => {
-      console.error("Error loading exam data:", err);
+      console.error("❌ Error loading exam data:", err);
     });
-},
-loadAnnouncements: function () {
+}
+
+,
+loadAnnouncements:  function () {
   fetch("http://localhost:4000/api/announcements")
     .then(res => res.json())
     .then(data => {
@@ -428,20 +480,27 @@ _getExamsForDate: function (dateString) {
       dialog.open();
     },
 
-    _fetchResults: function(userId) {
-      const that = this;
-      return fetch(`http://localhost:4000/api/user/${userId}/results`, {
-        credentials: "include"
-      })
-        .then(res => res.json())
-        .then(data => {
-          const resultsModel = new sap.ui.model.json.JSONModel(data);
-          that.getView().setModel(resultsModel, "results");
-          return data;
-        })
-        .catch(err => {
-          sap.m.MessageBox.error("Failed to load results: " + err.message);
-        });
-    }
-  });
-});
+  _fetchResults: function (userId) {
+  const that = this;
+  return fetch(`http://localhost:4000/api/users/${userId}/results`, {
+    credentials: "include"
+  })
+    .then(async (res) => {
+      if (!res.ok) {
+        // Read error as text (because it might be HTML)
+        const text = await res.text();
+        throw new Error(`Server returned ${res.status}: ${text}`);
+      }
+      return res.json(); // Only parse JSON if it's valid
+    })
+    .then((data) => {
+      const resultsModel = new sap.ui.model.json.JSONModel(data);
+      that.getView().setModel(resultsModel, "results");
+      return data;
+    })
+    .catch((err) => {
+      sap.m.MessageBox.error("Failed to load results: " + err.message);
+    });
+}
+
+  });});

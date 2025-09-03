@@ -88,7 +88,7 @@ sap.ui.define([], function () {
 
   return {
     createExam: function(examData) {
-      return fetch(BASE_URL + "/exam/create", {
+      return fetch(BASE_URL + "/exams/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -98,7 +98,7 @@ sap.ui.define([], function () {
       }).then(res => res.json());
     },
     addQuestion: function(questionData) {
-      return fetch(BASE_URL + "/exam/add-question", {
+      return fetch(BASE_URL + "/exams/add-question", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -118,7 +118,7 @@ sap.ui.define([], function () {
       }).then(res => res.json());
     }*/
    assignExam: function(assignData) {
-  return fetch(BASE_URL + "/exam/assign", {
+  return fetch(BASE_URL + "/exams/assign", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -135,19 +135,19 @@ sap.ui.define([], function () {
   });
 },
     getAssignedExams: function(userId) {
-      return fetch(BASE_URL + "/exam/assigned/" + userId, {
+      return fetch(BASE_URL + "/exams/assigned/" + userId, {
         method: "GET",
         credentials: "include"
       }).then(res => res.json());
     },
     getExamQuestions: function(examId) {
-      return fetch(BASE_URL + "/exam/" + examId + "/questions", {
+      return fetch(BASE_URL + "/exams/" + examId + "/questions", {
         method: "GET",
         credentials: "include"
       }).then(res => res.json());
     },
     submitExamAnswers: function(examId, userId, answers) {
-      return fetch(BASE_URL + "/exam/" + examId + "/submit", {
+      return fetch(BASE_URL + "/exams/" + examId + "/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -157,13 +157,13 @@ sap.ui.define([], function () {
       }).then(res => res.json());
     },
     getUserExamResult: function(examId, userId) {
-      return fetch(BASE_URL + "/exam/" + examId + "/result/" + userId, {
+      return fetch(BASE_URL + "/exams/" + examId + "/result/" + userId, {
         method: "GET",
         credentials: "include"
       }).then(res => res.json());
     },
     getAllExamResults: function(examId) {
-      return fetch(BASE_URL + "/exam/" + examId + "/results", {
+      return fetch(BASE_URL + "/exams/" + examId + "/results", {
         method: "GET",
         credentials: "include"
       }).then(res => res.json());
