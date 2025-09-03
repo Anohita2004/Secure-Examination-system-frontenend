@@ -465,36 +465,62 @@ sap.ui.define([
         },
 
         _showCreateExamDialog: function() {
-            const that = this;
-            const dialog = new sap.m.Dialog({
-                title: "Create Exam",
-                content: [
-                    new sap.m.Input("examTitle", { placeholder: "Title" }),
-                    new sap.m.Input("examDescription", { placeholder: "Description" }),
-                    new sap.m.Input("examDueDate", { placeholder: "Due Date (YYYY-MM-DD)" }),
-                    new sap.m.DatePicker("examStartDate", { placeholder: "Start Date" }),
-                    new sap.m.DatePicker("examEndDate", { placeholder: "End Date" })
-                ],
-                beginButton: new sap.m.Button({
-                    text: "Create",
-                    press: function() {
-                        const title = sap.ui.getCore().byId("examTitle").getValue();
-                        const description = sap.ui.getCore().byId("examDescription").getValue();
-                        const dueDate = sap.ui.getCore().byId("examDueDate").getValue();
-                        const user = that.getView().getModel("user").getData();
-                        const createdBy = user.id || user.userId;
-                        const startDate = sap.ui.getCore().byId("examStartDate").getValue();
-                        const endDate = sap.ui.getCore().byId("examEndDate").getValue();
-                        ExamService.createExam({ title, description, due_date: dueDate, created_by: createdBy, start_date: startDate, end_date: endDate })
-                            .then(() => MessageBox.success("Exam created!"))
-                            .catch(err => MessageBox.error("Error: " + (err.message || err)));
-                        dialog.close();
-                    }
-                }),
-                endButton: new sap.m.Button({ text: "Cancel", press: function() { dialog.close(); } })
-            });
-            dialog.open();
-        },
+    const that = this;
+    const dialog = new sap.m.Dialog({
+        title: "Create Exam",
+        content: [
+            new sap.m.Input("examTitle", { placeholder: "Title" }),
+            new sap.m.Input("examDescription", { placeholder: "Description" }),
+            new sap.m.Input("examDueDate", { placeholder: "Due Date (YYYY-MM-DD)" }),
+            new sap.m.DatePicker("examStartDate", { placeholder: "Start Date" }),
+            new sap.m.DatePicker("examEndDate", { placeholder: "End Date" }),
+
+            // 👇 NEW: Subject field
+            new sap.m.Label({ text: "Subject" }),
+            new sap.m.Select("examSubject", {
+                items: [
+                    new sap.ui.core.Item({ key: "Java", text: "Java" }),
+                    new sap.ui.core.Item({ key: "Database", text: "Database" }),
+                    new sap.ui.core.Item({ key: "SAP", text: "SAP" }),
+                    new sap.ui.core.Item({ key: "General", text: "General" })
+                ]
+            })
+        ],
+        beginButton: new sap.m.Button({
+            text: "Create",
+            press: function() {
+                const title = sap.ui.getCore().byId("examTitle").getValue();
+                const description = sap.ui.getCore().byId("examDescription").getValue();
+                const dueDate = sap.ui.getCore().byId("examDueDate").getValue();
+                const user = that.getView().getModel("user").getData();
+                const createdBy = user.id || user.userId;
+                const startDate = sap.ui.getCore().byId("examStartDate").getValue();
+                const endDate = sap.ui.getCore().byId("examEndDate").getValue();
+                const subject = sap.ui.getCore().byId("examSubject").getSelectedKey(); // ✅ collect subject
+
+                ExamService.createExam({ 
+                    title, 
+                    description, 
+                    due_date: dueDate, 
+                    created_by: createdBy, 
+                    start_date: startDate, 
+                    end_date: endDate, 
+                    subject 
+                })
+                .then(() => MessageBox.success("Exam created!"))
+                .catch(err => MessageBox.error("Error: " + (err.message || err)));
+
+                dialog.close();
+            }
+        }),
+        endButton: new sap.m.Button({ 
+            text: "Cancel", 
+            press: function() { dialog.close(); } 
+        })
+    });
+    dialog.open();
+}
+,
 
         onOpenAddQuestionDialog: function() {
             const user = this.getView().getModel("user") && this.getView().getModel("user").getData();
