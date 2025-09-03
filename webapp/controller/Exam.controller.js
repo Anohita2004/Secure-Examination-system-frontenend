@@ -685,39 +685,84 @@ sap.ui.define([
   return BaseController.extend("exam.controller.Exam", {
     _isExamActive: false, // Track if the exam is still in progress
 
-    onInit: function () {
-      // Attach the route handler immediately!
-      const oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-      oRouter.getRoute("exam").attachPatternMatched(this._onRouteMatched, this);
+   onInit: function () {
+  const oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+  oRouter.getRoute("exam").attachPatternMatched(this._onRouteMatched, this);
 
-      // Secure Exam: Add event listeners
-      this._onFullscreenChangeBound = this._onFullscreenChange.bind(this);
-      document.addEventListener("fullscreenchange", this._onFullscreenChangeBound);
-      document.addEventListener("webkitfullscreenchange", this._onFullscreenChangeBound);
-      document.addEventListener("mozfullscreenchange", this._onFullscreenChangeBound);
-      document.addEventListener("MSFullscreenChange", this._onFullscreenChangeBound);
-      this._onContextMenuBound = function(e) { e.preventDefault(); };
-      document.addEventListener("contextmenu", this._onContextMenuBound);
+  // Secure Exam: Add event listeners
+  this._onFullscreenChangeBound = this._onFullscreenChange.bind(this);
+  document.addEventListener("fullscreenchange", this._onFullscreenChangeBound);
+  document.addEventListener("webkitfullscreenchange", this._onFullscreenChangeBound);
+  document.addEventListener("mozfullscreenchange", this._onFullscreenChangeBound);
+  document.addEventListener("MSFullscreenChange", this._onFullscreenChangeBound);
 
-      // Set an empty model immediately to prevent empty bindings
-      this.getView().setModel(new sap.ui.model.json.JSONModel({
-        questions: [],
-        currentIndex: 0,
-        currentQuestion: {},
-        timeLeft: 900
-      }), "questions");
+  this._onContextMenuBound = function(e) { e.preventDefault(); };
+  document.addEventListener("contextmenu", this._onContextMenuBound);
 
-      // Check authentication (async, but do NOT attach route handler here)
-      AuthService.getCurrentUser()
-        .then(user => {
-          this.getView().setModel(new sap.ui.model.json.JSONModel(user), "user");
-        })
-        .catch(() => {
-          MessageBox.error("Unauthorized access.");
-          this.getRouter().navTo("login-employee");
-        });
-    },
+  // Prevent binding errors by setting empty model
+  this.getView().setModel(new sap.ui.model.json.JSONModel({
+    questions: [],
+    currentIndex: 0,
+    currentQuestion: {},
+    timeLeft: 900
+  }), "questions");
 
+  // Auth check
+  AuthService.getCurrentUser()
+    .then(user => {
+      this.getView().setModel(new sap.ui.model.json.JSONModel(user), "user");
+    })
+    .catch(() => {
+      MessageBox.error("Unauthorized access.");
+      this.getRouter().navTo("login-employee");
+    });
+},
+_attachCheatingDetection: function (userId, examId) {
+  const that = this;
+
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) {
+      that._reportCheating(userId, examId, "TAB_SWITCH", "User switched tab or minimized window");
+    }
+  });
+
+  document.addEventListener("copy", function (e) {
+    e.preventDefault();
+    that._reportCheating(userId, examId, "COPY", "User tried copying text");
+  });
+
+  document.addEventListener("paste", function (e) {
+    e.preventDefault();
+    that._reportCheating(userId, examId, "PASTE", "User tried pasting text");
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.ctrlKey && (e.key === "t" || e.key === "n" || e.key === "c" || e.key === "v")) {
+      e.preventDefault();
+      that._reportCheating(userId, examId, "BLOCKED_KEY", `Blocked key: Ctrl+${e.key}`);
+    }
+    if (e.key === "PrintScreen") {
+      e.preventDefault();
+      that._reportCheating(userId, examId, "SCREENSHOT", "User tried taking a screenshot");
+    }
+  });
+},
+
+_reportCheating: function (userId, examId, type, detail) {
+  fetch("http://localhost:4000/api/exams/report-cheating", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ user_id: userId, exam_id: examId, type, detail })
+  })
+    .then(res => res.json())
+    .then(data => {
+      console.log("Cheating logged:", data);
+    })
+    .catch(err => {
+      console.error("Error logging cheating:", err);
+    });
+}
+,
     onExit: function() {
       // Remove event listeners
       document.removeEventListener("fullscreenchange", this._onFullscreenChangeBound);
@@ -725,6 +770,12 @@ sap.ui.define([
       document.removeEventListener("mozfullscreenchange", this._onFullscreenChangeBound);
       document.removeEventListener("MSFullscreenChange", this._onFullscreenChangeBound);
       document.removeEventListener("contextmenu", this._onContextMenuBound);
+
+       document.removeEventListener("visibilitychange", this._cheatTabSwitch);
+  document.removeEventListener("contextmenu", this._cheatRightClick);
+  document.removeEventListener("copy", this._cheatCopy);
+  document.removeEventListener("paste", this._cheatPaste);
+  document.removeEventListener("keydown", this._cheatKeys);
     },
 
     _requestFullscreen: function() {
@@ -755,8 +806,8 @@ sap.ui.define([
       }
     },
 
-    _onRouteMatched: function (oEvent) {
-  // Reset model to empty
+   _onRouteMatched: function (oEvent) {
+  // Reset questions model
   this.getView().setModel(new sap.ui.model.json.JSONModel({
     questions: [],
     currentIndex: 0,
@@ -764,11 +815,32 @@ sap.ui.define([
     timeLeft: 900
   }), "questions");
 
-  const examId = oEvent.getParameter("arguments").examId; // <-- Move this up!
+  const examId = oEvent.getParameter("arguments").examId;
+  const userModel = this.getView().getModel("user");
   const that = this;
 
   console.log("Exam ID:", examId);
 
+  if (!userModel) {
+    // User model not ready → load it now
+    AuthService.getCurrentUser()
+      .then(user => {
+        that.getView().setModel(new sap.ui.model.json.JSONModel(user), "user");
+        that._attachCheatingDetection(user.id, examId);
+        that._loadQuestions(examId);
+      })
+      .catch(() => {
+        MessageBox.error("Unauthorized access.");
+        that.getRouter().navTo("login-employee");
+      });
+  } else {
+    const user = userModel.getData();
+    that._attachCheatingDetection(user.id, examId);
+    that._loadQuestions(examId);
+  }
+},
+_loadQuestions: function (examId) {
+  const that = this;
   ExamService.getExamQuestions(examId)
     .then(data => {
       console.log("Questions data:", data);
@@ -781,7 +853,6 @@ sap.ui.define([
       data.forEach((q, index) => {
         q.index = index;
         q.status = "notAnswered";
-        // Normalize is_msq to boolean
         q.is_msq = q.is_msq === true || q.is_msq === 1 || q.is_msq === "1" || q.is_msq === "true";
         if (q.is_msq) {
           q.selectedIndices = [];
@@ -799,7 +870,6 @@ sap.ui.define([
         timeLeft: 900
       });
 
-      // Automatically update currentQuestion when currentIndex changes
       model.attachPropertyChange(function (e) {
         if (e.getParameter("path") === "/currentIndex") {
           const index = e.getParameter("value");
@@ -811,15 +881,16 @@ sap.ui.define([
       that.getView().setModel(model, "questions");
       that._startCountdown();
 
-      // --- Secure Exam: Request fullscreen after questions are loaded ---
-      that._isExamActive = true; // Exam is now active
-      that._requestFullscreen();
+      // ✅ Only request fullscreen when user starts exam manually
+      // (move this into a Start Exam button press handler)
+      // that._requestFullscreen();
     })
     .catch(() => {
       MessageBox.error("Failed to load exam.");
       that._initEmptyModel();
     });
 },
+
 
     _initEmptyModel: function () {
       this.getView().setModel(new sap.ui.model.json.JSONModel({
@@ -949,6 +1020,20 @@ sap.ui.define([
       model.setProperty("/currentIndex", index);
       model.setProperty("/currentQuestion", questions[index]);
     },
+    onStartExam: function () {
+  this._isExamActive = true;
+
+  const elem = document.documentElement;
+  if (elem.requestFullscreen) elem.requestFullscreen();
+
+  // You could also re-enable cheating detection here if needed
+  const user = this.getView().getModel("user").getData();
+  const examId = this.getOwnerComponent().getRouter().getHashChanger().getHash().split("/").pop();
+  this._attachCheatingDetection(user.id, examId);
+
+  MessageToast.show("Exam started in secure mode.");
+},
+
 
     onSubmitExam: function (isAutoSubmit = false) {
       if (!this._isExamActive) return; // Prevent double submit

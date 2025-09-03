@@ -7,6 +7,7 @@
     <!-- Header -->
     <HBox justifyContent="SpaceBetween" alignItems="Center" class="sapUiSmallMarginBottom">
       <VBox>
+       <Button text="Start Exam" press="onStartExam" type="Emphasized"/>
         <Text text="Candidate: {/user/name}" />
         <Text text="Exam: {/user/examTitle}" />
       </VBox>
